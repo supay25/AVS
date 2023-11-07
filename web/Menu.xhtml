@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+        <style>
+            .centered-text {
+                text-align: center;
+                position: absolute;
+                top: 24%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+        </style>
+        <style>
+            .centered-DT {
+                text-align: center;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <div class="centered-text">
+            <h1>Admin Virtual Shop</h1>
+        </div>
+
+
+        <h:form>
+            <div class="centered-DT">
+                <p:panelGrid columns="1">
+                    <p:growl id="msg" showDetail="true" />
+                    <p:inputText value="#{loginController.usuario}" placeholder="Correo electrónico" />
+                    <p:password value="#{loginController.clave}" placeholder="Contraseña" />
+                    <p:commandButton value="Ingresar al sistema" actionListener="#{loginController.ingresar()}" update="msg" />
+                    <p:commandButton value="Crear Cuenta" actionListener="#{loginController.ingresar()}" update="msg" />
+                </p:panelGrid> 
+
+            </div>
+            
+            
+            <p:dialog header="Crear Nuevo Usuario" showEffect="fade" modal="true" widgetVar="manageUserDialog"
+                      responsive="true">
+                <p:outputPanel id="manage-product-content" class="ui-fluid">
+
+                    <div class="field">
+                        <p:outputLabel for="codigo">Codigo</p:outputLabel>
+                        <p:inputText id="codigo" value="#{proyectoController.proyectoSelec.codigo}"/>
+                    </div>
+
+                    <div class="field">
+                        <p:outputLabel for="nombre">Nombre</p:outputLabel>
+                        <p:inputText id="nombre" value="#{proyectoController.proyectoSelec.nombre}"/>
+                    </div>
+                    <div class="field">
+                        <p:outputLabel for="descripcion">Descripcion</p:outputLabel>
+                        <p:inputText id="descripcion" value="#{proyectoController.proyectoSelec.descripcion}"/>
+                    </div>
+
+                </p:outputPanel>
+
+                <f:facet name="footer">
+                    <p:commandButton value="Guardar" icon="pi pi-check" actionListener="#{proyectoController.saveUser}"
+                                     update="form manage-user-content messagesDialogs " process="manage-user-content @this" />
+                    <p:commandButton value="Salir" icon="pi pi-times" onclick="PF('manageUserDialog').hide()"
+                                     class="ui-button-secondary" type="button" />
+
+                </f:facet>
+
+
+            </p:dialog>
+
+
+
+
+        </h:form>
+    </h:body>
+</html>
