@@ -30,30 +30,19 @@ public class storeController {
     private String descripcion;
     private String calificacion;
     private String Categoria;
-    private TiendaTO selectedUsuario;
+    private TiendaTO selectedUsuario = new TiendaTO();
     ServicioTienda tienda = new ServicioTienda();
     private List<TiendaTO> listaRetorno = tienda.lista();
-    ServicioProducto products = new ServicioProducto();
+    
+    //ServicioProducto products = new ServicioProducto();
     private List<ProductoTO> listaRetornoProducts;
     
     
     
 
-    public ServicioTienda getTienda() {
-        return tienda;
-    }
+    
 
-    public void setTienda(ServicioTienda tienda) {
-        this.tienda = tienda;
-    }
-
-    public ServicioProducto getProducts() {
-        return products;
-    }
-
-    public void setProducts(ServicioProducto products) {
-        this.products = products;
-    }
+  
 
     public List<ProductoTO> getListaRetornoProducts() {
         return listaRetornoProducts;
@@ -77,7 +66,10 @@ public class storeController {
 
     }
 
-    public void openNewPage() {                        
+    public void openNewPage(TiendaTO tienda) {
+        
+        ServicioTienda ser = new ServicioTienda();       
+        this.listaRetornoProducts = ser.listaProducto(tienda.getIdl());
         this.redireccionar("/faces/tienda.xhtml");
         
         

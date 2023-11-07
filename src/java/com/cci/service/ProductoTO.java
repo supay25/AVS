@@ -15,13 +15,22 @@ public class ProductoTO implements Serializable{
     private String nombre;
     private String descripcion;
     private String precio;
-    private String codigo;
+    private int id;
+   
 
-    public ProductoTO(String nombre, String descripcion, String precio, String codigo) {
+    public ProductoTO(String nombre, String descripcion, String precio, int id) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
-        this.codigo = codigo;
+        this.id = id;
+      
+    }
+    public int getId(){
+        return this.id;
+    }
+    
+    public void setId(int id){
+        this.id = id;
     }
 
     public ProductoTO() {
@@ -52,13 +61,7 @@ public class ProductoTO implements Serializable{
         this.precio = precio;
     }
 
-    public String getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
-    }
+   
     
     
     

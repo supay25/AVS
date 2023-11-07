@@ -9,7 +9,7 @@
         <title>Tienda</title>
     </h:head>
     <h:body>
-
+        
     </h:body>
     <div class="product card">
         <h:form id="form">
@@ -50,13 +50,17 @@
                                 <div class="product-name">#{product.nombre}</div>
                                 <div class="product-description">#{product.descripcion}</div>
                             </div>
-                            
                             <div class="product-list-action">
                                 <h:outputText value="#{product.precio}" styleClass="product-price">
-                                    <f:convertNumber currencySymbol="$" type="currency"/>
-                                </h:outputText>
-                                <p:commandButton type="button" value="Add To Cart" icon="pi pi-shopping-cart"/>
-                            </div>
+                            <f:convertNumber currencySymbol="$" type="currency"/>
+                        </h:outputText>
+                        <p:commandButton type="button"
+                                            value="Add To Cart"
+                                            icon="pi pi-shopping-cart">
+                        </p:commandButton>
+                        
+                    </div>
+                            
                         </div>
                     </div>
                 </p:dataViewListItem>

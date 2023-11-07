@@ -35,9 +35,9 @@
                 </p:column> 
                 <p:column headerText="Acciones">
 
-                    <p:commandButton value="Abrir Tienda" actionListener="#{storeController.openNewPage()}">
-
-                    </p:commandButton>                
+                    <p:commandButton value="Abrir Tienda" actionListener="#{storeController.openNewPage(tienda)}">
+                        
+                    </p:commandButton>               
 
                 </p:column>
 
@@ -51,8 +51,8 @@
                 </f:facet>
 
             </p:dataTable>
-            
-            
+
+
         </h:form>
     </h:body>
 </html>
