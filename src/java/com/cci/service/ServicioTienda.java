@@ -18,6 +18,23 @@ import java.util.List;
  */
 public class ServicioTienda extends Servicio {
 
+    public void insertarTienda(TiendaTO tiendaTO) {
+
+        try {
+            PreparedStatement stmt = super.getConexion().prepareStatement("INSERT INTO tienda (nombre, descripcion, calificacion, categoria) VALUES (?,?,?,?)");
+            stmt.setString(1, tiendaTO.getNombre());
+            stmt.setString(2, tiendaTO.getDescripcion());
+            stmt.setString(3, tiendaTO.getCalificacion());
+            stmt.setString(4, tiendaTO.getCategoria());
+            stmt.execute();
+
+            stmt.close();
+
+        } catch (SQLException ex) {
+            System.out.println("Error al insertar tienda: " + ex.getMessage());
+        }
+
+    }
     public List<TiendaTO> lista() {
         List<TiendaTO> listaRetorno = new ArrayList<TiendaTO>();
         

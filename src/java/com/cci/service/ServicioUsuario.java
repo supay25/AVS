@@ -14,9 +14,9 @@ import java.sql.SQLException;
  * @author lizan
  */
 public class ServicioUsuario extends Servicio {
-    
-    public void AgregarUsuario(UsuarioTO userTO){
-        
+
+    public void AgregarUsuario(UsuarioTO userTO) {
+
         try {
             PreparedStatement stmt = super.getConexion().prepareStatement("INSERT INTO usuario (nombre, apellido, telefono, correo, contrasena, permiso) VALUES (?,?,?,?,?,?)");
             stmt.setString(1, userTO.getNombre());
@@ -28,13 +28,13 @@ public class ServicioUsuario extends Servicio {
             stmt.execute();
 
             stmt.close();
-            
+
         } catch (SQLException ex) {
             System.out.println("Error al insertar usuario: " + ex.getMessage());
         }
-        
+
     }
-    
+
     public void eliminar(int id) {
 
         try {
@@ -50,24 +50,24 @@ public class ServicioUsuario extends Servicio {
             System.out.println("Error al eliminar usuario: " + ex.getMessage());
         }
     }
-     public boolean Ver(String correo, String clave) {
+
+    public boolean Ver(String correo, String clave) {
         UsuarioTO c = null;
-        
-        try{
-           PreparedStatement stmt = super.getConexion().prepareStatement("SELECT COUNT(*) FROM usuario WHERE correo = ? and contrasena=? ");
-           stmt.setString(1, correo);
-           stmt.setString(2, clave);
-           ResultSet resultado = stmt.executeQuery();
-           if(resultado.next()){
-               int count = resultado.getInt(1);
-               return count >0;
-           }
-          
-       }catch (SQLException ex){
-           System.out.println("El error: " + ex);
-       }
-       
-       return false;
-   } 
-    
+
+        try {
+            PreparedStatement stmt = super.getConexion().prepareStatement("SELECT COUNT(*) FROM usuario WHERE correo = ? and contrasena=? ");
+            stmt.setString(1, correo);
+            stmt.setString(2, clave);
+            ResultSet resultado = stmt.executeQuery();
+            if (resultado.next()) {
+                int count = resultado.getInt(1);
+                return count > 0;
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("El error: " + ex);
+        }
+
+        return false;
+    }
 }
