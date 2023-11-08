@@ -14,18 +14,19 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
+
 @ManagedBean(name = "loginController")
 @SessionScoped
 
 public class LoginController {
-   
+
     private String nombre;
     private String apellido;
     private int telefono;
     private String correo;
     private String clave;
     private String permiso;
-    
+
     private UsuarioTO selectedUsuario;
 
     public LoginController() {
@@ -35,46 +36,28 @@ public class LoginController {
         this.selectedUsuario = new UsuarioTO();
     }
 
-    public void ingresar(){
-        
+    public void ingresar() {
         ServicioUsuario s = new ServicioUsuario();
-        
-        if(true == s.Ver(this.getCorreo(), this.getClave())){
-        
-        this.redireccionar("/faces/index.xhtml");
-            
-            
-        }else{
+        if (true == s.Ver(this.getCorreo(), this.getClave())) {
+            this.redireccionar("/faces/index.xhtml");
+        } else {
             FacesContext.getCurrentInstance().addMessage("sticky-key", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Campos Invalidos", "La clave o correo no son correctos"));
         }
     }
-        
 
     public void redireccionar(String ruta) {
         HttpServletRequest request;
         try {
             request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
             FacesContext.getCurrentInstance().getExternalContext().redirect(request.getContextPath() + ruta);
-        } catch (Exception e) {   
+        } catch (Exception e) {
         }
     }
-    
-    public void saveUser() {
-        
-        ServicioUsuario u = new ServicioUsuario();
-         u.AgregarUsuario(selectedUsuario);
-         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Usuario agregado"));    
-    }
-    
 
-    public LoginController(String nombre, String apellido, int telefono, String correo, String clave, String permiso, UsuarioTO selectedUsuario) {
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.telefono = telefono;
-        this.correo = correo;
-        this.clave = clave;
-        this.permiso = permiso;
-        this.selectedUsuario = selectedUsuario;
+    public void saveUser() {
+        ServicioUsuario u = new ServicioUsuario();
+        u.AgregarUsuario(selectedUsuario);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Usuario agregado"));
     }
 
     public String getNombre() {
@@ -132,10 +115,5 @@ public class LoginController {
     public void setSelectedUsuario(UsuarioTO selectedUsuario) {
         this.selectedUsuario = selectedUsuario;
     }
-    
-    
+
 }
-
-
-
-  

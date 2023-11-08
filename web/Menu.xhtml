@@ -5,7 +5,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
      <h:head>
-        <title>Facelet Title</title>
+        <title>Bienvenido</title>
         <style>
             .centered-text {
                 text-align: center;
@@ -58,6 +58,7 @@
              <p:dialog header="Crear Nuevo Usuario" showEffect="fade" modal="true" widgetVar="manageUserDialog" responsive="true">
                 
                  <p:outputPanel id="manage-user-content" class="ui-fluid">
+                     
                     <div class="field">
                         <p:outputLabel for="nombre">Nombre</p:outputLabel>
                         <p:inputText id="nombre" value="#{loginController.selectedUsuario.nombre}"  />
@@ -79,7 +80,7 @@
                     </div>
                      
                     <div class="field">
-                        <p:outputLabel for="contrasena">Clave</p:outputLabel>
+                        <p:outputLabel for="contrasena">Contrasena</p:outputLabel>
                         <p:inputText id="contrasena" value="#{loginController.selectedUsuario.contrasena}" required="true" />
                     </div>
                      
@@ -92,9 +93,9 @@
 
                 <f:facet name="footer">
                     <p:commandButton value="Guardar tarea" icon="pi pi-check" actionListener="#{loginController.saveUser()}"
-                                     update=":form manage-user-content" process="manage-user-content @this"
+                                     update=":form manage-user-content messagesDialogs" process="manage-user-content @this"
                                      oncomplete="PF('manageUserDialog').hide();"/>
-                    <p:commandButton value="Cancel" icon="pi pi-times" onclick="PF('manageUserDialog').hide()"
+                    <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('manageUserDialog').hide()"
                                      class="ui-button-secondary" type="button" />
                 </f:facet>
             </p:dialog>
