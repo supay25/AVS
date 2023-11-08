@@ -4,7 +4,7 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <h:head>
+     <h:head>
         <title>Facelet Title</title>
         <style>
             .centered-text {
@@ -35,49 +35,59 @@
             <div class="centered-DT">
                 <p:panelGrid columns="1">
                     <p:growl id="msg" showDetail="true" />
-                    <p:inputText value="#{loginController.usuario}" placeholder="Correo electrónico" />
+                    <p:inputText value="#{loginController.correo}" placeholder="Correo electrónico" />
                     <p:password value="#{loginController.clave}" placeholder="Contraseña" />
                     <p:commandButton value="Ingresar al sistema" actionListener="#{loginController.ingresar()}" update="msg" />
-                    <p:commandButton value="Crear Cuenta" actionListener="#{loginController.ingresar()}" update="msg" />
+                    <p:commandButton value="Crear usuario" actionListener="#{loginController.openNew()}"
+                                     oncomplete="PF('manageUserDialog').show()"
+                                     styleClass="ui-button-success" >
+                        <p:resetInput target=":dialogs:manage-user-content" />
+                    </p:commandButton>
                 </p:panelGrid> 
-
             </div>
             
-            
-            <p:dialog header="Crear Nuevo Usuario" showEffect="fade" modal="true" widgetVar="manageUserDialog"
-                      responsive="true">
-                <p:outputPanel id="manage-product-content" class="ui-fluid">
-
-                    <div class="field">
-                        <p:outputLabel for="codigo">Codigo</p:outputLabel>
-                        <p:inputText id="codigo" value="#{proyectoController.proyectoSelec.codigo}"/>
-                    </div>
-
+              
+            <p:dialog header="Crear Nuevo Usuario" showEffect="fade" modal="true" widgetVar="manageUserDialog" responsive="true">
+                <p:outputPanel id="manage-user-content" class="ui-fluid">
                     <div class="field">
                         <p:outputLabel for="nombre">Nombre</p:outputLabel>
-                        <p:inputText id="nombre" value="#{proyectoController.proyectoSelec.nombre}"/>
+                        <p:inputText id="nombre" value="#{loginController.selectedUsuario.nombre}"  />
                     </div>
                     <div class="field">
-                        <p:outputLabel for="descripcion">Descripcion</p:outputLabel>
-                        <p:inputText id="descripcion" value="#{proyectoController.proyectoSelec.descripcion}"/>
+                        <p:outputLabel for="apellido">Apellido</p:outputLabel>
+                        <p:inputText id="apellido" value="#{loginController.selectedUsuario.apellido}"  />
                     </div>
+                    <div class="field">
+                        <p:outputLabel for="telefono">Telefono</p:outputLabel>
+                        <p:inputText id="telefono" value="#{loginController.selectedUsuario.telefono}" required="true" />
+                    </div>
+                    <div class="field">
+                        <p:outputLabel for="correo">Correo</p:outputLabel>
+                        <p:inputText id="correo" value="#{loginController.selectedUsuario.correo}" required="true" />
+                    </div>
+                    <div class="field">
+                        <p:outputLabel for="contrasena">Clave</p:outputLabel>
+                        <p:inputText id="contrasena" value="#{loginController.selectedUsuario.contrasena}" required="true" />
+                    </div>
+                    <div class="field">
+                        <p:outputLabel for="permiso">Permisos</p:outputLabel>
+                        <p:inputText id="permiso" value="#{loginController.selectedUsuario.permiso}" required="true" />
+                    </div>
+                    
 
                 </p:outputPanel>
 
                 <f:facet name="footer">
-                    <p:commandButton value="Guardar" icon="pi pi-check" actionListener="#{proyectoController.saveUser}"
-                                     update="form manage-user-content messagesDialogs " process="manage-user-content @this" />
-                    <p:commandButton value="Salir" icon="pi pi-times" onclick="PF('manageUserDialog').hide()"
+                    <p:commandButton value="Guardar tarea" icon="pi pi-check" actionListener="#{loginController.saveUser()}"
+                                     update=":form manage-user-content" process="manage-user-content @this"
+                                     oncomplete="PF('manageUserDialog').hide();"/>
+                    <p:commandButton value="Cancel" icon="pi pi-times" onclick="PF('manageUserDialog').hide()"
                                      class="ui-button-secondary" type="button" />
-
                 </f:facet>
-
-
             </p:dialog>
 
-
-
-
         </h:form>
+       
     </h:body>
 </html>
+

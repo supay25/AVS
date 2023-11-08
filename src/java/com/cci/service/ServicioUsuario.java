@@ -6,6 +6,7 @@
 package com.cci.service;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
@@ -49,6 +50,24 @@ public class ServicioUsuario extends Servicio {
             System.out.println("Error al eliminar ususario: " + ex.getMessage());
         }
     }
-    
+     public boolean Ver(String correo, String clave) {
+        UsuarioTO c = null;
+        
+        try{
+           PreparedStatement stmt = super.getConexion().prepareStatement("SELECT COUNT(*) FROM usuario WHERE correo = ? and contrasena=? ");
+           stmt.setString(1, correo);
+           stmt.setString(2, clave);
+           ResultSet resultado = stmt.executeQuery();
+           if(resultado.next()){
+               int count = resultado.getInt(1);
+               return count >0;
+           }
+          
+       }catch (SQLException ex){
+           System.out.println("la adriana cachera" + ex);
+       }
+       
+       return false;
+   } 
     
 }

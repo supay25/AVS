@@ -17,9 +17,9 @@ import java.util.logging.Logger;
  */
 public class Servicio {
     private Connection conectar = null;
-    private String url = "jdbc:mysql://localhost:3306/poryectoweb?serverTimezone=UTC&zeroDateTimeBehavior=convertToNull"; //Se busca el URL en el server
+    private String url = "jdbc:mysql://localhost:3306/avs?serverTimezone=UTC&zeroDateTimeBehavior=convertToNull"; //Se busca el URL en el server
     private String usuario = "root"; //El usuario del MySQL
-    private String password = "JOSMANU18"; // La contraseña del MySQL
+    private String password = "oirflame"; // La contraseña del MySQL
     
     //Constructor
 

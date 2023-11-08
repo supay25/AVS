@@ -10,14 +10,22 @@ import com.cci.service.UsuarioTO;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
-
+@ManagedBean(name = "loginController")
+@SessionScoped
 
 public class LoginController {
+   
+    private String nombre;
+    private String apellido;
+    private int telefono;
     private String correo;
     private String clave;
-
+    private String permiso;
+    
     private UsuarioTO selectedUsuario;
 
     public LoginController() {
@@ -27,25 +35,20 @@ public class LoginController {
         this.selectedUsuario = new UsuarioTO();
     }
 
-    public void ingresar() {
-        System.out.println("Valor de usuario: " + this.getCorreo());
-        System.out.println("Valor de clave: " + this.getClave());
-
-        try {
-            
-            UsuarioTO userTO = new UsuarioTO();
-            if (this.getCorreo().equals(userTO.getCorreo()) && this.getClave().equals(userTO.getContrasena())) {
-            this.redireccionar("/faces/bienvenido.xhtml");
-        } else {
-            FacesContext.getCurrentInstance().addMessage("sticky-key", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Campos invalidos", "La clave o correo no son correctos"));
-
-        }
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void ingresar(){
         
+        ServicioUsuario s = new ServicioUsuario();
+        
+        if(true == s.Ver(this.getCorreo(), this.getClave())){
+        
+        this.redireccionar("/faces/index.xhtml");
+            
+            
+        }else{
+            FacesContext.getCurrentInstance().addMessage("sticky-key", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Campos Invalidos", "La clave o correo no son correctos"));
+        }
     }
+        
 
     public void redireccionar(String ruta) {
         HttpServletRequest request;
@@ -54,6 +57,48 @@ public class LoginController {
             FacesContext.getCurrentInstance().getExternalContext().redirect(request.getContextPath() + ruta);
         } catch (Exception e) {   
         }
+    }
+    
+    public void saveUser() {
+        
+        ServicioUsuario u = new ServicioUsuario();
+         u.AgregarUsuario(selectedUsuario);
+         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Usuario agregado"));    
+    }
+    
+
+    public LoginController(String nombre, String apellido, int telefono, String correo, String clave, String permiso, UsuarioTO selectedUsuario) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.telefono = telefono;
+        this.correo = correo;
+        this.clave = clave;
+        this.permiso = permiso;
+        this.selectedUsuario = selectedUsuario;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    public int getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(int telefono) {
+        this.telefono = telefono;
     }
 
     public String getCorreo() {
@@ -72,6 +117,14 @@ public class LoginController {
         this.clave = clave;
     }
 
+    public String getPermiso() {
+        return permiso;
+    }
+
+    public void setPermiso(String permiso) {
+        this.permiso = permiso;
+    }
+
     public UsuarioTO getSelectedUsuario() {
         return selectedUsuario;
     }
@@ -79,4 +132,10 @@ public class LoginController {
     public void setSelectedUsuario(UsuarioTO selectedUsuario) {
         this.selectedUsuario = selectedUsuario;
     }
+    
+    
 }
+
+
+
+  
