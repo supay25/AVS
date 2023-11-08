@@ -12,6 +12,11 @@
 
         <h:form id="form">
             <p:growl id="messages" showDetail="true" />
+            <p:commandButton value="Nueva Tienda" icon="pi pi-plus" actionListener="#{loginController.openNew()}"
+                             update=":dialogs:manage-product-content" oncomplete="PF('manageProductDialog').show()"
+                             styleClass="ui-button-success" style="margin-right: .5rem">
+                <p:resetInput target=":dialogs:manage-product-content" />
+            </p:commandButton>
 
             <p:dataTable var="tienda" value="#{storeController.listaRetorno}" rows="10"
                          paginator="true" paginatorPosition="both"
@@ -36,11 +41,11 @@
                 <p:column headerText="Acciones">
 
                     <p:commandButton value="Abrir Tienda" actionListener="#{storeController.openNewPage(tienda)}">
-                        
+
                     </p:commandButton>  
-                    
+
                 </p:column>
-               
+
 
 
                 <f:facet name="paginatorTopLeft">
@@ -54,6 +59,34 @@
             </p:dataTable>
 
 
+        </h:form>
+        <h:form id="dialogs">
+            <p:growl id="messagesDialogs" showDetail="false" />
+            <p:dialog header="Detalles de Tienda" showEffect="fade" modal="true" widgetVar="manageProductDialog"
+                      responsive="true">
+                <p:outputPanel id="manage-product-content" class="ui-fluid">
+                    <div class="field">
+                        <p:outputLabel for="Nombre">Nombre</p:outputLabel>
+                        <p:inputText id="Nombre" value="#{storeController.selectedUsuario.nombre}" required="true" requiredMessage="Nombre Requerido" />
+                    </div>
+                    <div class="field">
+                        <p:outputLabel for="Descripcion">Descripcion</p:outputLabel>
+                        <p:inputText id="Descripcion" value="#{storeController.selectedUsuario.descripcion}" required="true" />
+                    </div>
+                    <div class="field">
+                        <p:outputLabel for="Categoria">Categoria</p:outputLabel>
+                        <p:inputText id="Categoria" value="#{storeController.selectedUsuario.categoria}" required="true" />
+                    </div>
+
+                </p:outputPanel> 
+                <f:facet name="footer">
+                    <p:commandButton value="Guardar" icon="pi pi-check" actionListener="#{storeController.saveProduct()}"
+                                     update="form manage-product-content" process="manage-product-content @this"
+                                     oncomplete="PF('manageProductDialog').hide();"/>
+                    <p:commandButton value="Cancel" icon="pi pi-times" onclick="PF('manageProductDialog').hide()"
+                                     class="ui-button-secondary" type="button" />
+                </f:facet>  
+            </p:dialog>
         </h:form>
     </h:body>
 </html>
