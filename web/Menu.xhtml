@@ -4,7 +4,7 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-     <h:head>
+    <h:head>
         <title>Bienvenido</title>
         <style>
             .centered-text {
@@ -25,23 +25,23 @@
             }
         </style>
     </h:head>
-    
+
     <h:body>
         <div class="centered-text">
             <h1>Admin Virtual Shop</h1>
         </div>
-        
+
         <h:form id="form">
             <div class="centered-DT">
-                
+
                 <p:panelGrid columns="1">
-                    
+
                     <p:growl id="msg" showDetail="true" />
                     <p:inputText value="#{loginController.correo}" placeholder="Correo electrónico" />
                     <p:password value="#{loginController.clave}" placeholder="Contraseña" />
-                    
+
                     <p:commandButton value="Ingresar al sistema" actionListener="#{loginController.ingresar()}" update="msg" />
-                    
+
                     <p:commandButton value="Crear usuario" actionListener="#{loginController.openNew()}"
                                      update=":dialogs:manage-user-content"
                                      oncomplete="PF('manageUserDialog').show()"
@@ -51,45 +51,54 @@
                 </p:panelGrid> 
             </div>
         </h:form>
-        
+
         <h:form id="dialogs">
-             <p:growl id="messagesDialogs" showDetail="false" />
-             
-             <p:dialog header="Crear Nuevo Usuario" showEffect="fade" modal="true" widgetVar="manageUserDialog" responsive="true">
-                
-                 <p:outputPanel id="manage-user-content" class="ui-fluid">
-                     
+            <p:growl id="messagesDialogs" showDetail="false" />
+
+            <p:dialog header="Crear Nuevo Usuario" showEffect="fade" modal="true" widgetVar="manageUserDialog" responsive="true">
+
+                <p:outputPanel id="manage-user-content" class="ui-fluid">
+
                     <div class="field">
                         <p:outputLabel for="nombre">Nombre</p:outputLabel>
                         <p:inputText id="nombre" value="#{loginController.selectedUsuario.nombre}"  />
                     </div>
-                     
+
                     <div class="field">
                         <p:outputLabel for="apellido">Apellido</p:outputLabel>
                         <p:inputText id="apellido" value="#{loginController.selectedUsuario.apellido}"  />
                     </div>
-                     
+
                     <div class="field">
                         <p:outputLabel for="telefono">Telefono</p:outputLabel>
                         <p:inputText id="telefono" value="#{loginController.selectedUsuario.telefono}" required="true" />
                     </div>
-                     
+
                     <div class="field">
                         <p:outputLabel for="correo">Correo</p:outputLabel>
                         <p:inputText id="correo" value="#{loginController.selectedUsuario.correo}" required="true" />
                     </div>
-                     
+
                     <div class="field">
                         <p:outputLabel for="contrasena">Contrasena</p:outputLabel>
                         <p:inputText id="contrasena" value="#{loginController.selectedUsuario.contrasena}" required="true" />
                     </div>
-                     
-                    <div class="field">
-                        <p:outputLabel for="permiso">Permisos</p:outputLabel>
-                        <p:inputText id="permiso" value="#{loginController.selectedUsuario.permiso}" required="true" />
+
+                    <div class="field col-12 md:col-4">
+                        <p:outputLabel for="@next" value="Permiso"/>
+                        <p:selectOneMenu id="option" value="#{loginController.selectedUsuario.permiso}">
+                            <f:selectItem itemLabel="-Seleccione uno-" itemValue=""/>
+                            <f:selectItem itemLabel="Cliente" itemValue="Cliente"/>
+                            <f:selectItem itemLabel="Administrador" itemValue="Admin"/>
+                    <f:facet name="footer">
+                                <p:divider styleClass="mt-0" />
+                                <h:outputText value="2 options" style="font-weight:bold;"/>
+                    </f:facet>
+                        </p:selectOneMenu>
                     </div>
-                    
+
                 </p:outputPanel>
+
 
                 <f:facet name="footer">
                     <p:commandButton value="Guardar tarea" icon="pi pi-check" actionListener="#{loginController.saveUser()}"
@@ -99,9 +108,9 @@
                                      class="ui-button-secondary" type="button" />
                 </f:facet>
             </p:dialog>
-            
+
         </h:form>
-       
+
     </h:body>
 </html>
 
