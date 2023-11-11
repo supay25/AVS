@@ -13,6 +13,7 @@
     </h:body>
     <div class="product card">
         <h:form id="form">
+            <p:commandButton value="Volver"  actionListener="#{storeController.redireccionar('/faces/index.xhtml')}"/>  
             <p:messages id="messages"/>
             <p:dataView var="product" value="#{storeController.listaRetornoProducts}" multiViewState="true" rows="12"
                         paginator="true"
@@ -54,6 +55,12 @@
                                 <h:outputText value="#{product.precio}" styleClass="product-price">
                             <f:convertNumber currencySymbol="$" type="currency"/>
                         </h:outputText>
+                                <p:commandButton type="button"
+                                                 value="Ver Producto"
+                                                 style="background-color: gray; color: white;">                                   
+                                    <f:setPropertyActionListener value="#{product}" target="#{storeController.selectedUsuario}" />
+                                    <p:resetInput target=":dialogs:manage-product-content" />
+                                </p:commandButton>
                         <p:commandButton type="button"
                                             value="Add To Cart"
                                             icon="pi pi-shopping-cart">
