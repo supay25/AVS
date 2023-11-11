@@ -9,71 +9,67 @@
         <title>Tienda</title>
     </h:head>
     <h:body>
-        
+
     </h:body>
     <div class="product card">
         <h:form id="form">
             <p:commandButton value="Volver"  actionListener="#{storeController.redireccionar('/faces/index.xhtml')}"/>  
             <p:messages id="messages"/>
-            <p:dataView var="product" value="#{storeController.listaRetornoProducts}" multiViewState="true" rows="12"
-                        paginator="true"
-                        rowsPerPageTemplate="6,12,16"
-                        paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                        gridIcon="pi pi-th-large" listIcon="pi pi-bars">
-                
-                <p:dataViewGridItem>
-                <div class="product-grid-item card border-1">                   
-                    <div class="product-grid-item-content">
-                        
-                        <div class="product-name">#{product.nombre}</div>
-                        <div class="product-description">#{product.descripcion}</div>                    
-                    </div>
-                    <div class="product-grid-item-bottom">
-                        <h:outputText value="#{product.precio}" styleClass="product-price">
-                            <f:convertNumber currencySymbol="$" type="currency"/>
-                        </h:outputText>
-                        <p:commandButton type="button"
-                                            value="Add To Cart"
-                                            icon="pi pi-shopping-cart">
-                        </p:commandButton>
-                    </div>
-                </div>
-            </p:dataViewGridItem>
+
+            <p:dataTable var="producto" value="#{storeController.listaRetornoProducts}" rows="10"
+                         paginator="true" paginatorPosition="both"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                         rowsPerPageTemplate="5,10,{ShowAll|'All'}">
 
 
-                <!-- List View -->
-                <p:dataViewListItem>
-                    <div style="border: 2px solid #ccc; margin: 20px ;">
+                <p:column headerText="Nombre">
+                    <h:outputText value="#{producto.nombre}" />
+                </p:column>
+
+                <p:column headerText="Descripcion">
+                    <h:outputText value="#{producto.descripcion}" />
+                </p:column>
+
+                <p:column headerText="Precio">
+                    <h:outputText value="$#{producto.precio}" />
+                </p:column>
+
+                <p:column headerText="Acciones">
+                    <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash"
+                                     process="@this"
+                                     style="background-color: red; color: white;"
+                                     oncomplete="PF('deleteProductoDialog').show()">
+                        <f:setPropertyActionListener value="#{producto}" target="#{storeController.selectedProducto}" />
+                    </p:commandButton>
+
+                    <p:commandButton class="ui-button-warning rounded-button"
+                                     icon="pi pi-eye"
+                                     style="background-color: blue; color: white;">                                   
+                        <f:setPropertyActionListener value="#{product}" target="#{storeController.selectedUsuario}" />
+                        <p:resetInput target=":dialogs:manage-producto-content" />
+                    </p:commandButton>
+                    <p:commandButton class="ui-button-warning rounded-button"
+                                     icon="pi pi-shopping-cart">
+                    </p:commandButton>
 
 
-                        <div class="product-list-item" style="display: flex; justify-content: space-between;">
-                            <div class="product-list-detail">
-                                <div class="product-name">#{product.nombre}</div>
-                                <div class="product-description">#{product.descripcion}</div>
-                            </div>
-                            <div class="product-list-action">
-                                <h:outputText value="#{product.precio}" styleClass="product-price">
-                            <f:convertNumber currencySymbol="$" type="currency"/>
-                        </h:outputText>
-                                <p:commandButton type="button"
-                                                 value="Ver Producto"
-                                                 style="background-color: gray; color: white;">                                   
-                                    <f:setPropertyActionListener value="#{product}" target="#{storeController.selectedUsuario}" />
-                                    <p:resetInput target=":dialogs:manage-product-content" />
-                                </p:commandButton>
-                        <p:commandButton type="button"
-                                            value="Add To Cart"
-                                            icon="pi pi-shopping-cart">
-                        </p:commandButton>
-                        
-                    </div>
-                            
-                        </div>
-                    </div>
-                </p:dataViewListItem>
-            </p:dataView>
+                </p:column>
+
+            </p:dataTable>
+            
+              <p:confirmDialog widgetVar="deleteProductoDialog" showEffect="fade" width="300"
+                             message="Desea eliminar este producto?" header="Confirmar" severity="warn">
+                <p:commandButton value="Yes" icon="pi pi-check" action="#{storeController.deleteProducto()}"
+                                 process="@this" update="form manage-producto-content messagesDialogs"
+                                 oncomplete="PF('deleteProductoDialog').hide()" />
+                <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                                 onclick="PF('deleteProductoDialog').hide()" />
+            </p:confirmDialog>
+
 
         </h:form>
+       
     </div>
 </html>
 

@@ -10,6 +10,8 @@ import com.cci.service.ServicioProducto;
 import com.cci.service.ServicioTienda;
 import com.cci.service.TiendaTO;
 import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -24,25 +26,29 @@ import javax.servlet.http.HttpServletRequest;
  */
 @ManagedBean(name = "storeController")
 @SessionScoped
-public class storeController {
+public class storeController implements Serializable {
 
     private String nombre;
     private String descripcion;
     private String calificacion;
     private String Categoria;
+    
+    
     private TiendaTO selectedUsuario = new TiendaTO();
-    ServicioTienda tienda = new ServicioTienda();
+    ServicioTienda tienda = new ServicioTienda(); 
     private List<TiendaTO> listaRetorno = tienda.lista();
     
     //ServicioProducto products = new ServicioProducto();
     private List<ProductoTO> listaRetornoProducts;
-    
-    
-    
+    private ProductoTO selectedProducto;
 
+    public storeController() {
+    }
     
-
-  
+    public void OpenNewProducto(){
+        this.selectedProducto = new ProductoTO();
+    }
+    
 
     public List<ProductoTO> getListaRetornoProducts() {
         return listaRetornoProducts;
@@ -50,6 +56,14 @@ public class storeController {
 
     public void setListaRetornoProducts(List<ProductoTO> listaRetornoProducts) {
         this.listaRetornoProducts = listaRetornoProducts;
+    }
+
+    public ProductoTO getSelectedProducto() {
+        return selectedProducto;
+    }
+
+    public void setSelectedProducto(ProductoTO selectedProducto) {
+        this.selectedProducto = selectedProducto;
     }
     
     
@@ -62,19 +76,32 @@ public class storeController {
         this.listaRetorno = listaRetorno;
     }
 
-    public storeController() {
+     public void deleteProducto() {
+    ServicioProducto servicioProducto = new ServicioProducto();
 
+    if (selectedProducto != null) {
+        // Lógica para eliminar el producto
+        try {
+            System.out.println("Eliminando producto: " + selectedProducto.getNombre());
+            servicioProducto.eliminar(selectedProducto.getNombre());
+            listaRetornoProducts.remove(selectedProducto);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Producto eliminado"));
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error al eliminar el producto", null));
+            e.printStackTrace();
+        } finally {
+            selectedProducto = null;
+        }
+    } else {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Seleccione un producto antes de intentar eliminar", null));
     }
-
+}
+//---------------------------------------------------------------------------------------------------------------------------------
     public void openNewPage(TiendaTO tienda) {
         
         ServicioTienda ser = new ServicioTienda();       
         this.listaRetornoProducts = ser.listaProducto(tienda.getIdl());
         this.redireccionar("/faces/tienda.xhtml");
-        
-        
-
-        //FacesContext.getCurrentInstance().addMessage("sticky-key", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Campos Invalidos", "La clave o correo no son correctos"));
 
     }
 

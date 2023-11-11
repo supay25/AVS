@@ -65,10 +65,10 @@ public class ServicioTienda extends Servicio {
                 while (rs1.next()) {
                     String nombreProducto = rs1.getString("nombre");
                     String descripProducto = rs1.getString("descripcion");
-                    String precio = rs1.getString("precio");
+                    int precio = rs1.getInt("precio");
                     int id = rs1.getInt("tienda");
 
-                    ProductoTO prod = new ProductoTO(nombreProducto, descripProducto, precio, id);
+                    ProductoTO prod = new ProductoTO(nombreProducto, descripProducto, precio);
                     listaProducto.add(prod);
 
                     //System.out.println("Added Producto: " + prod.getNombre());
@@ -113,9 +113,9 @@ public class ServicioTienda extends Servicio {
             while (rs1.next()) {
                 String nombreProducto = rs1.getString("nombre");
                 String descripProducto = rs1.getString("descripcion");
-                String precio = rs1.getString("precio");               
+                int precio = rs1.getInt("precio");               
 
-                ProductoTO prod = new ProductoTO(nombreProducto, descripProducto, precio, id);
+                ProductoTO prod = new ProductoTO(nombreProducto, descripProducto, precio);
                 listaRetorno.add(prod);
 
                 System.out.println("Added Producto: " + prod.getNombre());

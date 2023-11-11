@@ -14,15 +14,19 @@ import java.io.Serializable;
 public class ProductoTO implements Serializable{
     private String nombre;
     private String descripcion;
-    private String precio;
+    private int precio;
     private int id;
-   
 
-    public ProductoTO(String nombre, String descripcion, String precio, int id) {
+    public ProductoTO() {
+    }
+   
+    
+
+    public ProductoTO(String nombre, String descripcion, int precio) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
-        this.id = id;
+       
       
     }
     public int getId(){
@@ -32,11 +36,7 @@ public class ProductoTO implements Serializable{
     public void setId(int id){
         this.id = id;
     }
-
-    public ProductoTO() {
-    }
     
-
     public String getNombre() {
         return nombre;
     }
@@ -53,16 +53,17 @@ public class ProductoTO implements Serializable{
         this.descripcion = descripcion;
     }
 
-    public String getPrecio() {
+    public int getPrecio() {
         return precio;
     }
 
-    public void setPrecio(String precio) {
+    public void setPrecio(int precio) {
         this.precio = precio;
     }
 
-   
-    
-    
+    @Override
+    public String toString() {
+        return "ProductoTO{" + "nombre=" + nombre + ", descripcion=" + descripcion + ", precio=" + precio + ", id=" + id + '}';
+    }  
     
 }
