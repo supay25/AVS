@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @ManagedBean(name = "storeController")
 @SessionScoped
-public class storeController implements Serializable {
+public class storeController{
 
     private String nombre;
     private String descripcion;
@@ -34,18 +34,18 @@ public class storeController implements Serializable {
     private String Categoria;
     
     
-    private TiendaTO selectedUsuario = new TiendaTO();
+    private TiendaTO selectedUsuario;
     ServicioTienda tienda = new ServicioTienda(); 
     private List<TiendaTO> listaRetorno = tienda.lista();
     
     //ServicioProducto products = new ServicioProducto();
     private List<ProductoTO> listaRetornoProducts;
     private ProductoTO selectedProducto;
-
+    int idProducto;
     public storeController() {
     }
     
-    public void OpenNewProducto(){
+    public void openNewProducto(){
         this.selectedProducto = new ProductoTO();
     }
     
@@ -97,14 +97,19 @@ public class storeController implements Serializable {
     }
 }
 //---------------------------------------------------------------------------------------------------------------------------------
-    public void openNewPage(TiendaTO tienda) {
-        
+    public void openNewPage(TiendaTO tienda) {   
         ServicioTienda ser = new ServicioTienda();       
         this.listaRetornoProducts = ser.listaProducto(tienda.getIdl());
         this.redireccionar("/faces/tienda.xhtml");
+        this.idProducto = tienda.getIdl();
+       System.out.println("ID tienda " + this.idProducto);
 
     }
-
+    public void openNewTienda(){
+        this.selectedUsuario = new TiendaTO();
+    }
+    
+    
     public String getNombre() {
         return nombre;
     }
@@ -153,5 +158,24 @@ public class storeController implements Serializable {
         } catch (Exception e) {
         }
     }
+    
+    public void saveTienda(){
+        System.out.println("Aqui estas " + this.selectedUsuario.getNombre());
+        ServicioTienda user = new ServicioTienda();
+        user.insertar(this.selectedUsuario);
+        this.listaRetorno = user.lista();
+    }
+    
+    public void saveProduct(){
+        System.out.println("Aqui esta produto " + this.idProducto + this.selectedProducto.getNombre());
+        ServicioProducto prod = new ServicioProducto();
+        prod.insertar(this.selectedProducto,this.idProducto);
+        ServicioTienda user = new ServicioTienda();
+        this.listaRetornoProducts = user.listaProducto(idProducto);
+        
+        
+    }
+    
+    
 
 }

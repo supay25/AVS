@@ -53,27 +53,29 @@ public class ServicioProducto extends Servicio{
         return listaRetorno;
     }
      
-        /*public void insertar(ProductoTO productoTO) {
+        public void insertar(ProductoTO productoTO, int tienda) {
 
         try {
             
-             if(existente(productoTO.getCodigo())){
-           PreparedStatement stmt = super.getConexion().prepareStatement("UPDATE proyecto SET nombre=? , descripcion=? where codigo=?");
+             if(productoExists(productoTO.getId())){
+           PreparedStatement stmt = super.getConexion().prepareStatement("UPDATE productos SET nombre=? , descripcion=?,precio = ? where idproductos=?");
 
-            stmt.setString(3, proyectoTO.getCodigo());
-            stmt.setString(1, proyectoTO.getNombre());
-            stmt.setString(2, proyectoTO.getDescripcion());
+            stmt.setString(1, productoTO.getNombre());
+            stmt.setString(2, productoTO.getDescripcion());
+            stmt.setInt(3, productoTO.getPrecio());
+            stmt.setInt(4, productoTO.getId());
             stmt.execute();
 
             stmt.close();
 
            }else{
 
-            PreparedStatement stmt = super.getConexion().prepareStatement("INSERT INTO proyecto(codigo, nombre , descripcion) VALUES (?,?,?)");
+            PreparedStatement stmt = super.getConexion().prepareStatement("INSERT INTO productos(nombre, descripcion, precio,tienda) VALUES (?,?,?,?)");
 
-            stmt.setString(1, proyectoTO.getCodigo());
-            stmt.setString(2, proyectoTO.getNombre());
-            stmt.setString(3, proyectoTO.getDescripcion());
+            stmt.setString(1, productoTO.getNombre());
+            stmt.setString(2, productoTO.getDescripcion());
+            stmt.setInt(3, productoTO.getPrecio());
+            stmt.setInt(4, tienda);
             stmt.execute();
 
             stmt.close();
@@ -81,11 +83,26 @@ public class ServicioProducto extends Servicio{
              }
 
         } catch (SQLException ex) {
-            System.out.println("Error al insertar usuario: " + ex.getMessage());
+            System.out.println("Error al insertar Producto: " + ex.getMessage());
         }
 
     
-        }*/
+        }
+        public boolean productoExists(int Tienda) {
+        try {
+            PreparedStatement checkStmt = super.getConexion().prepareStatement("SELECT COUNT(*) FROM productos WHERE idproductos = ?");
+            checkStmt.setInt(1, Tienda);
+            
+            ResultSet result = checkStmt.executeQuery();
+            if (result.next()) {
+                int count = result.getInt(1);
+                return count > 0; // If count > 0, the user already exists
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error checking if producto exists: " + ex.getMessage());
+        }
+        return false;
+    }
         
         
         public void eliminar(String nombre) {
@@ -99,25 +116,5 @@ public class ServicioProducto extends Servicio{
         }
 
     }
-
-  /* private boolean existente(String ticodigo){
-
-       try{
-           
-           PreparedStatement stmt = super.getConexion().prepareStatement("SELECT COUNT(*) FROM proyecto WHERE codigo = ?");
-           stmt.setString(1, ticodigo);
-           ResultSet resultado = stmt.executeQuery();
-           if(resultado.next()){
-               int count = resultado.getInt(1);
-               return count >0;
-           }
-
-       }catch (SQLException ex){
-           System.out.println("Error al actualizar"+ ex.getMessage());
-       }
-
-       return false;
-   }*/ 
-    
-    
+       
 }
