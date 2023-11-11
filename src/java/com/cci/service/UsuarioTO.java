@@ -20,6 +20,7 @@ public class UsuarioTO implements Serializable{
     private String correo;
     private String contrasena;
     private String permiso;
+    private String token;
 
     public UsuarioTO() {
     }
@@ -88,6 +89,14 @@ public class UsuarioTO implements Serializable{
 
     public void setPermiso(String permiso) {
         this.permiso = permiso;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
     
     

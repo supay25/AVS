@@ -14,6 +14,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
+import org.primefaces.PrimeFaces;
 
 @ManagedBean(name = "loginController")
 @SessionScoped
@@ -26,7 +27,8 @@ public class LoginController {
     private String correo;
     private String clave;
     private String permiso;
-
+    private String token;
+    
     private UsuarioTO selectedUsuario;
 
     public LoginController() {
@@ -36,14 +38,22 @@ public class LoginController {
         this.selectedUsuario = new UsuarioTO();
     }
 
-    public void ingresar() {
-        ServicioUsuario s = new ServicioUsuario();
-        if (true == s.Ver(this.getCorreo(), this.getClave())) {
+   public void ingresar() {
+    ServicioUsuario s = new ServicioUsuario();
+    
+    if (s.Ver(this.getCorreo(), this.getClave())) {
+        String permiso = s.obtenerPermisoUsuario(this.getCorreo());
+        
+        if ("Admin".equals(permiso)) {
             this.redireccionar("/faces/index.xhtml");
         } else {
-            FacesContext.getCurrentInstance().addMessage("sticky-key", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Campos Invalidos", "La clave o correo no son correctos"));
+             this.redireccionar("/faces/Tienda2.xhtml");
         }
+    } else {
+        FacesContext.getCurrentInstance().addMessage("sticky-key", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Campos Invalidos", "La clave o correo no son correctos"));
     }
+}
+
 
     public void redireccionar(String ruta) {
         HttpServletRequest request;
@@ -54,12 +64,33 @@ public class LoginController {
         }
     }
 
-    public void saveUser() {
+    public void saveCliente() {
         ServicioUsuario u = new ServicioUsuario();
-        u.AgregarUsuario(selectedUsuario);
+         u.AgregarUsuario(selectedUsuario);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Usuario agregado"));
     }
+     public void saveAdmin() {
+        ServicioUsuario u = new ServicioUsuario();
+         u.AgregarAdmin(selectedUsuario);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Usuario agregado"));
+    }
+    
+    
+    
+    
+    public void VerificarToken() {
+    ServicioUsuario u = new ServicioUsuario();
+    
 
+    if (u.VerificarT(selectedUsuario.getToken())) {
+        // Token verificado, mostrar el pop-up manageAdminDialog
+        PrimeFaces.current().executeScript("PF('manageAdminDialog').show();");
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Token verificado"));
+    } else {
+        FacesContext.getCurrentInstance().addMessage("sticky-key", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Token erroneo", "Token incorrecto"));
+    }
+}
+    
     public String getNombre() {
         return nombre;
     }
@@ -111,6 +142,15 @@ public class LoginController {
     public UsuarioTO getSelectedUsuario() {
         return selectedUsuario;
     }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+    
 
     public void setSelectedUsuario(UsuarioTO selectedUsuario) {
         this.selectedUsuario = selectedUsuario;

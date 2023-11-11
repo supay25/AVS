@@ -43,10 +43,10 @@
                     <p:commandButton value="Ingresar al sistema" actionListener="#{loginController.ingresar()}" update="msg" />
 
                     <p:commandButton value="Crear usuario" actionListener="#{loginController.openNew()}"
-                                     update=":dialogs:manage-user-content"
-                                     oncomplete="PF('manageUserDialog').show()"
+                                     update=":dialogs:manage-regis-content"
+                                     oncomplete="PF('manageRegisDialog').show()"
                                      styleClass="ui-button-success" >
-                        <p:resetInput target=":dialogs:manage-user-content" />
+                        <p:resetInput target=":dialogs:manage-regis-content" />
                     </p:commandButton>
                 </p:panelGrid> 
             </div>
@@ -55,9 +55,36 @@
         <h:form id="dialogs">
             <p:growl id="messagesDialogs" showDetail="false" />
 
-            <p:dialog header="Crear Nuevo Usuario" showEffect="fade" modal="true" widgetVar="manageUserDialog" responsive="true">
+            
+            
+            
+            <p:dialog header="Crear Nuevo Usuario" showEffect="fade" modal="true" widgetVar="manageRegisDialog" responsive="true">
 
-                <p:outputPanel id="manage-user-content" class="ui-fluid">
+                <p:outputPanel id="manage-regis-content" class="ui-fluid">
+                     <p:commandButton value="Registrarse como cliente" actionListener="#{loginController.openNew()}"
+                                     update=":dialogs:manage-regis-content"
+                                     oncomplete="PF('manageClienteDialog').show()"
+                                     styleClass="ui-button-success" >
+                        <p:resetInput target=":dialogs:manage-cliente-content" />
+                    </p:commandButton>
+                    
+                    <p:spacer width="10" height="1" /> 
+                    
+                    <p:commandButton value="Registrarse como administrador" 
+                                     update=":dialogs:manage-token-content"
+                                     oncomplete="PF('manageTokenDialog').show()"
+                                     styleClass="ui-button-success" >
+                        <p:resetInput target=":dialogs:manage-token-content" />
+                    </p:commandButton>
+                </p:outputPanel>
+
+            </p:dialog>
+            
+            
+            
+            <p:dialog header="Registrarse como cliente" showEffect="fade" modal="true" widgetVar="manageClienteDialog" responsive="true">
+
+                <p:outputPanel id="manage-cliente-content" class="ui-fluid">
 
                     <div class="field">
                         <p:outputLabel for="nombre">Nombre</p:outputLabel>
@@ -84,33 +111,90 @@
                         <p:inputText id="contrasena" value="#{loginController.selectedUsuario.contrasena}" required="true" />
                     </div>
 
-                    <div class="field col-12 md:col-4">
-                        <p:outputLabel for="@next" value="Permiso"/>
-                        <p:selectOneMenu id="option" value="#{loginController.selectedUsuario.permiso}">
-                            <f:selectItem itemLabel="-Seleccione uno-" itemValue=""/>
-                            <f:selectItem itemLabel="Cliente" itemValue="Cliente"/>
-                            <f:selectItem itemLabel="Administrador" itemValue="Admin"/>
-                    <f:facet name="footer">
-                                <p:divider styleClass="mt-0" />
-                                <h:outputText value="2 options" style="font-weight:bold;"/>
-                    </f:facet>
-                        </p:selectOneMenu>
+                   
+
+                </p:outputPanel>
+
+                <f:facet name="footer">
+                    <p:commandButton value="Guardar" icon="pi pi-check" actionListener="#{loginController.saveCliente()}"
+                                     update="form manage-cliente-content messagesDialogs " process="manage-cliente-content @this" />
+                    <p:commandButton value="Salir" icon="pi pi-times" onclick="PF('manageClienteDialog').hide()"
+                                     class="ui-button-secondary" type="button" />
+                </f:facet>
+
+            </p:dialog>
+            
+            
+            
+            
+            
+            <p:dialog header="Ingrese token" showEffect="fade" modal="true" widgetVar="manageTokenDialog" responsive="true">
+                <p:outputPanel id="manage-token-content" class="ui-fluid">
+                    <div class="field">
+                        <p:outputLabel for="token">Token</p:outputLabel>
+                        <p:inputText id="token" value="#{loginController.selectedUsuario.token}"  />
                     </div>
 
                 </p:outputPanel>
 
-
                 <f:facet name="footer">
-                    <p:commandButton value="Guardar tarea" icon="pi pi-check" actionListener="#{loginController.saveUser()}"
-                                     update=":form manage-user-content messagesDialogs" process="manage-user-content @this"
-                                     oncomplete="PF('manageUserDialog').hide();"/>
-                    <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('manageUserDialog').hide()"
+                    <p:commandButton value="Verificar" icon="pi pi-check" actionListener="#{loginController.VerificarToken()}"
+                                     update=":form manage-token-content" process="manage-token-content @this"
+                                     oncomplete="PF('manageTokenDialog').hide();"/>
+                    <p:commandButton value="Cancel" icon="pi pi-times" onclick="PF('manageTokenDialog').hide()"
                                      class="ui-button-secondary" type="button" />
                 </f:facet>
             </p:dialog>
+            
+            
+            
+            
+            
+            <p:dialog header="Registrarse como administrador" showEffect="fade" modal="true" widgetVar="manageAdminDialog" responsive="true">
+
+                <p:outputPanel id="manage-admin-content" class="ui-fluid">
+
+                    <div class="field">
+                        <p:outputLabel for="nombreA">Nombre</p:outputLabel>
+                        <p:inputText id="nombreA" value="#{loginController.selectedUsuario.nombre}"  />
+                    </div>
+
+                    <div class="field">
+                        <p:outputLabel for="apellidoA">Apellido</p:outputLabel>
+                        <p:inputText id="apellidoA" value="#{loginController.selectedUsuario.apellido}"  />
+                    </div>
+
+                    <div class="field">
+                        <p:outputLabel for="telefonoA">Telefono</p:outputLabel>
+                        <p:inputText id="telefonoA" value="#{loginController.selectedUsuario.telefono}" required="true" />
+                    </div>
+
+                    <div class="field">
+                        <p:outputLabel for="correoA">Correo</p:outputLabel>
+                        <p:inputText id="correoA" value="#{loginController.selectedUsuario.correo}" required="true" />
+                    </div>
+
+                    <div class="field">
+                        <p:outputLabel for="contrasenaA">Contrasena</p:outputLabel>
+                        <p:inputText id="contrasenaA" value="#{loginController.selectedUsuario.contrasena}" required="true" />
+                    </div>
+
+                  
+                </p:outputPanel>
+
+                <f:facet name="footer">
+                    <p:commandButton value="Guardar" icon="pi pi-check" actionListener="#{loginController.saveAdmin()}"
+                                     update="form manage-admin-content messagesDialogs " process="manage-admin-content @this" />
+                    <p:commandButton value="Salir" icon="pi pi-times" onclick="PF('manageAdminDialog').hide()"
+                                     class="ui-button-secondary" type="button" />
+                </f:facet>
+
+            </p:dialog>
+            
+            
+
 
         </h:form>
 
     </h:body>
 </html>
-
