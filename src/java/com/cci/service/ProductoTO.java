@@ -16,7 +16,7 @@ public class ProductoTO implements Serializable{
     private String descripcion;
     private int precio;
     private int id;
-
+    
     public ProductoTO() {
     }
    
@@ -29,13 +29,16 @@ public class ProductoTO implements Serializable{
        
       
     }
-    public int getId(){
-        return this.id;
+
+    public int getId() {
+        return id;
     }
-    
-    public void setId(int id){
+
+    public void setId(int id) {
         this.id = id;
     }
+    
+    
     
     public String getNombre() {
         return nombre;
@@ -63,7 +66,7 @@ public class ProductoTO implements Serializable{
 
     @Override
     public String toString() {
-        return "ProductoTO{" + "nombre=" + nombre + ", descripcion=" + descripcion + ", precio=" + precio + ", id=" + id + '}';
+        return "ProductoTO{" + "nombre=" + nombre + ", descripcion=" + descripcion + ", precio=" + precio+ '}';
     }  
     
 }

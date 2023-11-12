@@ -63,18 +63,22 @@
                 </p:column>
 
                 <p:column headerText="Acciones">
+                    
+                    <p:commandButton icon="pi pi-pencil"
+                                     style="background-color: gray; color: white;"
+                                     styleClass="edit-button rounded-button ui-button-success" process="@this">
+                    </p:commandButton>
+                    
                     <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash"
                                      process="@this"
                                      style="background-color: red; color: white;"
-                                     oncomplete="PF('deleteProductoDialog').show()">
+                                     oncomplete="PF('deleteProductConfirmDialog').show()">
                         <f:setPropertyActionListener value="#{producto}" target="#{storeController.selectedProducto}" />
                     </p:commandButton>
 
                     <p:commandButton class="ui-button-warning rounded-button"
                                      icon="pi pi-eye"
                                      style="background-color: blue; color: white;">                                   
-                        <f:setPropertyActionListener value="#{producto}" target="#{storeController.selectedUsuario}" />
-                        <p:resetInput target=":dialogs:manage-producto-content" />
                     </p:commandButton>
                     <p:commandButton class="ui-button-warning rounded-button"
                                      icon="pi pi-shopping-cart">
@@ -174,7 +178,16 @@
                     <p:commandButton value="Cancel" icon="pi pi-times" onclick="PF('manageProductDialog').hide()"
                                      class="ui-button-secondary" type="button" />
                 </f:facet>  
-            </p:dialog>           
+            </p:dialog>   
+
+            <p:confirmDialog widgetVar="deleteProductConfirmDialog" showEffect="fade" width="300"
+                             message="¿Desea eliminar este producto?" header="Confirmar" severity="warn">
+                <p:commandButton value="Sí" icon="pi pi-check" actionListener="#{storeController.deleteProducto()}"
+                                 process="@this" update="form manage-product-content messagesDialogs"
+                                 oncomplete="PF('deleteProductConfirmDialog').hide()" />
+                <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                                 onclick="PF('deleteProductConfirmDialog').hide()" />
+            </p:confirmDialog>
         </h:form>
 
 

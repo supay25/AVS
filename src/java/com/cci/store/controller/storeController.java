@@ -78,23 +78,9 @@ public class storeController{
 
      public void deleteProducto() {
     ServicioProducto servicioProducto = new ServicioProducto();
-
-    if (selectedProducto != null) {
-        // Lógica para eliminar el producto
-        try {
-            System.out.println("Eliminando producto: " + selectedProducto.getNombre());
-            servicioProducto.eliminar(selectedProducto.getNombre());
-            listaRetornoProducts.remove(selectedProducto);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Producto eliminado"));
-        } catch (Exception e) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error al eliminar el producto", null));
-            e.printStackTrace();
-        } finally {
-            selectedProducto = null;
-        }
-    } else {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Seleccione un producto antes de intentar eliminar", null));
-    }
+        servicioProducto.eliminar(this.selectedProducto);
+        listaRetornoProducts.remove(selectedProducto);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Proyecto eliminado"));   
 }
 //---------------------------------------------------------------------------------------------------------------------------------
     public void openNewPage(TiendaTO tienda) {   

@@ -105,10 +105,10 @@ public class ServicioProducto extends Servicio{
     }
         
         
-        public void eliminar(String nombre) {
+        public void eliminar(ProductoTO productoTO) {
         try {
             PreparedStatement stmt = super.getConexion().prepareStatement("DELETE FROM productos WHERE nombre = ?");
-            stmt.setString(1, nombre);
+            stmt.setString(1, productoTO.getNombre());
             stmt.executeUpdate();
             stmt.close();
         } catch (SQLException ex) {
