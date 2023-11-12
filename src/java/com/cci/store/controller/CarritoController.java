@@ -6,9 +6,12 @@
 package com.cci.store.controller;
 
 import com.cci.service.ProductoTO;
+import java.util.ArrayList;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  *
@@ -19,26 +22,35 @@ import javax.faces.bean.SessionScoped;
 public class CarritoController {
 
     //Atributos
-    private List<ProductoTO> listaRetornoCarrito;
+    private int numTarjeta;
+    private int cvvTarjeta;
+    private String nomTarjeta;
+    
+    private List<ProductoTO> listaCarrito = new ArrayList<ProductoTO>();
     private ProductoTO selectedProducto;
+    
 
     //Métodos
     public CarritoController() {
     }
-
-    public void openNewProducto() {
-        this.selectedProducto = new ProductoTO();
+    
+    public void agregarAlCarrito(ProductoTO prodTO) {
+        this.listaCarrito.add(prodTO);
     }
 
+    public void redirigirCompra(){
+        this.redireccionar("/faces/RealizarCompra.xhtml");
+    }
+    
+    public void redireccionar(String ruta) {
+        HttpServletRequest request;
+        try {
+            request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+            FacesContext.getCurrentInstance().getExternalContext().redirect(request.getContextPath() + ruta);
+        } catch (Exception e) {
+        }
+    }
     //Getters and Setters
-    public List<ProductoTO> getListaRetornoCarrito() {
-        return listaRetornoCarrito;
-    }
-
-    public void setListaRetornoCarrito(List<ProductoTO> listaRetornoCarrito) {
-        this.listaRetornoCarrito = listaRetornoCarrito;
-    }
-
     public ProductoTO getSelectedProducto() {
         return selectedProducto;
     }
@@ -47,4 +59,37 @@ public class CarritoController {
         this.selectedProducto = selectedProducto;
     }
 
+    public int getNumTarjeta() {
+        return numTarjeta;
+    }
+
+    public void setNumTarjeta(int numTarjeta) {
+        this.numTarjeta = numTarjeta;
+    }
+
+    public int getCvvTarjeta() {
+        return cvvTarjeta;
+    }
+
+    public void setCvvTarjeta(int cvvTarjeta) {
+        this.cvvTarjeta = cvvTarjeta;
+    }
+
+    public String getNomTarjeta() {
+        return nomTarjeta;
+    }
+
+    public void setNomTarjeta(String nomTarjeta) {
+        this.nomTarjeta = nomTarjeta;
+    }
+
+    public List<ProductoTO> getListaCarrito() {
+        return listaCarrito;
+    }
+
+    public void setListaCarrito(List<ProductoTO> listaCarrito) {
+        this.listaCarrito = listaCarrito;
+    }
+
+    
 }

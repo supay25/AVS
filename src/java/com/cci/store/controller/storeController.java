@@ -26,30 +26,79 @@ import javax.servlet.http.HttpServletRequest;
  */
 @ManagedBean(name = "storeController")
 @SessionScoped
-public class storeController{
+public class storeController {
 
+//Atributos
     private String nombre;
     private String descripcion;
     private String calificacion;
     private String Categoria;
-    
-    
-    private TiendaTO selectedUsuario;
-    ServicioTienda tienda = new ServicioTienda(); 
-    private List<TiendaTO> listaRetorno = tienda.lista();
-    
-    //ServicioProducto products = new ServicioProducto();
+
     private List<ProductoTO> listaRetornoProducts;
     private ProductoTO selectedProducto;
+    private ArrayList<ProductoTO> listaCarrito = new ArrayList<ProductoTO>();
+
+    ServicioTienda tienda = new ServicioTienda();
+    private List<TiendaTO> listaRetorno = tienda.lista();
+    private TiendaTO selectedUsuario = new TiendaTO();
+
     int idProducto;
+
+    //Constructor
     public storeController() {
     }
-    
-    public void openNewProducto(){
+
+    //métodos
+    public void openNewProducto() {
         this.selectedProducto = new ProductoTO();
     }
-    
 
+    public void saveTienda() {
+        System.out.println("Aqui estas " + this.selectedUsuario.getNombre());
+        ServicioTienda user = new ServicioTienda();
+        user.insertar(this.selectedUsuario);
+        this.listaRetorno = user.lista();
+    }
+
+    public void saveProduct() {
+        System.out.println("Aqui esta produto " + this.idProducto + this.selectedProducto.getNombre());
+        ServicioProducto prod = new ServicioProducto();
+        prod.insertar(this.selectedProducto, this.idProducto);
+        ServicioTienda user = new ServicioTienda();
+        this.listaRetornoProducts = user.listaProducto(idProducto);
+    }
+
+    public void deleteProducto() {
+        ServicioProducto servicioProducto = new ServicioProducto();
+        servicioProducto.eliminar(this.selectedProducto);
+        listaRetornoProducts.remove(selectedProducto);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Proyecto eliminado"));
+    }
+
+    public void openNewPage(TiendaTO tienda) {
+        ServicioTienda ser = new ServicioTienda();
+        this.listaRetornoProducts = ser.listaProducto(tienda.getIdl());
+        //this.listaCarrito = new ArrayList<ProductoTO>();
+        this.redireccionar("/faces/tienda.xhtml");
+        this.idProducto = tienda.getIdl();
+        System.out.println("ID tienda " + this.idProducto);
+
+    }
+
+    public void openNewTienda() {
+        this.selectedUsuario = new TiendaTO();
+    }
+
+    public void redireccionar(String ruta) {
+        HttpServletRequest request;
+        try {
+            request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+            FacesContext.getCurrentInstance().getExternalContext().redirect(request.getContextPath() + ruta);
+        } catch (Exception e) {
+        }
+    }
+
+    //Getters and setters
     public List<ProductoTO> getListaRetornoProducts() {
         return listaRetornoProducts;
     }
@@ -65,8 +114,6 @@ public class storeController{
     public void setSelectedProducto(ProductoTO selectedProducto) {
         this.selectedProducto = selectedProducto;
     }
-    
-    
 
     public List<TiendaTO> getListaRetorno() {
         return listaRetorno;
@@ -76,26 +123,6 @@ public class storeController{
         this.listaRetorno = listaRetorno;
     }
 
-     public void deleteProducto() {
-    ServicioProducto servicioProducto = new ServicioProducto();
-        servicioProducto.eliminar(this.selectedProducto);
-        listaRetornoProducts.remove(selectedProducto);
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Proyecto eliminado"));   
-}
-//---------------------------------------------------------------------------------------------------------------------------------
-    public void openNewPage(TiendaTO tienda) {   
-        ServicioTienda ser = new ServicioTienda();       
-        this.listaRetornoProducts = ser.listaProducto(tienda.getIdl());
-        this.redireccionar("/faces/tienda.xhtml");
-        this.idProducto = tienda.getIdl();
-       System.out.println("ID tienda " + this.idProducto);
-
-    }
-    public void openNewTienda(){
-        this.selectedUsuario = new TiendaTO();
-    }
-    
-    
     public String getNombre() {
         return nombre;
     }
@@ -135,33 +162,5 @@ public class storeController{
     public void setSelectedUsuario(TiendaTO selectedUsuario) {
         this.selectedUsuario = selectedUsuario;
     }
-
-    public void redireccionar(String ruta) {
-        HttpServletRequest request;
-        try {
-            request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-            FacesContext.getCurrentInstance().getExternalContext().redirect(request.getContextPath() + ruta);
-        } catch (Exception e) {
-        }
-    }
-    
-    public void saveTienda(){
-        System.out.println("Aqui estas " + this.selectedUsuario.getNombre());
-        ServicioTienda user = new ServicioTienda();
-        user.insertar(this.selectedUsuario);
-        this.listaRetorno = user.lista();
-    }
-    
-    public void saveProduct(){
-        System.out.println("Aqui esta produto " + this.idProducto + this.selectedProducto.getNombre());
-        ServicioProducto prod = new ServicioProducto();
-        prod.insertar(this.selectedProducto,this.idProducto);
-        ServicioTienda user = new ServicioTienda();
-        this.listaRetornoProducts = user.listaProducto(idProducto);
-        
-        
-    }
-    
-    
 
 }

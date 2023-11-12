@@ -63,12 +63,12 @@
                 </p:column>
 
                 <p:column headerText="Acciones">
-                    
+
                     <p:commandButton icon="pi pi-pencil"
                                      style="background-color: gray; color: white;"
                                      styleClass="edit-button rounded-button ui-button-success" process="@this">
                     </p:commandButton>
-                    
+
                     <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash"
                                      process="@this"
                                      style="background-color: red; color: white;"
@@ -80,8 +80,13 @@
                                      icon="pi pi-eye"
                                      style="background-color: blue; color: white;">                                   
                     </p:commandButton>
+
+                    <!--Botón de carrito -->
                     <p:commandButton class="ui-button-warning rounded-button"
-                                     icon="pi pi-shopping-cart">
+                                     icon="pi pi-shopping-cart" actionListener="#{carritoController.agregarAlCarrito(producto)}"
+                                     update=":dialogs:manage-carrito-content">
+
+                        <p:resetInput target=":dialogs:manage-carrito-content" />
                     </p:commandButton>
 
 
@@ -99,7 +104,8 @@
 
                 <p:outputPanel id="manage-carrito-content" class="ui-fluid">
 
-                    <p:dataTable var="tablaProductos" value="#{storeController.listaRetornoProducts}"  rows="10"
+                    <p:dataTable var="tablaProductos" value="#{carritoController.listaCarrito}" scrollable="true"
+                                 rows="10" scrollHeight="250"
                                  paginator="true" paginatorPosition="both"
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
@@ -144,7 +150,7 @@
                 </p:outputPanel>
 
                 <f:facet name="footer">
-                    <p:commandButton value="Proceder con la compra" icon="pi pi-check" actionListener="#{loginController.saveUser()}"
+                    <p:commandButton value="Proceder con la compra" icon="pi pi-check" actionListener="#{carritoController.redirigirCompra()}"
                                      update=":form manage-carrito-content messagesDialogs" process="manage-carrito-content @this"
                                      oncomplete="PF('manageCarritoDialog').hide();"/>
                     <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('manageCarritoDialog').hide()"
