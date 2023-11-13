@@ -38,14 +38,15 @@ public class CarritoController implements Serializable {
 
     public void agregarAlCarrito(ProductoTO prodTO) {
         this.listaCarrito.add(prodTO);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Producto Agregado al Carrito"));
     }
 
     public void redirigirCompra() {
         this.redireccionar("/faces/RealizarCompra.xhtml");
     }
 
-    public void deleteProductoCarrito(ProductoTO prodTO) {
-        listaCarrito.remove(prodTO);
+    public void deleteProductoCarrito() {
+        listaCarrito.remove(this.selectedProducto);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Producto del carrito eliminado"));
         System.out.println("Aquí esta el producto del carrito" + listaCarrito);
     }

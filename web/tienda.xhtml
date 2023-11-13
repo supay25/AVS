@@ -231,7 +231,7 @@
             <!-- Eliminar cosas del carrito -->
             <p:confirmDialog widgetVar="deleteCarritoConfirmDialog" showEffect="fade" width="300"
                              message="¿Desea eliminar este producto del carrito?" header="Confirmar" severity="warn">
-                <p:commandButton value="Sí" icon="pi pi-check" actionListener="#{carritoController.deleteProductoCarrito(tablaProductos)}"
+                <p:commandButton value="Sí" icon="pi pi-check" actionListener="#{carritoController.deleteProductoCarrito()}"
                                  process="@this" update="form manage-product-content messagesDialogs"
                                  oncomplete="PF('deleteCarritoConfirmDialog').hide()" />
                 <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
