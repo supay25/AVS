@@ -72,7 +72,6 @@ public class storeController {
         ServicioProducto servicioProducto = new ServicioProducto();
         servicioProducto.eliminar(this.selectedProducto);
         listaRetornoProducts.remove(selectedProducto);
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Proyecto eliminado"));
     }
 
     public void openNewPage(TiendaTO tienda) {

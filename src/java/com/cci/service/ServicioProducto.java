@@ -52,22 +52,21 @@ public class ServicioProducto extends Servicio {
         return listaRetorno;
     }
 
-    public void insertar(ProductoTO productoTO, int tienda) {
+   public void insertar(ProductoTO productoTO, int tienda) {
 
         try {
+            
+             if(productoExists(productoTO.getNombre())){
+           PreparedStatement stmt = super.getConexion().prepareStatement("UPDATE productos SET descripcion=? , precio=? where nombre=?");
 
-            if (productoExists(productoTO.getId())) {
-                PreparedStatement stmt = super.getConexion().prepareStatement("UPDATE productos SET nombre=? , descripcion=?,precio = ? where idproductos=?");
+            stmt.setString(3, productoTO.getNombre());
+            stmt.setString(1, productoTO.getDescripcion());
+            stmt.setInt(2, productoTO.getPrecio());
+            stmt.execute();
 
-                stmt.setString(1, productoTO.getNombre());
-                stmt.setString(2, productoTO.getDescripcion());
-                stmt.setInt(3, productoTO.getPrecio());
-                stmt.setInt(4, productoTO.getId());
-                stmt.execute();
+            stmt.close();
 
-                stmt.close();
-
-            } else {
+           }else{
 
                 PreparedStatement stmt = super.getConexion().prepareStatement("INSERT INTO productos(nombre, descripcion, precio,tienda) VALUES (?,?,?,?)");
 
@@ -87,18 +86,18 @@ public class ServicioProducto extends Servicio {
 
     }
 
-    public boolean productoExists(int Tienda) {
-        try {
-            PreparedStatement checkStmt = super.getConexion().prepareStatement("SELECT COUNT(*) FROM productos WHERE idproductos = ?");
-            checkStmt.setInt(1, Tienda);
-
+   public boolean productoExists(String nombre) {
+         try {
+            PreparedStatement checkStmt = super.getConexion().prepareStatement("SELECT COUNT(*) FROM productos WHERE nombre = ?");
+            checkStmt.setString(1, nombre);
+            
             ResultSet result = checkStmt.executeQuery();
             if (result.next()) {
                 int count = result.getInt(1);
                 return count > 0; // If count > 0, the user already exists
             }
         } catch (SQLException ex) {
-            System.out.println("Error checking if producto exists: " + ex.getMessage());
+            System.out.println("Error checking if user exists: " + ex.getMessage());
         }
         return false;
     }

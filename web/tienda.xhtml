@@ -54,7 +54,7 @@
                     <h:outputText value="#{producto.nombre}" />
                 </p:column>
 
-                
+
                 <p:column headerText="Precio" filterBy="#{producto.precio}" filterMatchMode="startsWith">
                     <h:outputText value="$#{producto.precio}" />
                 </p:column>
@@ -64,8 +64,12 @@
                 <p:column headerText="Acciones">
 
                     <p:commandButton icon="pi pi-pencil"
+                                     update=":dialogsProduct:manage-product-content"
                                      style="background-color: gray; color: white;"
-                                     styleClass="edit-button rounded-button ui-button-success" process="@this">
+                                     oncomplete="PF('manageProductDialog').show()"
+                                     styleClass="edit-button rounded-button ui-button-success" process="@form">
+                        <f:setPropertyActionListener value="#{producto}" target="#{storeController.selectedProducto}" />
+                        <p:resetInput target=":dialogsProduct:manage-product-content" />
                     </p:commandButton>
 
                     <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash"
@@ -127,7 +131,7 @@
                                              oncomplete="PF('deleteCarritoConfirmDialog').show()" >
                                 <f:setPropertyActionListener value="#{tablaProductos}" target="#{carritoController.selectedProducto}" />
                             </p:commandButton>
-							
+
 
                             <div class="field col-12 md:col-4">
                                 <p:outputLabel for="@next" value="Cantidad"/>
@@ -157,6 +161,32 @@
                     <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('manageCarritoDialog').hide()"
                                      class="ui-button-secondary" type="button" />
                 </f:facet>
+            </p:dialog>
+            
+            <p:dialog header="Editar de Producto" showEffect="fade" modal="true" widgetVar="manageProductDialog"
+                      responsive="true">
+                <p:outputPanel id="manage-product-content" class="ui-fluid">
+                    <div class="field">
+                        <p:outputLabel for="Nombre">Nombre</p:outputLabel>
+                        <p:inputText id="Nombre" value="#{storeController.selectedProducto.nombre}" required="true" />
+                    </div>
+                    <div class="field">
+                        <p:outputLabel for="Descripcion">Descripcion</p:outputLabel>
+                        <p:inputText id="Descripcion" value="#{storeController.selectedProducto.descripcion}" required="true" />
+                    </div>
+                    <div class="field">
+                        <p:outputLabel for="Precio">Precio</p:outputLabel>
+                        <p:inputText id="Precio" value="#{storeController.selectedProducto.precio}" required="true" />
+                    </div>
+
+                </p:outputPanel> 
+                <f:facet name="footer">
+                    <p:commandButton value="Guardar" icon="pi pi-check" actionListener="#{storeController.saveProduct()}"
+                                     update="form manage-product-content" process="manage-product-content @this"
+                                     oncomplete="PF('manageProductDialog').hide();"/>
+                    <p:commandButton value="Cancel" icon="pi pi-times" onclick="PF('manageProductDialog').hide()"
+                                     class="ui-button-secondary" type="button" />
+                </f:facet>  
             </p:dialog>
         </h:form>
         <h:form id="dialogsProduct">
@@ -195,7 +225,9 @@
                 <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
                                  onclick="PF('deleteProductConfirmDialog').hide()" />
             </p:confirmDialog>
+
             
+
             <!-- Eliminar cosas del carrito -->
             <p:confirmDialog widgetVar="deleteCarritoConfirmDialog" showEffect="fade" width="300"
                              message="¿Desea eliminar este producto del carrito?" header="Confirmar" severity="warn">
@@ -206,6 +238,8 @@
                                  onclick="PF('deleteCarritoConfirmDialog').hide()" />
             </p:confirmDialog>
             
+            
+
         </h:form>
 
 
