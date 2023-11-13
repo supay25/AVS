@@ -50,17 +50,16 @@
                          rowsPerPageTemplate="5,10,{ShowAll|'All'}">
 
 
-                <p:column headerText="Nombre">
+                <p:column headerText="Nombre" filterBy="#{producto.nombre}" filterMatchMode="startsWith">
                     <h:outputText value="#{producto.nombre}" />
                 </p:column>
 
-                <p:column headerText="Descripcion">
-                    <h:outputText value="#{producto.descripcion}" />
-                </p:column>
-
-                <p:column headerText="Precio">
+                
+                <p:column headerText="Precio" filterBy="#{producto.precio}" filterMatchMode="startsWith">
                     <h:outputText value="$#{producto.precio}" />
                 </p:column>
+
+
 
                 <p:column headerText="Acciones">
 
