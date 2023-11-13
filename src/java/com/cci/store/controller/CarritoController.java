@@ -6,8 +6,11 @@
 package com.cci.store.controller;
 
 import com.cci.service.ProductoTO;
+import com.cci.service.ServicioProducto;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -19,29 +22,34 @@ import javax.servlet.http.HttpServletRequest;
  */
 @ManagedBean(name = "carritoController")
 @SessionScoped
-public class CarritoController {
+public class CarritoController implements Serializable {
 
     //Atributos
     private int numTarjeta;
     private int cvvTarjeta;
     private String nomTarjeta;
-    
+
     private List<ProductoTO> listaCarrito = new ArrayList<ProductoTO>();
     private ProductoTO selectedProducto;
-    
 
     //Métodos
     public CarritoController() {
     }
-    
+
     public void agregarAlCarrito(ProductoTO prodTO) {
         this.listaCarrito.add(prodTO);
     }
 
-    public void redirigirCompra(){
+    public void redirigirCompra() {
         this.redireccionar("/faces/RealizarCompra.xhtml");
     }
-    
+
+    public void deleteProductoCarrito(ProductoTO prodTO) {
+        listaCarrito.remove(prodTO);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Producto del carrito eliminado"));
+        System.out.println("Aquí esta el producto del carrito" + listaCarrito);
+    }
+
     public void redireccionar(String ruta) {
         HttpServletRequest request;
         try {
@@ -50,6 +58,7 @@ public class CarritoController {
         } catch (Exception e) {
         }
     }
+
     //Getters and Setters
     public ProductoTO getSelectedProducto() {
         return selectedProducto;
@@ -91,5 +100,4 @@ public class CarritoController {
         this.listaCarrito = listaCarrito;
     }
 
-    
 }

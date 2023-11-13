@@ -119,13 +119,15 @@
                         </p:column>
 
                         <p:column>
-                            <p:commandButton icon="pi pi-trash" 
+                            <!-- Eliminar Botón dentro del carrito -->
+                            <p:commandButton icon="pi pi-trash" process="@this"
                                              style="background-color: red; color: white;"
+                                             styleClass="rounded-button ui-button-danger ui-button-flat"
                                              update=":dialogs:manage-carrito-content"
-                                             oncomplete="PF('manageCarritoDialog').show()"
-                                             styleClass="rounded-button ui-button-danger ui-button-flat" >
-                                <p:resetInput target=":dialogs:manage-carrito-content" />
+                                             oncomplete="PF('deleteCarritoConfirmDialog').show()" >
+                                <f:setPropertyActionListener value="#{tablaProductos}" target="#{carritoController.selectedProducto}" />
                             </p:commandButton>
+							
 
                             <div class="field col-12 md:col-4">
                                 <p:outputLabel for="@next" value="Cantidad"/>
@@ -193,6 +195,17 @@
                 <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
                                  onclick="PF('deleteProductConfirmDialog').hide()" />
             </p:confirmDialog>
+            
+            <!-- Eliminar cosas del carrito -->
+            <p:confirmDialog widgetVar="deleteCarritoConfirmDialog" showEffect="fade" width="300"
+                             message="¿Desea eliminar este producto del carrito?" header="Confirmar" severity="warn">
+                <p:commandButton value="Sí" icon="pi pi-check" actionListener="#{carritoController.deleteProductoCarrito(tablaProductos)}"
+                                 process="@this" update="form manage-product-content messagesDialogs"
+                                 oncomplete="PF('deleteCarritoConfirmDialog').hide()" />
+                <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                                 onclick="PF('deleteCarritoConfirmDialog').hide()" />
+            </p:confirmDialog>
+            
         </h:form>
 
 
