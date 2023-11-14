@@ -43,7 +43,8 @@
                 <p:resetInput target=":dialogsProduct" />
             </p:commandButton>
 
-            <p:dataTable var="producto" value="#{storeController.listaRetornoProducts}" rows="10"
+            <p:dataTable var="producto" value="#{storeController.listaRetornoProducts}" scrollable="true"
+                         rows="10" scrollHeight="250"
                          paginator="true" paginatorPosition="both"
                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
@@ -139,7 +140,7 @@
 
                             <div class="field col-12 md:col-4">
                                 <p:outputLabel for="@next" value="Cantidad"/>
-                                <p:spinner id="horizontalAfter" value="#{spinnerView.number9}" min="1" max="10" stepFactor="1"
+                                <p:spinner id="horizontalAfter" min="1" max="10" stepFactor="1"
                                            buttons="horizontal-after"
                                            upButtonStyleClass="ui-button-success" downButtonStyleClass="ui-button-danger"
                                            onkeydown="return false" styleClass="no-input"/>
@@ -186,7 +187,7 @@
                 <f:facet name="footer">
                     <p:commandButton value="Salir" icon="pi pi-times" onclick="PF('manageDProductDialog').hide()"
                                      class="ui-button-secondary" type="button" style="display: block; margin: 0 auto; background-color: red; color: white;" />
-                                     
+
                 </f:facet> 
             </p:dialog>
 
