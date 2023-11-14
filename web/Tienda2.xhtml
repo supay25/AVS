@@ -1,12 +1,101 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        <title>Tienda 2</title>
+        <title>Tiendas</title>
     </h:head>
     <h:body>
-        Funciona bien
+        <h:form id="form">
+            <div class="card">
+
+                <p:tabMenu activeIndex="#{param.i}">
+                    <p:menuitem value="Salir" icon="pi pi-fw pi-home" action="#{storeController.redireccionar('/faces/Menu.xhtml')}">
+                        <f:param name="i" value="0"/>
+                    </p:menuitem>
+                    <p:menuitem value="Ver Perfil" icon="pi pi-fw pi-calendar" action="#{storeController.openNewTienda}">
+                        <f:param name="i" value="1"/>                      
+                    </p:menuitem>
+                    <p:menuitem value="Ver Compras"  icon="pi pi-fw pi-pencil">
+                        <f:param name="i" value="2"/>
+                    </p:menuitem>
+
+
+                </p:tabMenu>
+            </div>
+
+            <p:growl id="messages" showDetail="true" />
+            
+
+            <p:dataTable var="tienda" value="#{storeController.listaRetorno}" rows="10"
+                         paginator="true" paginatorPosition="both"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                         rowsPerPageTemplate="5,10,{ShowAll|'All'}">
+
+                <p:column headerText="Nombre">
+                    <h:outputText value="#{tienda.nombre}" />
+                </p:column>
+
+                <p:column headerText="Descripcion">
+                    <h:outputText value="#{tienda.descripcion}" />
+                </p:column>
+
+                <p:column headerText="Categoria">
+                    <h:outputText value="#{tienda.categoria}" />
+                </p:column>     
+                <p:column headerText="Calificacion">
+                    <h:outputText value="#{tienda.calificacion}" />
+                </p:column> 
+                <p:column headerText="Acciones">
+
+                    <p:commandButton value="Abrir" actionListener="#{storeController.openNewPageCliente(tienda)}">
+
+                    </p:commandButton> 
+                    
+
+                </p:column>
+
+
+
+                
+
+            </p:dataTable>
+
+
+        </h:form>
+        <h:form id="dialogs">
+            <p:growl id="messagesDialogs" showDetail="false" />
+            <p:dialog header="Detalles de Tienda" showEffect="fade" modal="true" widgetVar="manageProductDialog"
+                      responsive="true">
+                <p:outputPanel id="manage-product-content" class="ui-fluid">
+                    <div class="field">
+                        <p:outputLabel for="Nombre">Nombre</p:outputLabel>
+                        <p:inputText id="Nombre" value="#{storeController.selectedUsuario.nombre}" required="true" requiredMessage="Nombre Requerido" />
+                    </div>
+                    <div class="field">
+                        <p:outputLabel for="Descripcion">Descripcion</p:outputLabel>
+                        <p:inputText id="Descripcion" value="#{storeController.selectedUsuario.descripcion}" required="true" />
+                    </div>
+                    <div class="field">
+                        <p:outputLabel for="Categoria">Categoria</p:outputLabel>
+                        <p:inputText id="Categoria" value="#{storeController.selectedUsuario.categoria}" required="true" />
+                    </div>
+
+                </p:outputPanel> 
+                <f:facet name="footer">
+                    <p:commandButton value="Guardar" icon="pi pi-check" actionListener="#{storeController.saveTienda()}"
+                                     update="form manage-product-content" process="manage-product-content @this"
+                                     oncomplete="PF('manageProductDialog').hide();"/>
+                    <p:commandButton value="Cancel" icon="pi pi-times" onclick="PF('manageProductDialog').hide()"
+                                     class="ui-button-secondary" type="button" />
+                </f:facet>  
+            </p:dialog>     
+            
+        </h:form>
     </h:body>
+    
 </html>
 

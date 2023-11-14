@@ -83,6 +83,17 @@ public class storeController {
         System.out.println("ID tienda " + this.idProducto);
 
     }
+    
+    public void openNewPageCliente(TiendaTO tienda) {
+        ServicioTienda ser = new ServicioTienda();
+        this.listaRetornoProducts = ser.listaProducto(tienda.getIdl());
+        //this.listaCarrito = new ArrayList<ProductoTO>();
+        this.redireccionar("/faces/Productos.xhtml");
+        this.idProducto = tienda.getIdl();
+        System.out.println("ID tienda " + this.idProducto);
+
+    }
+    
 
     public void openNewTienda() {
         this.selectedUsuario = new TiendaTO();

@@ -10,7 +10,7 @@
             .centered-text {
                 text-align: center;
                 position: absolute;
-                top: 24%;
+                top: 20%;
                 left: 50%;
                 transform: translate(-50%, -50%);
             }
@@ -23,7 +23,45 @@
                 left: 50%;
                 transform: translate(-50%, -50%);
             }
+            body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        .login-label {
+            font-size: 18px;
+            color: black; /* Blue color, you can change it to your preferred color */
+            font-weight: bold;
+        }
+
+        .new-user-label {
+            font-size: 16px;
+            color: black; /* Green color, you can change it to your preferred color */
+            font-style: bold;
+        }
+        .terms {
+            font-size: 5px;
+            color: #666;
+            font-style: italic;
+            position: absolute;
+            bottom: 0; /* Align at the bottom of the container */
+            transform: translate(-50%, 50%); /* Center horizontally and move up vertically */
+        }
+       
+      
         </style>
+        
     </h:head>
 
     <h:body>
@@ -33,23 +71,36 @@
 
         <h:form id="form">
             <div class="centered-DT">
-
+                
                 <p:panelGrid columns="1">
+                    
 
                     <p:growl id="msg" showDetail="true" />
+                    
+                    <p:outputLabel  value="Ingresar" styleClass="login-label"/>
+                    
                     <p:inputText value="#{loginController.correo}" placeholder="Correo electrónico" />
                     <p:password value="#{loginController.clave}" placeholder="Contraseña" />
-
-                    <p:commandButton value="Ingresar al sistema" actionListener="#{loginController.ingresar()}" update="msg" />
-
-                    <p:commandButton value="Crear usuario" actionListener="#{loginController.openNew()}"
+                    
+                    <p:commandButton value="Continuar" actionListener="#{loginController.ingresar()}" update="msg" />
+                    
+                    <p:outputLabel  value="¿Eres nuevo?" styleClass="new-user-label"/>
+                    
+                                    
+                    <p:commandButton value="Crear cuenta" actionListener="#{loginController.openNew()}"
                                      update=":dialogs:manage-regis-content"
                                      oncomplete="PF('manageRegisDialog').show()"
                                      styleClass="ui-button-success" >
                         <p:resetInput target=":dialogs:manage-regis-content" />
                     </p:commandButton>
-                </p:panelGrid> 
+                    
+             
+                    
+                </p:panelGrid>
+                
+                
             </div>
+            
         </h:form>
 
         <h:form id="dialogs">
