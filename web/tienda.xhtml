@@ -29,6 +29,8 @@
     </h:body>
     <div class="product card">
         <h:form id="form">
+
+            <!-- Barra de arriba -->
             <p:tabMenu activeIndex="#{param.i}">
                 <p:menuitem value="Salir" icon="pi pi-fw pi-home" action="#{storeController.redireccionar('/faces/index.xhtml')}">
                     <f:param name="i" value="0"/>
@@ -40,6 +42,8 @@
                     <f:param name="i" value="2"/>
                 </p:menuitem>
             </p:tabMenu>
+
+            <!-- Nuevo Producto -->
             <div class="new-product-button">
                 <p:commandButton value="Nuevo Producto" actionListener="#{storeController.openNewProducto()}"
                                  update=":dialogsProduct" oncomplete="PF('manageProductDialog').show()"
@@ -61,7 +65,7 @@
 
 
 
-
+            <!-- Tabla de producto -->
             <p:dataTable var="producto" value="#{storeController.listaRetornoProducts}" scrollable="true"
                          rows="10" scrollHeight="250"
                          paginator="true" paginatorPosition="both"
@@ -69,22 +73,21 @@
                          currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
                          rowsPerPageTemplate="5,10,{ShowAll|'All'}">
 
-
+                <!-- Nombre de las columnas -->
                 <p:column headerText="Nombre" filterBy="#{producto.nombre}" filterMatchMode="startsWith">
                     <h:outputText value="#{producto.nombre}" />
                 </p:column>
                 <p:column headerText="Descripcion">
                     <h:outputText value="#{producto.descripcion}" />
                 </p:column>
-
                 <p:column headerText="Precio" filterBy="#{producto.precio}" filterMatchMode="startsWith">
                     <h:outputText value="$#{producto.precio}" />
                 </p:column>
 
 
-
+                <!-- Columna de botones de productos
+                     Editar, Eliminar, ver detalles, ver carrito -->
                 <p:column headerText="Acciones">
-
                     <p:commandButton icon="pi pi-pencil"
                                      update=":dialogsProduct:manage-product-content-edit"
                                      style="background-color: gray; color: white;"
@@ -117,20 +120,15 @@
 
                         <p:resetInput target=":dialogs:manage-carrito-content" />
                     </p:commandButton>
-
-
                 </p:column>
-
             </p:dataTable>
-
-
         </h:form>
 
         <h:form id="dialogs">
             <p:growl id="messagesDialogs" showDetail="false" />
 
+            <!-- Tabla del carrito -->
             <p:dialog header="Productos seleccionados" showEffect="fade" modal="true" widgetVar="manageCarritoDialog" responsive="true">
-
                 <p:outputPanel id="manage-carrito-content" class="ui-fluid">
 
                     <p:dataTable var="tablaProductos" value="#{carritoController.listaCarrito}" scrollable="true"
@@ -143,7 +141,7 @@
                         <p:column headerText="Nombre">
                             <h:outputText value="#{tablaProductos.nombre}" />
                         </p:column>
-                        
+
 
                         <p:column headerText="Descripción">
                             <h:outputText value="#{tablaProductos.precio}" />
@@ -165,15 +163,13 @@
                                 <p:spinner id="horizontalAfter" min="1" max="10" stepFactor="1"
                                            buttons="horizontal-after"
                                            upButtonStyleClass="ui-button-success" downButtonStyleClass="ui-button-danger"
-                                           onkeydown="return false" styleClass="no-input"/>
+                                           onkeydown="return false" styleClass="no-input" value="1"/>
                             </div>
-
                         </p:column>
 
                         <f:facet name="paginatorTopLeft">
                             <p:commandButton type="button" icon="pi pi-refresh"/>
                         </f:facet>
-
                         <f:facet name="paginatorBottomRight">
                             <p:commandButton type="button" icon="pi pi-cloud-upload"/>
                         </f:facet>
@@ -181,6 +177,7 @@
 
                 </p:outputPanel>
 
+                <!-- Redireccionar para comprar -->
                 <f:facet name="footer">
                     <p:commandButton value="Proceder con la compra" icon="pi pi-check" actionListener="#{carritoController.redirigirCompra()}"
                                      update=":form manage-carrito-content messagesDialogs" process="manage-carrito-content @this"
@@ -190,6 +187,7 @@
                 </f:facet>
             </p:dialog>
 
+            <!-- Ver detalles del producto -->
             <p:dialog header="Detalles de Producto" showEffect="fade" modal="true" widgetVar="manageDProductDialog"
                       responsive="true">
                 <p:outputPanel id="manage-Dproduct-content" class="ui-fluid">
@@ -205,19 +203,20 @@
                         <p:outputLabel for="Precio">Precio ($)</p:outputLabel>
                         <p:inputText id="Precio" value="$#{storeController.selectedProducto.precio}" required="true" readonly="true" />
                     </div>
-                </p:outputPanel> 
+                </p:outputPanel>
+                
                 <f:facet name="footer">
                     <p:commandButton value="Salir" icon="pi pi-times" onclick="PF('manageDProductDialog').hide()"
                                      class="ui-button-secondary" type="button" style="display: block; margin: 0 auto; background-color: red; color: white;" />
 
                 </f:facet> 
             </p:dialog>
-
         </h:form>
 
         <h:form id="dialogsProduct">
             <p:growl id="messagesDialogs" showDetail="false" />
 
+            <!-- Popup del editar producto -->
             <p:dialog header="Editar Producto" showEffect="fade" modal="true" widgetVar="manageProductDialogEdit"
                       responsive="true">
                 <p:outputPanel id="manage-product-content-edit" class="ui-fluid">
@@ -243,7 +242,8 @@
                                      class="ui-button-secondary" type="button" />
                 </f:facet>  
             </p:dialog>
-            
+
+            <!-- Pop-up de agregar producto -->
             <p:dialog header="Agregar Producto" showEffect="fade" modal="true" widgetVar="manageProductDialog"
                       responsive="true">
                 <p:outputPanel id="manage-product-content" class="ui-fluid">
@@ -270,6 +270,7 @@
                 </f:facet>  
             </p:dialog>
 
+            <!-- Eliminar un producto -->
             <p:confirmDialog widgetVar="deleteProductConfirmDialog" showEffect="fade" width="300"
                              message="¿Desea eliminar este producto?" header="Confirmar" severity="warn">
                 <p:commandButton value="Sí" icon="pi pi-check" actionListener="#{storeController.deleteProducto()}"
@@ -285,17 +286,12 @@
             <p:confirmDialog widgetVar="deleteCarritoConfirmDialog" showEffect="fade" width="300"
                              message="¿Desea eliminar este producto del carrito?" header="Confirmar" severity="warn">
                 <p:commandButton value="Sí" icon="pi pi-check" actionListener="#{carritoController.deleteProductoCarrito()}"
-                                 process="@this" update="form manage-product-content messagesDialogs"
+                                 process="@this" update="dialogs:manage-carrito-content"
                                  oncomplete="PF('deleteCarritoConfirmDialog').hide()" />
                 <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
                                  onclick="PF('deleteCarritoConfirmDialog').hide()" />
             </p:confirmDialog>
-
-
-
         </h:form>
-
-
     </div>
 </html>
 
