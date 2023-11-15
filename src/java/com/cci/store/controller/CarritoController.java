@@ -26,13 +26,16 @@ public class CarritoController implements Serializable {
 
     //Atributos
     private int numTarjeta;
+    private String verificarNumTarjeta;
     private int cvvTarjeta;
+    private String verificarCvvTarjeta;
     private String nomTarjeta;
 
     private List<ProductoTO> listaCarrito = new ArrayList<ProductoTO>();
     private ProductoTO selectedProducto;
 
     //Métodos
+    //-------------Métodos del carrito-----------------
     public CarritoController() {
     }
 
@@ -49,6 +52,7 @@ public class CarritoController implements Serializable {
         listaCarrito.remove(this.selectedProducto);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Producto del carrito eliminado"));
         System.out.println("Aquí esta el producto del carrito" + listaCarrito);
+
     }
 
     public void redireccionar(String ruta) {
@@ -57,6 +61,37 @@ public class CarritoController implements Serializable {
             request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
             FacesContext.getCurrentInstance().getExternalContext().redirect(request.getContextPath() + ruta);
         } catch (Exception e) {
+        }
+    }
+
+    //-----------------------Métodos de la compra----------------------
+    public void realizarCompra() {
+        if (verificarNumTarjeta.length() == 16 && verificarNumTarjeta.matches("[0-9]+")) {
+            // La entrada es válida
+            numTarjeta = Integer.parseInt(verificarNumTarjeta);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Número de tarjeta válido"));
+            System.out.println("Número de tarjeta válido: " + numTarjeta);
+
+            if (verificarCvvTarjeta.length() == 3 && verificarCvvTarjeta.matches("[0-9]+")) {
+                cvvTarjeta = Integer.parseInt(verificarCvvTarjeta);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Número del cvv de la tarjeta válido"));
+                System.out.println("Número de tarjeta válido: " + numTarjeta);
+                if (nomTarjeta != null){
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Nombre de persona válido"));
+                    this.redireccionar("/faces/tienda.xhtml");
+                } else {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Complete el cuadro nombre"));
+                }
+                
+            } else {
+                
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Número del cvv de la tarjeta inválido"));
+                System.out.println("El número de tarjeta debe contener exactamente 16 números.");
+            }
+        } else {
+            // La entrada no es válida
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Número de tarjeta inválido"));
+            System.out.println("El número de tarjeta debe contener exactamente 16 números.");
         }
     }
 
