@@ -11,17 +11,17 @@
             .centered-button {
                 text-align: center;
                 position: absolute;
-                top: 10%;
-                left: 86.5%;
+                top: 12%;
+                left: 90.5%;
                 transform: translate(-50%, -50%);
             }
             .new-product-button {
                 text-align: center;
                 position: absolute;
-                top: 10%;
-                right: 86.5%;
+                top: 12%;
+                right: 83.5%;
                 transform: translate(-50%, -50%);
-            }          
+            }                
         </style>
     </h:head>
     <h:body>
@@ -193,15 +193,15 @@
                 <p:outputPanel id="manage-Dproduct-content" class="ui-fluid">
                     <div class="field">
                         <p:outputLabel for="Nombre">Nombre</p:outputLabel>
-                        <p:inputText id="Nombre" value="#{storeController.selectedProducto.nombre}" required="true" readonly="true"/>
+                        <p:inputText id="Nombre" value="#{storeController.selectedProducto.nombre}" required="true" readonly="true" disabled="true"/>
                     </div>
                     <div class="field">
                         <p:outputLabel for="Descripcion">Descripcion</p:outputLabel>
-                        <p:inputText id="Descripcion" value="#{storeController.selectedProducto.descripcion}" required="true" readonly="true" />
+                        <p:inputText id="Descripcion" value="#{storeController.selectedProducto.descripcion}" required="true" readonly="true" disabled="true" />
                     </div>
                     <div class="field">
                         <p:outputLabel for="Precio">Precio ($)</p:outputLabel>
-                        <p:inputText id="Precio" value="$#{storeController.selectedProducto.precio}" required="true" readonly="true" />
+                        <p:inputText id="Precio" value="$#{storeController.selectedProducto.precio}" required="true" readonly="true" disabled="true" />
                     </div>
                 </p:outputPanel>
                 
@@ -222,7 +222,7 @@
                 <p:outputPanel id="manage-product-content-edit" class="ui-fluid">
                     <div class="field">
                         <p:outputLabel for="NombreEdit">Nombre</p:outputLabel>
-                        <p:inputText id="NombreEdit" value="#{storeController.selectedProducto.nombre}" required="true" readonly="true" />
+                        <p:inputText id="NombreEdit" value="#{storeController.selectedProducto.nombre}" required="true" readonly="true" disabled="true" />
                     </div>
                     <div class="field">
                         <p:outputLabel for="DescripcionEdit">Descripcion</p:outputLabel>
