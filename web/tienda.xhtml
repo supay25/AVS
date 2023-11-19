@@ -38,7 +38,7 @@
                 <p:menuitem value="Ver Perfil" icon="pi pi-fw pi-calendar" action="#{storeController.openNewTienda}">
                     <f:param name="i" value="1"/>                      
                 </p:menuitem>
-                <p:menuitem value="Ver Compras"  icon="pi pi-fw pi-pencil">
+                <p:menuitem value="Vista General"  icon="pi pi-fw pi-pencil" action="#{storeController.redireccionar('/faces/VistaGeneral.xhtml')}">
                     <f:param name="i" value="2"/>
                 </p:menuitem>
             </p:tabMenu>
