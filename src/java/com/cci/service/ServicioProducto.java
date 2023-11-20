@@ -21,59 +21,32 @@ public class ServicioProducto extends Servicio {
 
     }
 
-    public List<ProductoTO> lista() {
-        List<ProductoTO> listaRetorno = new ArrayList<ProductoTO>();
-
-        try {
-            PreparedStatement stmt = super.getConexion().prepareStatement("SELECT nombre, descripcion, precio FROM productos");
-            ResultSet rs = stmt.executeQuery();
-
-            while (rs.next()) {
-
-                String nombre = rs.getString("nombre");
-                String descripcion = rs.getString("descripcion");
-                int precio = rs.getInt("precio");
-
-                ProductoTO p = new ProductoTO(nombre, descripcion, precio);
-
-                p.setNombre(nombre);
-                p.setDescripcion(descripcion);
-                p.setPrecio(precio);
-                listaRetorno.add(p);
-            }
-            rs.close();
-            stmt.close();
-
-        } catch (SQLException ex) {
-
-            ex.printStackTrace();
-        }
-
-        return listaRetorno;
-    }
 
    public void insertar(ProductoTO productoTO, int tienda) {
 
         try {
             
              if(productoExists(productoTO.getNombre())){
-           PreparedStatement stmt = super.getConexion().prepareStatement("UPDATE productos SET descripcion=? , precio=? where nombre=?");
+           PreparedStatement stmt = super.getConexion().prepareStatement("UPDATE productos SET descripcion=? , precio=?, cantidad = ? where nombre=?");
 
-            stmt.setString(3, productoTO.getNombre());
+            
             stmt.setString(1, productoTO.getDescripcion());
             stmt.setInt(2, productoTO.getPrecio());
+            stmt.setInt(3, productoTO.getCantidad());
+            stmt.setString(4, productoTO.getNombre());
             stmt.execute();
 
             stmt.close();
 
            }else{
 
-                PreparedStatement stmt = super.getConexion().prepareStatement("INSERT INTO productos(nombre, descripcion, precio,tienda) VALUES (?,?,?,?)");
+                PreparedStatement stmt = super.getConexion().prepareStatement("INSERT INTO productos(nombre, descripcion, precio,tienda,cantidad) VALUES (?,?,?,?,?)");
 
                 stmt.setString(1, productoTO.getNombre());
                 stmt.setString(2, productoTO.getDescripcion());
                 stmt.setInt(3, productoTO.getPrecio());
                 stmt.setInt(4, tienda);
+                stmt.setInt(5, productoTO.getCantidad());
                 stmt.execute();
 
                 stmt.close();

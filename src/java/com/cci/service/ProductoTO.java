@@ -16,19 +16,23 @@ public class ProductoTO implements Serializable{
     private String descripcion;
     private int precio;
     private int id;
+    private int cantidad;
     
     public ProductoTO() {
     }
+
+    public ProductoTO(String nombre, String descripcion, int precio, int cantidad) {
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.precio = precio;       
+        this.cantidad = cantidad;
+    }
+
+    
    
     
 
-    public ProductoTO(String nombre, String descripcion, int precio) {
-        this.nombre = nombre;
-        this.descripcion = descripcion;
-        this.precio = precio;
-       
-      
-    }
+    
 
     public int getId() {
         return id;
@@ -37,6 +41,15 @@ public class ProductoTO implements Serializable{
     public void setId(int id) {
         this.id = id;
     }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+    
     
     
     

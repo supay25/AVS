@@ -19,6 +19,15 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
+import org.primefaces.model.chart.BarChartModel;
+import org.primefaces.model.charts.ChartData;
+import org.primefaces.model.charts.axes.cartesian.CartesianScales;
+import org.primefaces.model.charts.axes.cartesian.linear.CartesianLinearAxes;
+import org.primefaces.model.charts.axes.cartesian.linear.CartesianLinearTicks;
+import org.primefaces.model.charts.bar.BarChartOptions;
+import org.primefaces.model.charts.hbar.HorizontalBarChartDataSet;
+import org.primefaces.model.charts.hbar.HorizontalBarChartModel;
+import org.primefaces.model.charts.optionconfig.title.Title;
 
 /**
  *
@@ -33,7 +42,6 @@ public class storeController {
     private String descripcion;
     private String calificacion;
     private String Categoria;
-
     private List<ProductoTO> listaRetornoProducts;
     private ProductoTO selectedProducto;
     private ArrayList<ProductoTO> listaCarrito = new ArrayList<ProductoTO>();
@@ -46,6 +54,7 @@ public class storeController {
 
     //Constructor
     public storeController() {
+        
     }
 
     //métodos
@@ -83,7 +92,7 @@ public class storeController {
         System.out.println("ID tienda " + this.idProducto);
 
     }
-    
+
     public void openNewPageCliente(TiendaTO tienda) {
         ServicioTienda ser = new ServicioTienda();
         this.listaRetornoProducts = ser.listaProducto(tienda.getIdl());
@@ -93,7 +102,6 @@ public class storeController {
         System.out.println("ID tienda " + this.idProducto);
 
     }
-    
 
     public void openNewTienda() {
         this.selectedUsuario = new TiendaTO();
@@ -172,5 +180,12 @@ public class storeController {
     public void setSelectedUsuario(TiendaTO selectedUsuario) {
         this.selectedUsuario = selectedUsuario;
     }
+
+    public String getPageTitle() {
+        System.out.println(" Titulo " + this.getNombre());
+        return "My Web App - " + this.selectedUsuario.getNombre();
+    }
+
+    
 
 }

@@ -56,6 +56,7 @@ public class CarritoController implements Serializable {
     }
 
     public void redireccionar(String ruta) {
+        listaCarrito = new ArrayList<ProductoTO>();
         HttpServletRequest request;
         try {
             request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
