@@ -114,12 +114,15 @@
                     </p:commandButton>
 
                     <!--Botón de carrito -->
+
                     <p:commandButton class="ui-button-warning rounded-button"
                                      icon="pi pi-shopping-cart" actionListener="#{carritoController.agregarAlCarrito(producto)}"
                                      update=":dialogs:manage-carrito-content">
 
                         <p:resetInput target=":dialogs:manage-carrito-content" />
                     </p:commandButton>
+
+
                 </p:column>
             </p:dataTable>
         </h:form>
@@ -204,7 +207,7 @@
                         <p:inputText id="Precio" value="$#{storeController.selectedProducto.precio}" required="true" readonly="true" disabled="true" />
                     </div>
                 </p:outputPanel>
-                
+
                 <f:facet name="footer">
                     <p:commandButton value="Salir" icon="pi pi-times" onclick="PF('manageDProductDialog').hide()"
                                      class="ui-button-secondary" type="button" style="display: block; margin: 0 auto; background-color: red; color: white;" />
@@ -291,6 +294,7 @@
                 <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
                                  onclick="PF('deleteCarritoConfirmDialog').hide()" />
             </p:confirmDialog>
+            
         </h:form>
     </div>
 </html>

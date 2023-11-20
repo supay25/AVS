@@ -128,7 +128,7 @@
 
                                 <div class="field col-12 md:col-4">
                                     <p:outputLabel for="@next" value="Cantidad"/>
-                                    <p:spinner id="horizontalAfter" value="#{spinnerView.number9}" min="1" max="10" stepFactor="1"
+                                    <p:spinner id="horizontalAfter" min="1" max="10" stepFactor="1"
                                                buttons="horizontal-after"
                                                upButtonStyleClass="ui-button-success" downButtonStyleClass="ui-button-danger"
                                                onkeydown="return false" styleClass="no-input"/>
@@ -155,9 +155,9 @@
                                          class="ui-button-secondary" type="button" />
                     </f:facet>
                 </p:dialog>
-                
+
             </h:form>
-            
+
             <h:form id="dialogsProduct">
                 <p:growl id="messagesDialogs" showDetail="false" />
                 <p:dialog header="Detalles de Producto" showEffect="fade" modal="true" widgetVar="manageProductDialog"
@@ -197,7 +197,7 @@
                 <p:confirmDialog widgetVar="deleteCarritoConfirmDialog" showEffect="fade" width="300"
                                  message="¿Desea eliminar este producto del carrito?" header="Confirmar" severity="warn">
                     <p:commandButton value="Sí" icon="pi pi-check" actionListener="#{carritoController.deleteProductoCarrito()}"
-                                     process="@this" update="form manage-product-content messagesDialogs"
+                                     process="@this" update="dialogs:manage-carrito-content"
                                      oncomplete="PF('deleteCarritoConfirmDialog').hide()" />
                     <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
                                      onclick="PF('deleteCarritoConfirmDialog').hide()" />
