@@ -7,133 +7,207 @@
     <h:head>
         <title>Admin</title>
     </h:head>
-    <h:body>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+
+        main {
+            flex: 1;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;            
+            margin-top: auto;
+        }
+
+        footer ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        footer li {
+            display: inline-block;
+            margin:  10px;
+        }
+
+        footer a {
+            color: #fff;
+            text-decoration: none;
+        }body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+    </style>
+    <style>
+        .centered-button {
+            text-align: center;
+            position: absolute;
+            top: 12%;
+            left: 90.5%;
+            transform: translate(-50%, -50%);
+        }
+        .new-product-button {
+            text-align: center;
+            position: absolute;
+            top: 12%;
+            right: 79.9%;
+            transform: translate(-50%, -50%);           
+        </style>
+        <h:body>
 
 
-        <h:form id="form">
-            <div class="card">
+            <h:form id="form">
+                <div class="card">
 
-                <p:tabMenu activeIndex="#{param.i}">
-                    <p:menuitem value="Salir" icon="pi pi-fw pi-home" action="#{storeController.redireccionar('/faces/Menu.xhtml')}">
-                        <f:param name="i" value="0"/>
-                    </p:menuitem>
-                    <p:menuitem value="Ver Perfil" icon="pi pi-fw pi-calendar" action="#{storeController.openNewTienda}">
-                        <f:param name="i" value="1"/>                      
-                    </p:menuitem>
-                    
-
-
-                </p:tabMenu>
-            </div>
-
-            <p:growl id="messages" showDetail="true" />
-            <p:commandButton value="Nueva Tienda" icon="pi pi-plus" actionListener="#{storeController.openNewTienda}"
-                             update=":dialogs:manage-product-content" oncomplete="PF('manageProductDialog').show()"
-                             styleClass="ui-button-success" style="margin-right: .5rem">
-                <p:resetInput target=":dialogs:manage-product-content" />
-            </p:commandButton>
-
-            <p:dataTable var="tienda" value="#{storeController.listaRetorno}" rows="10"
-                         paginator="true" paginatorPosition="both"
-                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                         currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
-                         rowsPerPageTemplate="5,10,{ShowAll|'All'}">
-
-                <p:column headerText="Nombre">
-                    <h:outputText value="#{tienda.nombre}" />
-                </p:column>
-
-                <p:column headerText="Descripcion">
-                    <h:outputText value="#{tienda.descripcion}" />
-                </p:column>
-
-                <p:column headerText="Categoria">
-                    <h:outputText value="#{tienda.categoria}" />
-                </p:column>     
-                <p:column headerText="Calificacion">
-                    <h:outputText value="#{tienda.calificacion}" />
-                </p:column> 
-                <p:column headerText="Acciones">
-
-                    <p:commandButton value="Abrir" actionListener="#{storeController.openNewPage(tienda)}">
-
-                    </p:commandButton> 
-                    <p:commandButton icon="pi pi-pencil" update=":dialogs:manage-product-content-edit"
-                                     oncomplete="PF('manageProductDialogEdit').show()"
-                                     styleClass="edit-button rounded-button ui-button-success" process="@form">
-                        <f:setPropertyActionListener value="#{tienda}" target="#{storeController.selectedUsuario}" />
-                        <p:resetInput target=":dialogs:manage-product-content-edit" />
-                    </p:commandButton>
-
-                </p:column>
+                    <p:tabMenu activeIndex="#{param.i}">
+                        <p:menuitem value="Salir" icon="pi pi-fw pi-home" action="#{storeController.redireccionar('/faces/Menu.xhtml')}">
+                            <f:param name="i" value="0"/>
+                        </p:menuitem>
+                        <p:menuitem value="Ver Perfil" icon="pi pi-fw pi-calendar" action="#{storeController.openNewTienda}">
+                            <f:param name="i" value="1"/>                      
+                        </p:menuitem>
 
 
 
-                <f:facet name="paginatorTopLeft">
-                    <p:commandButton type="button" icon="pi pi-refresh"/>
-                </f:facet>
+                    </p:tabMenu>
+                </div>
 
-                <f:facet name="paginatorBottomRight">
-                    <p:commandButton type="button" icon="pi pi-cloud-upload"/>
-                </f:facet>
-
-            </p:dataTable>
-
-
-        </h:form>
-        <h:form id="dialogs">
-            <p:growl id="messagesDialogs" showDetail="false" />
-            <p:dialog header="Agregar detalles de Tienda" showEffect="fade" modal="true" widgetVar="manageProductDialog"
-                      responsive="true">
-                <p:outputPanel id="manage-product-content" class="ui-fluid">
-                    <div class="field">
-                        <p:outputLabel for="Nombre">Nombre</p:outputLabel>
-                        <p:inputText id="Nombre" value="#{storeController.selectedUsuario.nombre}" required="true" requiredMessage="Nombre Requerido" />
-                    </div>
-                    <div class="field">
-                        <p:outputLabel for="Descripcion">Descripcion</p:outputLabel>
-                        <p:inputText id="Descripcion" value="#{storeController.selectedUsuario.descripcion}" required="true" />
-                    </div>
-                    <div class="field">
-                        <p:outputLabel for="Categoria">Categoria</p:outputLabel>
-                        <p:inputText id="Categoria" value="#{storeController.selectedUsuario.categoria}" required="true" />
+                <p:growl id="messages" showDetail="true" />
+                <div class="new-product-button">
+                    <p:commandButton value="Nueva Tienda" icon="pi pi-plus" actionListener="#{storeController.openNewTienda}"
+                                     update=":dialogs:manage-product-content" oncomplete="PF('manageProductDialog').show()"
+                                     styleClass="ui-button-success" style="margin-right: .5rem">
+                                         <p:resetInput target=":dialogs:manage-product-content" />
+                                     </p:commandButton>
                     </div>
 
-                </p:outputPanel> 
-                <f:facet name="footer">
-                    <p:commandButton value="Guardar" icon="pi pi-check" actionListener="#{storeController.saveTienda()}"
-                                     update="form manage-product-content" process="manage-product-content @this"
-                                     oncomplete="PF('manageProductDialog').hide();"/>
-                    <p:commandButton value="Cancel" icon="pi pi-times" onclick="PF('manageProductDialog').hide()"
-                                     class="ui-button-secondary" type="button" />
-                </f:facet>  
-            </p:dialog>   
-             <p:dialog header="Editar Tienda" showEffect="fade" modal="true" widgetVar="manageProductDialogEdit"
-                      responsive="true">
-                <p:outputPanel id="manage-product-content-edit" class="ui-fluid">
-                    <div class="field">
-                        <p:outputLabel for="NombreEdit">Nombre</p:outputLabel>
-                        <p:inputText id="NombreEdit" value="#{storeController.selectedUsuario.nombre}" required="true" readonly="true" />
-                    </div>
-                    <div class="field">
-                        <p:outputLabel for="DescripcionEdit">Descripcion</p:outputLabel>
-                        <p:inputText id="DescripcionEdit" value="#{storeController.selectedUsuario.descripcion}" required="true" />
-                    </div>
-                    <div class="field">
-                        <p:outputLabel for="CategoriaEdit">Categoria</p:outputLabel>
-                        <p:inputText id="CategoriaEdit" value="#{storeController.selectedUsuario.categoria}" required="true" />
-                    </div>
+                    <p:dataTable var="tienda" value="#{storeController.listaRetorno}" rows="10"
+                                 paginator="true" paginatorPosition="bottom"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                                 rowsPerPageTemplate="5,10,{ShowAll|'All'}"
+                                 style="margin-top: 40px; margin-left: 310px; width:1300px; ">
 
-                </p:outputPanel> 
-                <f:facet name="footer">
-                    <p:commandButton value="Guardar" icon="pi pi-check" actionListener="#{storeController.saveTienda()}"
-                                     update="form manage-product-content-edit" process="manage-product-content-edit @this"
-                                     oncomplete="PF('manageProductDialogEdit').hide();"/>
-                    <p:commandButton value="Cancel" icon="pi pi-times" onclick="PF('manageProductDialogEdit').hide()"
-                                     class="ui-button-secondary" type="button" />
-                </f:facet>  
-            </p:dialog>   
-        </h:form>
-    </h:body>
-</html>
+                    <p:column headerText="Nombre">
+                        <h:outputText value="#{tienda.nombre}" />
+                    </p:column>
+
+                    <p:column headerText="Descripcion">
+                        <h:outputText value="#{tienda.descripcion}" />
+                    </p:column>
+
+                    <p:column headerText="Categoria">
+                        <h:outputText value="#{tienda.categoria}" />
+                    </p:column>     
+                    <p:column headerText="Calificacion">
+                        <h:outputText value="#{tienda.calificacion}" />
+                    </p:column> 
+                    <p:column headerText="Acciones">
+
+                        <p:commandButton value="Abrir" actionListener="#{storeController.openNewPage(tienda)}">
+
+                        </p:commandButton> 
+                        <p:commandButton icon="pi pi-pencil" update=":dialogs:manage-product-content-edit"
+                                         oncomplete="PF('manageProductDialogEdit').show()"
+                                         styleClass="edit-button rounded-button ui-button-success" process="@form">
+                            <f:setPropertyActionListener value="#{tienda}" target="#{storeController.selectedUsuario}" />
+                            <p:resetInput target=":dialogs:manage-product-content-edit" />
+                        </p:commandButton>
+
+                    </p:column>
+
+
+
+                    <f:facet name="paginatorTopLeft">
+                        <p:commandButton type="button" icon="pi pi-refresh"/>
+                    </f:facet>
+
+                    <f:facet name="paginatorBottomRight">
+                        <p:commandButton type="button" icon="pi pi-cloud-upload"/>
+                    </f:facet>
+
+                </p:dataTable>
+
+
+            </h:form>
+            <h:form id="dialogs">
+                <p:growl id="messagesDialogs" showDetail="false" />
+                <p:dialog header="Agregar detalles de Tienda" showEffect="fade" modal="true" widgetVar="manageProductDialog"
+                          responsive="true">
+                    <p:outputPanel id="manage-product-content" class="ui-fluid">
+                        <div class="field">
+                            <p:outputLabel for="Nombre">Nombre</p:outputLabel>
+                            <p:inputText id="Nombre" value="#{storeController.selectedUsuario.nombre}" required="true" requiredMessage="Nombre Requerido" />
+                        </div>
+                        <div class="field">
+                            <p:outputLabel for="Descripcion">Descripcion</p:outputLabel>
+                            <p:inputText id="Descripcion" value="#{storeController.selectedUsuario.descripcion}" required="true" />
+                        </div>
+                        <div class="field">
+                            <p:outputLabel for="Categoria">Categoria</p:outputLabel>
+                            <p:inputText id="Categoria" value="#{storeController.selectedUsuario.categoria}" required="true" />
+                        </div>
+
+                    </p:outputPanel> 
+                    <f:facet name="footer">
+                        <p:commandButton value="Guardar" icon="pi pi-check" actionListener="#{storeController.saveTienda()}"
+                                         update="form manage-product-content" process="manage-product-content @this"
+                                         oncomplete="PF('manageProductDialog').hide();"/>
+                        <p:commandButton value="Cancel" icon="pi pi-times" onclick="PF('manageProductDialog').hide()"
+                                         class="ui-button-secondary" type="button" />
+                    </f:facet>  
+                </p:dialog>   
+                <p:dialog header="Editar Tienda" showEffect="fade" modal="true" widgetVar="manageProductDialogEdit"
+                          responsive="true">
+                    <p:outputPanel id="manage-product-content-edit" class="ui-fluid">
+                        <div class="field">
+                            <p:outputLabel for="NombreEdit">Nombre</p:outputLabel>
+                            <p:inputText id="NombreEdit" value="#{storeController.selectedUsuario.nombre}" required="true" readonly="true" />
+                        </div>
+                        <div class="field">
+                            <p:outputLabel for="DescripcionEdit">Descripcion</p:outputLabel>
+                            <p:inputText id="DescripcionEdit" value="#{storeController.selectedUsuario.descripcion}" required="true" />
+                        </div>
+                        <div class="field">
+                            <p:outputLabel for="CategoriaEdit">Categoria</p:outputLabel>
+                            <p:inputText id="CategoriaEdit" value="#{storeController.selectedUsuario.categoria}" required="true" />
+                        </div>
+
+                    </p:outputPanel> 
+                    <f:facet name="footer">
+                        <p:commandButton value="Guardar" icon="pi pi-check" actionListener="#{storeController.saveTienda()}"
+                                         update="form manage-product-content-edit" process="manage-product-content-edit @this"
+                                         oncomplete="PF('manageProductDialogEdit').hide();"/>
+                        <p:commandButton value="Cancel" icon="pi pi-times" onclick="PF('manageProductDialogEdit').hide()"
+                                         class="ui-button-secondary" type="button" />
+                    </f:facet>  
+                </p:dialog>   
+            </h:form>
+            <footer>
+                <div>
+                    <h4 class="interactive mb1 uppercase">Servicio</h4>
+                    <ul>
+                        <li><a href="help.html">Terminos y  Condiciones</a></li>
+                        <li><a href="covid19.html">Politica de privacidad</a></li>
+                        <li><a href="account.html">Contactenos</a></li>                       
+                        <li><a href="shipping.html">Acerca de Nosotros</a></li>
+                        <li><a href="returns.html">Ordenes</a></li>        
+                        <li><a href="orders.html">Tiendas</a></li>
+                    </ul>
+                </div>
+            </footer>
+        </h:body>
+    </html>
 

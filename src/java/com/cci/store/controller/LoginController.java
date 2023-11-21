@@ -47,7 +47,7 @@ public class LoginController {
         if ("Admin".equals(permiso)) {
             this.redireccionar("/faces/index.xhtml");
         } else {
-             this.redireccionar("/faces/Tienda2.xhtml");
+             this.redireccionar("/faces/MenuTiendas.xhtml");
         }
     } else {
         FacesContext.getCurrentInstance().addMessage("sticky-key", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Campos Invalidos", "La clave o correo no son correctos"));

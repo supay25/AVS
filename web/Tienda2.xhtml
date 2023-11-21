@@ -7,6 +7,49 @@
     <h:head>
         <title>Tiendas</title>
     </h:head>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+
+        main {
+            flex: 1;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;            
+            margin-top: auto;
+        }
+
+        footer ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        footer li {
+            display: inline-block;
+            margin:  10px;
+        }
+
+        footer a {
+            color: #fff;
+            text-decoration: none;
+        }body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+    </style>
     <h:body>
         <h:form id="form">
             <div class="card">
@@ -27,12 +70,11 @@
             </div>
 
             <p:growl id="messages" showDetail="true" />
-            
+
 
             <p:dataTable var="tienda" value="#{storeController.listaRetorno}" rows="10"
-                         paginator="true" paginatorPosition="both"
-                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                         currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                         paginator="true" paginatorPosition="bottom"
+                         style="margin-top: 30px; margin-left: 310px; width:1300px; "
                          rowsPerPageTemplate="5,10,{ShowAll|'All'}">
 
                 <p:column headerText="Nombre">
@@ -54,13 +96,13 @@
                     <p:commandButton value="Abrir" actionListener="#{storeController.openNewPageCliente(tienda)}">
 
                     </p:commandButton> 
-                    
+
 
                 </p:column>
 
 
 
-                
+
 
             </p:dataTable>
 
@@ -92,10 +134,24 @@
                     <p:commandButton value="Cancel" icon="pi pi-times" onclick="PF('manageProductDialog').hide()"
                                      class="ui-button-secondary" type="button" />
                 </f:facet>  
-            </p:dialog>     
-            
+            </p:dialog> 
+
+
         </h:form>
+        <footer>
+            <div>
+                <h4 class="interactive mb1 uppercase">Servicio</h4>
+                <ul>
+                    <li><a href="help.html">Terminos y  Condiciones</a></li>
+                    <li><a href="covid19.html">Politica de privacidad</a></li>
+                    <li><a href="account.html">Contactenos</a></li>                       
+                    <li><a href="shipping.html">Acerca de Nosotros</a></li>
+                    <li><a href="returns.html">Ordenes</a></li>        
+                    <li><a href="orders.html">Tiendas</a></li>
+                </ul>
+            </div>
+        </footer>
     </h:body>
-    
+
 </html>
 
