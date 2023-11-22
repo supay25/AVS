@@ -112,7 +112,10 @@
                         <p:column headerText="Nombre" filterBy="#{producto.nombre}" filterMatchMode="startsWith">
                             <h:outputText value="#{producto.nombre}" />
                         </p:column>
-
+                        
+                        <p:column headerText="Descripción" filterBy="#{producto.descripcion}">
+                            <h:outputText value="#{producto.descripcion}" />
+                        </p:column>
 
                         <p:column headerText="Precio" filterBy="#{producto.precio}" filterMatchMode="startsWith">
                             <h:outputText value="$#{producto.precio}" />
