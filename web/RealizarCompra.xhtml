@@ -16,6 +16,8 @@
                 transform: translate(-50%, -50%);
             }
         </style>
+        
+        
 
     </h:head>
 
@@ -25,18 +27,92 @@
             <p:commandButton value="Volver"  actionListener="#{storeController.redireccionar('/faces/Productos.xhtml')}"/>  
             <p:messages id="messages"/>
 
-            <div class="centered-DT">
+            <div style="margin-top: 30px;">
+                <div>
+                    <p:panel header="Inventario de Productos - #{carritoController.listaCarrito.size()}" style="width: 40%; height: 200px; display: inline-block; margin-left: 70px;">
 
-                <p:panelGrid columns="1">
+                        <p:dataTable var="producto" value="#{carritoController.listaCarrito}" scrollable="true"
+                                     rows="10" scrollHeight="250">
+
+                            <p:column headerText="Precio"> 
+                                <h:outputText value="#{producto.precio}" />
+                            </p:column>
+                            <p:column headerText="Nombre">
+                                <h:outputText value="#{producto.nombre}" />
+                            </p:column>
+
+                        </p:dataTable>
+                    </p:panel>
 
                     <p:growl id="msg" showDetail="true" />
-                    <p:inputText value="#{carritoController.nomTarjeta}" placeholder="Nombre de la tarjeta" />
-                    <p:inputText value="#{carritoController.numTarjeta}" placeholder="Numero de la tarjeta" />
-                    <p:password value="#{carritoController.cvvTarjeta}" placeholder="CVV De la tarjeta" />
+
+                    <p:panelGrid columns="2" style="width: 50%; height: 185px; display: inline-block; margin-left: 60px; margin-top: 0px">
 
 
-                </p:panelGrid> 
+                        <p:inputText value="#{carritoController.correoCompra}" placeholder="Correo electronico" />
+                        <p:inputText value="#{carritoController.direccion}" placeholder="Direccion" />
+
+                        <p:selectOneMenu id="option2" value="#{carritoController.provincia}">
+
+                            <f:selectItem itemLabel="Alajuela" itemValue="Option1"/>
+                            <f:selectItem itemLabel="San Jose" itemValue="Option2"/>
+                            <f:selectItem itemLabel="Heredia" itemValue="Option3"/>
+                            <f:selectItem itemLabel="Cartago" itemValue="Option4"/>
+                            <f:facet name="footer">
+                                <p:divider styleClass="mt-0" />
+                                <h:outputText value="4 options" style="font-weight:bold;"/>
+                            </f:facet>
+                        </p:selectOneMenu>
+
+
+                        <p:inputText value="#{carritoController.codigoPostal}" placeholder="Codigo Postal">
+                            <p:keyFilter regEx="/[1-9]+/" />
+                        </p:inputText>
+
+                        <p:selectOneMenu id="option" value="#{carritoController.metodoPago}">
+
+                            <f:selectItem itemLabel="Visa" itemValue="Option1"/>
+                            <f:selectItem itemLabel="MasterCard" itemValue="Option2"/>
+                            <f:selectItem itemLabel="American Express" itemValue="Option3"/>
+                            <f:facet name="footer">
+                                <p:divider styleClass="mt-0" />
+                                <h:outputText value="3 options" style="font-weight:bold;"/>
+                            </f:facet>
+                        </p:selectOneMenu>
+
+
+                        <p:inputText value="#{carritoController.nomTarjeta}" placeholder="Nombre de la tarjeta" />
+                        
+                        <p:inputText value="#{carritoController.numTarjeta}" placeholder="Numero de la tarjeta">
+                            <p:keyFilter regEx="/[1-9]+/" />
+                        </p:inputText>
+                        
+                        <p:password value="#{carritoController.cvvTarjeta}" placeholder="CVV De la tarjeta" />
+
+                    </p:panelGrid> 
+
+
+                </div>
+
+
+                <div style="margin-top: 60px;">
+                    <p:panel id="drop" header="Subtotal" style="width: 200px; height: 400px; display: inline-block; margin-left: 70px; text-align: center">
+                        <h:outputText value="click" />
+
+                    </p:panel>
+                    <p:panel id="clip" header="Total" style="width: 200px; height: 400px; display: inline-block; margin-left: 60px; text-align: center">
+                        <h:outputText value="click" />
+
+                    </p:panel>
+                    
+                    <p:commandButton value="Comprar" style="width: 100px; height: 50px; display: inline-block; margin-left: 380px; text-align: center">
+                        
+                    </p:commandButton>
+                </div>
+           
+
             </div>
+
         </h:form>
     </h:body>
 </html>

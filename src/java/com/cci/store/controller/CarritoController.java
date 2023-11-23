@@ -29,7 +29,14 @@ public class CarritoController implements Serializable {
     private String verificarNumTarjeta;
     private int cvvTarjeta;
     private String verificarCvvTarjeta;
+    private String nombreTarjeta;
     private String nomTarjeta;
+    private String direccion;
+    private String metodoPago;
+    private String correoCompra;
+    private String provincia;
+    private String distrito;
+    private int codigoPostal;
 
     private List<ProductoTO> listaCarrito = new ArrayList<ProductoTO>();
     private ProductoTO selectedProducto;
@@ -46,6 +53,7 @@ public class CarritoController implements Serializable {
     }
 
     public void redirigirCompra() {
+        System.out.println(this.listaCarrito);
         this.redireccionar("/faces/RealizarCompra.xhtml");
     }
 
@@ -57,7 +65,7 @@ public class CarritoController implements Serializable {
     }
 
     public void redireccionar(String ruta) {
-        listaCarrito = new ArrayList<ProductoTO>();
+        
         HttpServletRequest request;
         try {
             request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -137,5 +145,78 @@ public class CarritoController implements Serializable {
     public void setListaCarrito(List<ProductoTO> listaCarrito) {
         this.listaCarrito = listaCarrito;
     }
+
+    public String getVerificarNumTarjeta() {
+        return verificarNumTarjeta;
+    }
+
+    public void setVerificarNumTarjeta(String verificarNumTarjeta) {
+        this.verificarNumTarjeta = verificarNumTarjeta;
+    }
+
+    public String getVerificarCvvTarjeta() {
+        return verificarCvvTarjeta;
+    }
+
+    public void setVerificarCvvTarjeta(String verificarCvvTarjeta) {
+        this.verificarCvvTarjeta = verificarCvvTarjeta;
+    }
+
+    public String getNombreTarjeta() {
+        return nombreTarjeta;
+    }
+
+    public void setNombreTarjeta(String nombreTarjeta) {
+        this.nombreTarjeta = nombreTarjeta;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public String getMetodoPago() {
+        return metodoPago;
+    }
+
+    public void setMetodoPago(String metodoPago) {
+        this.metodoPago = metodoPago;
+    }
+
+    public String getCorreoCompra() {
+        return correoCompra;
+    }
+
+    public void setCorreoCompra(String correoCompra) {
+        this.correoCompra = correoCompra;
+    }
+
+    public String getProvincia() {
+        return provincia;
+    }
+
+    public void setProvincia(String provincia) {
+        this.provincia = provincia;
+    }
+
+    public String getDistrito() {
+        return distrito;
+    }
+
+    public void setDistrito(String distrito) {
+        this.distrito = distrito;
+    }
+
+    public int getCodigoPostal() {
+        return codigoPostal;
+    }
+
+    public void setCodigoPostal(int codigoPostal) {
+        this.codigoPostal = codigoPostal;
+    }
+    
 
 }
