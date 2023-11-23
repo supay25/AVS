@@ -23,7 +23,8 @@
             body {
                 margin: 0 auto;
                 padding: 0;
-                font-family: Arial, sans-serif;
+                font-family: 'Arial', sans-serif;
+                background-color: #f2f2f2;
                 display: flex;
                 min-height: 100vh;
                 flex-direction: column;
@@ -32,18 +33,14 @@
             main {
                 flex: 1;
                 margin: 0 auto;
-
-
             }
 
             footer {
                 background-color: #333;
                 color: #fff;
                 padding: 20px;
-                text-align: center;            
+                text-align: center;
                 margin-top: auto;
-
-
             }
 
             footer ul {
@@ -53,19 +50,29 @@
 
             footer li {
                 display: inline-block;
-                margin:  10px;
+                margin: 10px;
             }
 
             footer a {
                 color: #fff;
                 text-decoration: none;
             }
-            body {
-                font-family: 'Arial', sans-serif;
-                background-color: #f2f2f2;
-                margin: 0;
-                padding: 0;
+
+            .ui-dataview .ui-dataview-listitem .button-container {
+                display: flex;
+                justify-content: space-between;
             }
+
+            .ui-dataview .ui-dataview-listitem .item-details {
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+            }
+
+            .ui-dataview .ui-dataview-listitem .item-details > div {
+                width: 100%;
+            }
+
 
         </style>
     </h:head>
@@ -92,7 +99,7 @@
                 <!-- Botón para el carrito -->
                 <div class="centered-button">
                     <p:commandButton value= "Ver Carrito" icon="pi pi-shopping-cart" 
-                                     style="background-color: green; color: white; margin-top:50px "
+                                     style="background-color: green; color: white; margin-top:2% "
                                      update=":dialogs:manage-carrito-content"
                                      oncomplete="PF('manageCarritoDialog').show()"
                                      styleClass="ui-button-success" >
@@ -100,19 +107,18 @@
                     </p:commandButton>
                 </div>
 
-                <div class="fixed-table-container">
+                <div class="card crud demo">
                     <p:dataTable var="producto" value="#{storeController.listaRetornoProducts}" rows="10"
                                  paginator="true" paginatorPosition="bottom"
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
-                                 rowsPerPageTemplate="5,10,{ShowAll|'All'}"
-                                 style="margin-top: 30px; margin-left: 350px; margin-right: 50px; width:1570px; ">
+                                 rowsPerPageTemplate="5,10,{ShowAll|'All'}">
 
 
                         <p:column headerText="Nombre" filterBy="#{producto.nombre}" filterMatchMode="startsWith">
                             <h:outputText value="#{producto.nombre}" />
                         </p:column>
-                        
+
                         <p:column headerText="Descripción" filterBy="#{producto.descripcion}">
                             <h:outputText value="#{producto.descripcion}" />
                         </p:column>
@@ -154,63 +160,82 @@
             <h:form id="dialogs">
                 <p:growl id="messagesDialogs" showDetail="false" />
 
-                <p:dialog header="Productos seleccionados" showEffect="fade" modal="true" widgetVar="manageCarritoDialog" responsive="true">
 
-                    <p:outputPanel id="manage-carrito-content" class="ui-fluid">
-
-                        <p:dataTable var="tablaProductos" value="#{carritoController.listaCarrito}" scrollable="true"
-                                     rows="10" scrollHeight="250"
-                                     paginator="true" paginatorPosition="both"
-                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                     currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
-                                     rowsPerPageTemplate="5,10,{ShowAll|'All'}">
-
-                            <p:column headerText="Nombre">
-                                <h:outputText value="#{tablaProductos.nombre}" />
-                            </p:column>
-
-                            <p:column headerText="Descripción">
-                                <h:outputText value="#{tablaProductos.precio}" />
-                            </p:column>
-
-                            <p:column>
-                                <!-- Eliminar Botón dentro del carrito -->
-                                <p:commandButton icon="pi pi-trash" process="@this"
-                                                 style="background-color: red; color: white;"
-                                                 styleClass="rounded-button ui-button-danger ui-button-flat"
-                                                 update=":dialogs:manage-carrito-content"
-                                                 oncomplete="PF('deleteCarritoConfirmDialog').show()" >
-                                    <f:setPropertyActionListener value="#{tablaProductos}" target="#{carritoController.selectedProducto}" />
-                                </p:commandButton>
+                <p:dialog header="Carrito" showEffect="fade" modal="true" widgetVar="manageCarritoDialog" responsive="true" width="50%">
 
 
-                                <div class="field col-12 md:col-4">
-                                    <p:outputLabel for="@next" value="Cantidad"/>
-                                    <p:spinner id="horizontalAfter" min="1" max="10" stepFactor="1"
-                                               buttons="horizontal-after"
-                                               upButtonStyleClass="ui-button-success" downButtonStyleClass="ui-button-danger"
-                                               onkeydown="return false" styleClass="no-input"/>
+
+                    <p:outputPanel id="manage-carrito-content"  >
+
+
+                        <p:dataView var="product" value="#{carritoController.listaCarrito}" multiViewState="true" rows="12"                                  
+                                    gridIcon="pi pi-th-large" listIcon="pi pi-bars" style="display: block">
+                            <f:facet name="header">
+                                <div class="header-container">                                                                      
+                                    <p:commandButton icon="pi pi-trash" process="@this"
+                                                     style="background-color: red; color: white; display: block"
+                                                     styleClass="rounded-button ui-button-danger ui-button-flat"
+                                                     update=":dialogs:manage-carrito-content"
+                                                     oncomplete="PF('deleteCarritoConfirmDialog').show()">
+                                        <f:setPropertyActionListener value="#{product}" target="#{carritoController.selectedProducto}" />
+                                    </p:commandButton>
                                 </div>
-
-                            </p:column>
-
-                            <f:facet name="paginatorTopLeft">
-                                <p:commandButton type="button" icon="pi pi-refresh"/>
                             </f:facet>
 
-                            <f:facet name="paginatorBottomRight">
-                                <p:commandButton type="button" icon="pi pi-cloud-upload"/>
-                            </f:facet>
-                        </p:dataTable>
+                            <p:dataViewListItem >
 
+                                <div style="display: flex; justify-content: space-between;">
+
+
+                                    <div class="product-image">
+                                        <p:graphicImage value="https://w7.pngwing.com/pngs/450/612/png-transparent-online-shopping-e-commerce-retail-business-store-text-retail-people-thumbnail.png"
+                                                        width="100" height="100"/>
+                                    </div>
+                                    <div class="product-details" style="width: 30%">
+                                        <div class="product-name">#{product.nombre}</div>
+                                        <div class="product-description">#{product.descripcion}</div>
+
+                                        <p:outputLabel for="@next" />
+                                        <p:spinner id="horizontalAfter" min="1" max="10" stepFactor="1"
+                                                   buttons="horizontal-after"
+                                                   upButtonStyleClass="ui-button-success" downButtonStyleClass="ui-button-danger"
+                                                   onkeydown="return false" styleClass="no-input" style="width: 50%;"/>
+                                    </div>
+                                    <div class="product-price" style="margin-top: 30px">
+                                        <h:outputText value="#{product.precio}" styleClass="product-price">
+                                            <f:convertNumber currencySymbol="$" type="currency"/>
+                                        </h:outputText>
+                                    </div>
+
+                                    <div class="product-action" style="margin-top: 25px">
+                                        <p:commandButton icon="pi pi-trash" process="@this"
+                                                         style="background-color: red; color: white; display:inline-block"
+                                                         styleClass="rounded-button ui-button-danger ui-button-flat"
+                                                         update=":dialogs:manage-carrito-content"
+                                                         oncomplete="PF('deleteCarritoConfirmDialog').show()">
+                                            <f:setPropertyActionListener value="#{product}" target="#{carritoController.selectedProducto}" />
+                                        </p:commandButton>
+
+                                    </div>
+                                </div>
+                            </p:dataViewListItem>
+                        </p:dataView>
                     </p:outputPanel>
 
+
+
+
+
+
+
                     <f:facet name="footer">
-                        <p:commandButton value="Proceder con la compra" icon="pi pi-check" actionListener="#{carritoController.redirigirCompra()}"
-                                         update=":form manage-carrito-content messagesDialogs" process="manage-carrito-content @this"
-                                         oncomplete="PF('manageCarritoDialog').hide();"/>
-                        <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('manageCarritoDialog').hide()"
-                                         class="ui-button-secondary" type="button" />
+                        <div class="button-container">
+                            <p:commandButton value="Proceder al pago" icon="pi pi-check" actionListener="#{carritoController.redirigirCompra()}"
+                                             update=":form manage-carrito-content messagesDialogs" process="manage-carrito-content @this"
+                                             oncomplete="PF('manageCarritoDialog').hide();"/>
+                            <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('manageCarritoDialog').hide()"
+                                             class="ui-button-secondary" type="button" />
+                        </div>
                     </f:facet>
                 </p:dialog>
 
