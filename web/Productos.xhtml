@@ -107,6 +107,7 @@
                     </p:commandButton>
                 </div>
 
+
                 <div class="card crud demo">
                     <p:dataTable var="producto" value="#{storeController.listaRetornoProducts}" rows="10"
                                  paginator="true" paginatorPosition="bottom"
@@ -126,7 +127,6 @@
                         <p:column headerText="Precio" filterBy="#{producto.precio}" filterMatchMode="startsWith">
                             <h:outputText value="$#{producto.precio}" />
                         </p:column>
-
 
 
                         <p:column headerText="Acciones">
@@ -172,11 +172,11 @@
                                     gridIcon="pi pi-th-large" listIcon="pi pi-bars" style="display: block">
                             <f:facet name="header">
                                 <div class="header-container">                                                                      
-                                    <p:commandButton icon="pi pi-trash" process="@this"
+                                    <p:commandButton icon="pi pi-trash" process="@this" value="Eliminar todo el carrito"
                                                      style="background-color: red; color: white; display: block"
                                                      styleClass="rounded-button ui-button-danger ui-button-flat"
                                                      update=":dialogs:manage-carrito-content"
-                                                     oncomplete="PF('deleteCarritoConfirmDialog').show()">
+                                                     oncomplete="PF('deleteAllConfirmDialog').show()">
                                         <f:setPropertyActionListener value="#{product}" target="#{carritoController.selectedProducto}" />
                                     </p:commandButton>
                                 </div>
@@ -286,6 +286,15 @@
                                      onclick="PF('deleteCarritoConfirmDialog').hide()" />
                 </p:confirmDialog>
 
+                <!-- Eliminar Todo del carrito -->
+                <p:confirmDialog widgetVar="deleteAllConfirmDialog" showEffect="fade" width="300"
+                                 message="¿Desea eliminar todo el carrito?" header="Confirmar" severity="warn">
+                    <p:commandButton value="Sí" icon="pi pi-check" actionListener="#{carritoController.deleteAllCarrito()}"
+                                     process="@this" update="dialogs:manage-carrito-content"
+                                     oncomplete="PF('deleteAllConfirmDialog').hide()" />
+                    <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                                     onclick="PF('deleteAllConfirmDialog').hide()" />
+                </p:confirmDialog>
 
 
 

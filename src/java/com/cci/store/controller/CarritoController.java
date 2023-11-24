@@ -63,6 +63,13 @@ public class CarritoController implements Serializable {
         System.out.println("Aquí esta el producto del carrito" + listaCarrito);
 
     }
+    
+    public void deleteAllCarrito() {
+        listaCarrito.clear();
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Producto del carrito eliminado"));
+        System.out.println("No hay nada se supone" + listaCarrito);
+
+    }
 
     public void redireccionar(String ruta) {
         
@@ -74,6 +81,18 @@ public class CarritoController implements Serializable {
         }
     }
 
+    public void redireccionarLimpiaCarrito(String ruta) {
+        
+        listaCarrito.clear();
+        
+        HttpServletRequest request;
+        try {
+            request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+            FacesContext.getCurrentInstance().getExternalContext().redirect(request.getContextPath() + ruta);
+        } catch (Exception e) {
+        }
+    }
+    
     //-----------------------Métodos de la compra----------------------
     public void realizarCompra() {
         if (verificarNumTarjeta.length() == 16 && verificarNumTarjeta.matches("[0-9]+")) {
