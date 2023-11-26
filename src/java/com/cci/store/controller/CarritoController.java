@@ -63,7 +63,7 @@ public class CarritoController implements Serializable {
         System.out.println("Aquí esta el producto del carrito" + listaCarrito);
 
     }
-    
+
     public void deleteAllCarrito() {
         listaCarrito.clear();
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Producto del carrito eliminado"));
@@ -72,7 +72,7 @@ public class CarritoController implements Serializable {
     }
 
     public void redireccionar(String ruta) {
-        
+
         HttpServletRequest request;
         try {
             request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -82,9 +82,9 @@ public class CarritoController implements Serializable {
     }
 
     public void redireccionarLimpiaCarrito(String ruta) {
-        
+
         listaCarrito.clear();
-        
+
         HttpServletRequest request;
         try {
             request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -92,7 +92,7 @@ public class CarritoController implements Serializable {
         } catch (Exception e) {
         }
     }
-    
+
     //-----------------------Métodos de la compra----------------------
     public void realizarCompra() {
         if (verificarNumTarjeta.length() == 16 && verificarNumTarjeta.matches("[0-9]+")) {
@@ -105,15 +105,15 @@ public class CarritoController implements Serializable {
                 cvvTarjeta = Integer.parseInt(verificarCvvTarjeta);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Número del cvv de la tarjeta válido"));
                 System.out.println("Número de tarjeta válido: " + numTarjeta);
-                if (nomTarjeta != null){
+                if (nomTarjeta != null) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Nombre de persona válido"));
                     this.redireccionar("/faces/tienda.xhtml");
                 } else {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Complete el cuadro nombre"));
                 }
-                
+
             } else {
-                
+
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Número del cvv de la tarjeta inválido"));
                 System.out.println("El número de tarjeta debe contener exactamente 16 números.");
             }
@@ -123,6 +123,32 @@ public class CarritoController implements Serializable {
             System.out.println("El número de tarjeta debe contener exactamente 16 números.");
         }
     }
+
+    public double calcularTotalCarrito() {
+        double total = 0.0;
+        for (ProductoTO producto : listaCarrito) {
+            total += producto.getPrecio();
+        }
+        double total1= total * 0.13;
+        double total2;
+        total2 = total - total1;        
+        return total2;
+    }
+    
+    public double totalFinal(){
+        
+        
+       double total = 0.0;
+        for (ProductoTO producto : listaCarrito) {
+            total += producto.getPrecio();
+        }
+          
+        return total;
+        
+        
+    }
+    
+    
 
     //Getters and Setters
     public ProductoTO getSelectedProducto() {
@@ -236,6 +262,5 @@ public class CarritoController implements Serializable {
     public void setCodigoPostal(int codigoPostal) {
         this.codigoPostal = codigoPostal;
     }
-    
 
 }

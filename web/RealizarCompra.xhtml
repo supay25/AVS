@@ -97,11 +97,11 @@
 
                 <div style="margin-top: 60px;">
                     <p:panel id="drop" header="Subtotal" style="width: 200px; height: 400px; display: inline-block; margin-left: 70px; text-align: center">
-                        <h:outputText value="click" />
+                        <h:outputText value="#{carritoController.calcularTotalCarrito()}" />
 
                     </p:panel>
                     <p:panel id="clip" header="Total" style="width: 200px; height: 400px; display: inline-block; margin-left: 60px; text-align: center">
-                        <h:outputText value="click" />
+                        <h:outputText value="#{carritoController.totalFinal()}" />
 
                     </p:panel>
                     
