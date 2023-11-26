@@ -196,10 +196,10 @@
                                         <div class="product-description">#{product.descripcion}</div>
 
                                         <p:outputLabel for="@next" />
-                                        <p:spinner id="horizontalAfter" min="1" max="10" stepFactor="1"
-                                                   buttons="horizontal-after"
+                                        <p:spinner id="horizontalAfter" min="1" max="#{product.cantidad}" stepFactor="1"
+                                                   buttons="horizontal-after" rotate="true"
                                                    upButtonStyleClass="ui-button-success" downButtonStyleClass="ui-button-danger"
-                                                   onkeydown="return false" styleClass="no-input" style="width: 50%;"/>
+                                                   onkeydown="return false" styleClass="no-input" style="width: 70%;"/>
                                     </div>
                                     <div class="product-price" style="margin-top: 30px">
                                         <h:outputText value="#{product.precio}" styleClass="product-price">
