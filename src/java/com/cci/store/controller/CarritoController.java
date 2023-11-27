@@ -37,6 +37,7 @@ public class CarritoController implements Serializable {
     private String provincia;
     private String distrito;
     private int codigoPostal;
+    private int spinner;
 
     private List<ProductoTO> listaCarrito = new ArrayList<ProductoTO>();
     private ProductoTO selectedProducto;
@@ -71,6 +72,11 @@ public class CarritoController implements Serializable {
 
     }
 
+    public void SpinnerCantidad(){
+        
+        
+    }
+    
     public void redireccionar(String ruta) {
 
         HttpServletRequest request;
@@ -136,8 +142,6 @@ public class CarritoController implements Serializable {
     }
     
     public double totalFinal(){
-        
-        
        double total = 0.0;
         for (ProductoTO producto : listaCarrito) {
             total += producto.getPrecio();
@@ -262,5 +266,15 @@ public class CarritoController implements Serializable {
     public void setCodigoPostal(int codigoPostal) {
         this.codigoPostal = codigoPostal;
     }
+
+    public int getSpinner() {
+        return spinner;
+    }
+
+    public void setSpinner(int spinner) {
+        this.spinner = spinner;
+    }
+    
+    
 
 }
