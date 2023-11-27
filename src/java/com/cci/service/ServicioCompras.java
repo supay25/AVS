@@ -20,10 +20,10 @@ public class ServicioCompras extends Servicio{
             stmt.setString(3, comprasTO.getCorreo());
             stmt.setString(4, comprasTO.getProvincia());
             stmt.setInt(5, comprasTO.getCodPostal());
-            stmt.setString(5, comprasTO.getNomTarjeta());
-            stmt.setInt(5, comprasTO.getNumTarjeta());
-            stmt.setInt(5, comprasTO.getCvv());
-            stmt.setInt(5, comprasTO.getTotal());
+            stmt.setString(6, comprasTO.getNomTarjeta());
+            stmt.setInt(7, comprasTO.getNumTarjeta());
+            stmt.setInt(8, comprasTO.getCvv());
+            stmt.setInt(9, comprasTO.getTotal());
             
             
             stmt.execute();

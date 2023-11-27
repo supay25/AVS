@@ -37,7 +37,6 @@ public class CarritoController implements Serializable {
     private String provincia;
     private String distrito;
     private int codigoPostal;
-    private int spinner;
 
     private List<ProductoTO> listaCarrito = new ArrayList<ProductoTO>();
     private ProductoTO selectedProducto;
@@ -70,11 +69,6 @@ public class CarritoController implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Producto del carrito eliminado"));
         System.out.println("No hay nada se supone" + listaCarrito);
 
-    }
-
-    public void SpinnerCantidad(){
-        
-        
     }
     
     public void redireccionar(String ruta) {
@@ -133,7 +127,7 @@ public class CarritoController implements Serializable {
     public double calcularTotalCarrito() {
         double total = 0.0;
         for (ProductoTO producto : listaCarrito) {
-            total += producto.getPrecio();
+            total += producto.getPrecio () * producto.getCantidad();
         }
         double total1= total * 0.13;
         double total2;
@@ -144,7 +138,7 @@ public class CarritoController implements Serializable {
     public double totalFinal(){
        double total = 0.0;
         for (ProductoTO producto : listaCarrito) {
-            total += producto.getPrecio();
+            total += producto.getPrecio() * producto.getCantidad();
         }
           
         return total;
@@ -266,15 +260,5 @@ public class CarritoController implements Serializable {
     public void setCodigoPostal(int codigoPostal) {
         this.codigoPostal = codigoPostal;
     }
-
-    public int getSpinner() {
-        return spinner;
-    }
-
-    public void setSpinner(int spinner) {
-        this.spinner = spinner;
-    }
     
-    
-
 }

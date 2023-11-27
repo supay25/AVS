@@ -26,13 +26,7 @@ public class ProductoTO implements Serializable{
         this.descripcion = descripcion;
         this.precio = precio;       
         this.cantidad = cantidad;
-    }
-
-    
-   
-    
-
-    
+    }  
 
     public int getId() {
         return id;
