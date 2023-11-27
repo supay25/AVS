@@ -16,8 +16,8 @@
                 transform: translate(-50%, -50%);
             }
         </style>
-        
-        
+
+
 
     </h:head>
 
@@ -56,40 +56,30 @@
                         <p:inputText value="#{carritoController.direccion}" placeholder="Direccion" />
 
                         <p:selectOneMenu id="option2" value="#{carritoController.provincia}">
-
-                            <f:selectItem itemLabel="Alajuela" itemValue="Option1"/>
-                            <f:selectItem itemLabel="San Jose" itemValue="Option2"/>
-                            <f:selectItem itemLabel="Heredia" itemValue="Option3"/>
-                            <f:selectItem itemLabel="Cartago" itemValue="Option4"/>
-                            <f:facet name="footer">
-                                <p:divider styleClass="mt-0" />
-                                <h:outputText value="4 options" style="font-weight:bold;"/>
-                            </f:facet>
+                            <f:selectItem itemLabel="Alajuela" itemValue="Alajuela"/>
+                            <f:selectItem itemLabel="San Jose" itemValue="San Jose"/>
+                            <f:selectItem itemLabel="Heredia" itemValue="Heredia"/>
+                            <f:selectItem itemLabel="Cartago" itemValue="Cartago"/>
                         </p:selectOneMenu>
 
 
                         <p:inputText value="#{carritoController.codigoPostal}" placeholder="Codigo Postal">
-                            <p:keyFilter regEx="/[1-9]+/" />
+
                         </p:inputText>
 
                         <p:selectOneMenu id="option" value="#{carritoController.metodoPago}">
-
-                            <f:selectItem itemLabel="Visa" itemValue="Option1"/>
-                            <f:selectItem itemLabel="MasterCard" itemValue="Option2"/>
-                            <f:selectItem itemLabel="American Express" itemValue="Option3"/>
-                            <f:facet name="footer">
-                                <p:divider styleClass="mt-0" />
-                                <h:outputText value="3 options" style="font-weight:bold;"/>
-                            </f:facet>
+                            <f:selectItem itemLabel="Visa" itemValue="Visa"/>
+                            <f:selectItem itemLabel="MasterCard" itemValue="MasterCard"/>
+                            <f:selectItem itemLabel="American Express" itemValue="American Express"/>
                         </p:selectOneMenu>
 
 
                         <p:inputText value="#{carritoController.nomTarjeta}" placeholder="Nombre de la tarjeta" />
-                        
+
                         <p:inputText value="#{carritoController.numTarjeta}" placeholder="Numero de la tarjeta">
-                            <p:keyFilter regEx="/[1-9]+/" />
+
                         </p:inputText>
-                        
+
                         <p:password value="#{carritoController.cvvTarjeta}" placeholder="CVV De la tarjeta" />
 
                     </p:panelGrid> 
@@ -107,12 +97,12 @@
                         <h:outputText value="#{carritoController.totalFinal()}" />
 
                     </p:panel>
-                    
-                    <p:commandButton value="Comprar" style="width: 100px; height: 50px; display: inline-block; margin-left: 380px; text-align: center">
-                        
+
+                    <p:commandButton value="Comprar" actionListener="#{carritoController.Compras()}" style="width: 100px; height: 50px; display: inline-block; margin-left: 380px; text-align: center">
+
                     </p:commandButton>
                 </div>
-           
+
 
             </div>
 

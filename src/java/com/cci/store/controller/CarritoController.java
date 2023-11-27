@@ -5,7 +5,9 @@
  */
 package com.cci.store.controller;
 
+import com.cci.service.ComprasTO;
 import com.cci.service.ProductoTO;
+import com.cci.service.ServicioCompras;
 import com.cci.service.ServicioProducto;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -145,7 +147,16 @@ public class CarritoController implements Serializable {
         
         
     }
-    
+      public void Compras(){
+            
+            double total = totalFinal();
+            
+            ComprasTO compra = new ComprasTO(this.direccion, this.metodoPago,this.correoCompra, this.provincia,this.codigoPostal, this.nomTarjeta, this.numTarjeta, this.cvvTarjeta, total);
+            ServicioCompras ser = new ServicioCompras();
+            
+            ser.Insertar(compra);
+        }
+
     
 
     //Getters and Setters

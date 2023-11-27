@@ -14,14 +14,15 @@ public class ComprasTO implements Serializable {
     private String nomTarjeta;
     private int numTarjeta;
     private int cvv;
-    private int total;
+    private double total;
+    
     
     
     //Constructor
     public ComprasTO() {
     }
 
-    public ComprasTO(String direccion, String metodoPago, String correo, String provincia, int codPostal, String nomTarjeta, int numTarjeta, int cvv, int total) {
+    public ComprasTO(String direccion, String metodoPago, String correo, String provincia, int codPostal, String nomTarjeta, int numTarjeta, int cvv, double total) {
         this.direccion = direccion;
         this.metodoPago = metodoPago;
         this.correo = correo;
@@ -99,11 +100,11 @@ public class ComprasTO implements Serializable {
         this.cvv = cvv;
     }
 
-    public int getTotal() {
+    public double getTotal() {
         return total;
     }
 
-    public void setTotal(int total) {
+    public void setTotal(double total) {
         this.total = total;
     }
     

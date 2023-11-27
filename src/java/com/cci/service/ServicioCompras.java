@@ -1,4 +1,4 @@
-
+    
 package com.cci.service;
 
 import java.sql.PreparedStatement;
@@ -15,6 +15,8 @@ public class ServicioCompras extends Servicio{
         
         try {
             PreparedStatement stmt = super.getConexion().prepareStatement("INSERT INTO compras (direccion, metodoPago, correo, provincia, codigoPostal, nomTarjeta, numTarjeta, cvv, total) VALUES (?,?,?,?,?,?,?,?,?)");
+            
+           
             stmt.setString(1, comprasTO.getDireccion());
             stmt.setString(2, comprasTO.getMetodoPago());
             stmt.setString(3, comprasTO.getCorreo());
@@ -23,7 +25,7 @@ public class ServicioCompras extends Servicio{
             stmt.setString(6, comprasTO.getNomTarjeta());
             stmt.setInt(7, comprasTO.getNumTarjeta());
             stmt.setInt(8, comprasTO.getCvv());
-            stmt.setInt(9, comprasTO.getTotal());
+            stmt.setDouble(9, comprasTO.getTotal());
             
             
             stmt.execute();
@@ -31,7 +33,7 @@ public class ServicioCompras extends Servicio{
             stmt.close();
             
         } catch (SQLException ex) {
-            System.out.println("Error al insertar usuario: " + ex.getMessage());
+            System.out.println("Error al insertar compra: " + ex.getMessage());
         }        
     }
     
@@ -53,4 +55,6 @@ public class ServicioCompras extends Servicio{
     
     
     
+    
 }//Fin
+
