@@ -72,7 +72,7 @@ public class CarritoController implements Serializable {
         System.out.println("No hay nada se supone" + listaCarrito);
 
     }
-    
+
     public void redireccionar(String ruta) {
 
         HttpServletRequest request;
@@ -96,68 +96,44 @@ public class CarritoController implements Serializable {
     }
 
     //-----------------------Métodos de la compra----------------------
-    public void realizarCompra() {
-        if (verificarNumTarjeta.length() == 16 && verificarNumTarjeta.matches("[0-9]+")) {
-            // La entrada es válida
-            numTarjeta = Integer.parseInt(verificarNumTarjeta);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Número de tarjeta válido"));
-            System.out.println("Número de tarjeta válido: " + numTarjeta);
-
-            if (verificarCvvTarjeta.length() == 3 && verificarCvvTarjeta.matches("[0-9]+")) {
-                cvvTarjeta = Integer.parseInt(verificarCvvTarjeta);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Número del cvv de la tarjeta válido"));
-                System.out.println("Número de tarjeta válido: " + numTarjeta);
-                if (nomTarjeta != null) {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Nombre de persona válido"));
-                    this.redireccionar("/faces/tienda.xhtml");
-                } else {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Complete el cuadro nombre"));
-                }
-
-            } else {
-
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Número del cvv de la tarjeta inválido"));
-                System.out.println("El número de tarjeta debe contener exactamente 16 números.");
-            }
-        } else {
-            // La entrada no es válida
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Número de tarjeta inválido"));
-            System.out.println("El número de tarjeta debe contener exactamente 16 números.");
-        }
-    }
-
     public double calcularTotalCarrito() {
         double total = 0.0;
         for (ProductoTO producto : listaCarrito) {
-            total += producto.getPrecio () * producto.getCantidad();
+            total += producto.getPrecio() * producto.getCantidad();
         }
-        double total1= total * 0.13;
+        double total1 = total * 0.13;
         double total2;
-        total2 = total - total1;        
+        total2 = total - total1;
         return total2;
     }
-    
-    public double totalFinal(){
-       double total = 0.0;
+
+    public double totalFinal() {
+        double total = 0.0;
         for (ProductoTO producto : listaCarrito) {
             total += producto.getPrecio() * producto.getCantidad();
         }
-          
+
         return total;
-        
-        
+
     }
-      public void Compras(){
-            
+
+    public void Compras() {
+        try {
+
             double total = totalFinal();
-            
-            ComprasTO compra = new ComprasTO(this.direccion, this.metodoPago,this.correoCompra, this.provincia,this.codigoPostal, this.nomTarjeta, this.numTarjeta, this.cvvTarjeta, total);
+
+            ComprasTO compra = new ComprasTO(this.direccion, this.metodoPago, this.correoCompra, this.provincia, this.codigoPostal, this.nomTarjeta, this.numTarjeta, this.cvvTarjeta, total);
             ServicioCompras ser = new ServicioCompras();
-            
+
             ser.Insertar(compra);
+            FacesContext.getCurrentInstance().addMessage("sticky-key", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Compra realizada", "Gracias por preferir a avs"));
+
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage("sticky-key", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Correo no vinculado", "Porfavor eliga un correo vinculado a avs"));
+
         }
 
-    
+    }
 
     //Getters and Setters
     public ProductoTO getSelectedProducto() {
@@ -271,5 +247,5 @@ public class CarritoController implements Serializable {
     public void setCodigoPostal(int codigoPostal) {
         this.codigoPostal = codigoPostal;
     }
-    
+
 }
