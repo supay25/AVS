@@ -68,25 +68,28 @@
                     </p:panel>
                     <p:panel header="Ultimas Compras" style="width: 50%; height: 400px; display: inline-block; margin-left: 60px; margin-top: 0px" >
 
-                        <p:dataTable var="producto" value="#{storeController.listaRetornoProducts}" scrollable="true" 
+                        <p:dataTable var="compras" value="#{storeController.ultimasCompras}" scrollable="true" 
                                      rows="10" scrollHeight="250">
 
                             <p:column headerText="Nombre">
-                                <h:outputText value="#{producto.nombre}" />
+                                <h:outputText value="#{compras.nomTarjeta}" />
                             </p:column>
-                            <p:column headerText="Cantidad">
-                                <h:outputText value="#{producto.descripcion}" />
+                            <p:column headerText="Total">
+                                <h:outputText value="#{compras.total}" />
                             </p:column>
-                            <p:column headerText="Precio">
-                                <h:outputText value="$#{producto.precio}" />
-                            </p:column>   
+                            <p:column headerText="Provincia">
+                                <h:outputText value="#{compras.provincia}" />
+                            </p:column>
+                            <p:column headerText="Correo Electronico">
+                                <h:outputText value="#{compras.correo}" />
+                            </p:column> 
 
                         </p:dataTable>
                     </p:panel>
                 </div>
                 <div style="margin-top: 40px;">
                     <p:panel id="drop" header="VENTAS TOTALES" style="width: 400px; height: 400px; display: inline-block; margin-left: 70px; text-align: center">
-                        <h:outputText value="click" />
+                        <h:outputText value="Total: $#{storeController.execute()}" />
 
                     </p:panel>
                     <p:panel id="clip" header="PRODUCTO MAS VENDIDO" style="width: 400px; height: 400px; display: inline-block; margin-left: 60px; text-align: center">

@@ -108,50 +108,57 @@
                 </div>
 
 
-                <div class="card crud demo">
-                    <p:dataTable var="producto" value="#{storeController.listaRetornoProducts}" rows="10"
-                                 paginator="true" paginatorPosition="bottom"
-                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                 currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
-                                 rowsPerPageTemplate="5,10,{ShowAll|'All'}">
+                <div class="card crud demo" style=" margin-left: 15%; margin-right: 15%; margin-top: 2%">
+                    <p:dataView var="product" value="#{storeController.listaRetornoProducts}"  rows="12"
+                                paginator="true"
+                                rowsPerPageTemplate="6,12"
+                                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                gridIcon="pi pi-th-large" listIcon="pi pi-bars">
 
 
-                        <p:column headerText="Nombre" filterBy="#{producto.nombre}" filterMatchMode="startsWith">
-                            <h:outputText value="#{producto.nombre}" />
-                        </p:column>
+                        <p:dataViewListItem>
+                            <div  style="display: flex; justify-content: flex-start">
 
-                        <p:column headerText="Descripción" filterBy="#{producto.descripcion}">
-                            <h:outputText value="#{producto.descripcion}" />
-                        </p:column>
+                                <div style="margin-bottom: 2%; margin-top: 2%; margin-left:2%">  
+                                    <p:graphicImage value="https://w7.pngwing.com/pngs/450/612/png-transparent-online-shopping-e-commerce-retail-business-store-text-retail-people-thumbnail.png"
+                                                    width="150" height="150"/>
+                                </div>  
+                                <div class="product-list-detail" style="width: 10%; margin-top: 2%; margin-left:2% ">
+                                    <div class="product-name" style="font-weight:bold;">#{product.nombre}</div>
+                                    <div class="product-description">#{product.descripcion}</div>
+                                    <h:outputText value="#{product.precio}" styleClass="product-price" style="font-weight:bold; font-size: larger">
+                                        <f:convertNumber currencySymbol="$" type="currency"/>
+                                    </h:outputText>
+                                </div>
+                                <div class="product-list-action" style="margin-top: 30px; margin-left: auto;">
+                                    <!-- Set margin-left to auto to push the button to the farthest point horizontally -->
 
-                        <p:column headerText="Precio" filterBy="#{producto.precio}" filterMatchMode="startsWith">
-                            <h:outputText value="$#{producto.precio}" />
-                        </p:column>
+                                    <p:commandButton class="ui-button-warning rounded-button"
+                                                     icon="pi pi-shopping-cart" actionListener="#{carritoController.agregarAlCarrito(product)}"
+                                                     update=":dialogs:manage-carrito-content"
+                                                     value="Agregar al Carrito"
+                                                     style="background-color: orange; color: white; display:inline-block; margin-left: -80%">
 
+                                        <p:resetInput target=":dialogs:manage-carrito-content" />
+                                    </p:commandButton>
+                                    <br/> <!-- Add a line break to move to the next line -->
+                                    <p:commandButton icon="pi pi-eye"
+                                                     update=":dialogsProduct:manage-product-content"
 
-                        <p:column headerText="Acciones">
+                                                     oncomplete="PF('manageProductDialog').show()"
+                                                     value="Ver Detalles"
+                                                     styleClass="edit-button rounded-button ui-button-success" process="@form"
+                                                     style="background-color: red; color: white; display:inline-block; margin-left: -67%; background-color: blue; color: white; margin-top: 5%">
+                                        <f:setPropertyActionListener value="#{product}" target="#{storeController.selectedProducto}" />
+                                        <p:resetInput target=":dialogsProduct:manage-product-content" />
+                                    </p:commandButton>
 
-                            <p:commandButton icon="pi pi-eye"
-                                             update=":dialogsProduct:manage-product-content"
-                                             style="background-color: blue; color: white;"
-                                             oncomplete="PF('manageProductDialog').show()"
-                                             styleClass="edit-button rounded-button ui-button-success" process="@form">
-                                <f:setPropertyActionListener value="#{producto}" target="#{storeController.selectedProducto}" />
-                                <p:resetInput target=":dialogsProduct:manage-product-content" />
-                            </p:commandButton>
+                                </div>
 
-                            <!--Botón de carrito -->
-                            <p:commandButton class="ui-button-warning rounded-button"
-                                             icon="pi pi-shopping-cart" actionListener="#{carritoController.agregarAlCarrito(producto)}"
-                                             update=":dialogs:manage-carrito-content">
+                            </div>
+                        </p:dataViewListItem>
 
-                                <p:resetInput target=":dialogs:manage-carrito-content" />
-                            </p:commandButton>
-
-
-                        </p:column>
-
-                    </p:dataTable>
+                    </p:dataView>
                 </div>
 
 
@@ -261,7 +268,7 @@
                     </p:outputPanel> 
                     <f:facet name="footer">
                         <p:commandButton value="Salir" icon="pi pi-times" onclick="PF('manageProductDialog').hide()"
-                                         class="ui-button-secondary" type="button" style="display: block; margin: 0 auto; background-color: red; color: white;" />
+                                         class="ui-button-secondary" type="button" style="display:inline-block; margin:  2; background-color: red; color: white;" />
 
                     </f:facet> 
                 </p:dialog>

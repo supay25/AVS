@@ -49,7 +49,9 @@ public class CarritoController implements Serializable {
     }
 
     public void agregarAlCarrito(ProductoTO prodTO) {
+        System.out.println( "Test " + prodTO.getNombre());
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Producto Agregado al Carrito"));
+        
         this.listaCarrito.add(prodTO);
 
     }

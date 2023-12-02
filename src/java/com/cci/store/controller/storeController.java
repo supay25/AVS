@@ -5,7 +5,9 @@
  */
 package com.cci.store.controller;
 
+import com.cci.service.ComprasTO;
 import com.cci.service.ProductoTO;
+import com.cci.service.ServicioCompras;
 import com.cci.service.ServicioProducto;
 import com.cci.service.ServicioTienda;
 import com.cci.service.TiendaTO;
@@ -49,7 +51,8 @@ public class storeController {
     ServicioTienda tienda = new ServicioTienda();
     private List<TiendaTO> listaRetorno = tienda.lista();
     private TiendaTO selectedUsuario = new TiendaTO();
-
+    ServicioCompras compra = new ServicioCompras();
+    private List<ComprasTO> ultimasCompras  =  compra.ventasTotales();
     int idProducto;
 
     //Constructor
@@ -185,6 +188,23 @@ public class storeController {
         System.out.println(" Titulo " + this.getNombre());
         return "My Web App - " + this.selectedUsuario.getNombre();
     }
+
+    public List<ComprasTO> getUltimasCompras() {
+        return ultimasCompras;
+    }
+
+    public void setUltimasCompras(List<ComprasTO> ultimasCompras) {
+        this.ultimasCompras = ultimasCompras;
+    }
+    
+    public double execute(){
+        
+        ServicioCompras compras =  new ServicioCompras();
+        
+        double total = compras.ventasGlobal();
+        return total;
+    }
+    
 
     
 

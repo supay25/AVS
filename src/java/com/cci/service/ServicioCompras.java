@@ -3,6 +3,8 @@ package com.cci.service;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
@@ -28,7 +30,7 @@ public class ServicioCompras extends Servicio {
                 stmt.setInt(7, comprasTO.getNumTarjeta());
                 stmt.setInt(8, comprasTO.getCvv());
                 stmt.setDouble(9, comprasTO.getTotal());
-               
+
                 stmt.execute();
 
                 stmt.close();
@@ -73,6 +75,68 @@ public class ServicioCompras extends Servicio {
         }
 
         return false;
+    }
+
+    public List<ComprasTO> ventasTotales() {
+
+        List<ComprasTO> listaRetorno = new ArrayList<ComprasTO>();
+
+        try {
+            System.out.println("Creating statement for Productos...");
+            PreparedStatement stmt1 = super.getConexion().prepareStatement("SELECT correo, total, nomTarjeta,provincia FROM avs.compras;");
+            ResultSet rs1 = stmt1.executeQuery();
+
+            while (rs1.next()) {
+                String correo = rs1.getString("correo");
+                double total = rs1.getDouble("total");
+                String nomTarjeta = rs1.getString("nomTarjeta");
+                String provincia = rs1.getString("provincia");
+
+                ComprasTO compra = new ComprasTO();
+                compra.setCorreo(correo);
+                compra.setTotal(total);
+                compra.setProvincia(provincia);
+                compra.setNomTarjeta(nomTarjeta);
+                listaRetorno.add(compra);
+
+                System.out.println("Added Producto: " + compra.getProvincia());
+                
+            }
+            // Close the Producto-related resources
+            rs1.close();
+            stmt1.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return listaRetorno;
+    }
+    
+     public double ventasGlobal() {
+         double ventasTotales = 0.0;
+        
+
+        try {
+            System.out.println("Creating statement for Productos...");
+            PreparedStatement stmt1 = super.getConexion().prepareStatement("SELECT  total FROM avs.compras;");
+            ResultSet rs1 = stmt1.executeQuery();
+
+            while (rs1.next()) {                
+                ventasTotales += rs1.getDouble("total");
+                
+                
+              
+                System.out.println("Added Producto: " + ventasTotales );
+                
+            }
+            // Close the Producto-related resources
+            rs1.close();
+            stmt1.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return ventasTotales;
     }
 
 }//Fin
