@@ -15,14 +15,14 @@ public class ComprasTO implements Serializable {
     private int numTarjeta;
     private int cvv;
     private double total;
-    
+    private String codigoCompra;
     
     
     //Constructor
     public ComprasTO() {
     }
 
-    public ComprasTO(String direccion, String metodoPago, String correo, String provincia, int codPostal, String nomTarjeta, int numTarjeta, int cvv, double total) {
+    public ComprasTO(String direccion, String metodoPago, String correo, String provincia, int codPostal, String nomTarjeta, int numTarjeta, int cvv, double total, String codigoCompra) {
         this.direccion = direccion;
         this.metodoPago = metodoPago;
         this.correo = correo;
@@ -32,6 +32,7 @@ public class ComprasTO implements Serializable {
         this.numTarjeta = numTarjeta;
         this.cvv = cvv;
         this.total = total;
+        this.codigoCompra = codigoCompra;
     }
     
     // Getters and Setters
@@ -107,6 +108,16 @@ public class ComprasTO implements Serializable {
     public void setTotal(double total) {
         this.total = total;
     }
+
+    public String getCodigoCompra() {
+        return codigoCompra;
+    }
+
+    public void setCodigoCompra(String codigoCompra) {
+        this.codigoCompra = codigoCompra;
+    }
+    
+    
     
     
 }

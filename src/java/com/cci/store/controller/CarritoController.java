@@ -12,9 +12,12 @@ import com.cci.service.ServicioProducto;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -24,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @ManagedBean(name = "carritoController")
 @SessionScoped
+@ViewScoped
 public class CarritoController implements Serializable {
 
     //Atributos
@@ -39,7 +43,15 @@ public class CarritoController implements Serializable {
     private String provincia;
     private String distrito;
     private int codigoPostal;
+    private String CodCompra;
 
+    
+    @PostConstruct
+    public void init() {
+    if (getCodCompra() == null) {
+        generarCodigoAleatorio();
+    }
+}
     private List<ProductoTO> listaCarrito = new ArrayList<ProductoTO>();
     private ProductoTO selectedProducto;
 
@@ -67,6 +79,19 @@ public class CarritoController implements Serializable {
         System.out.println("Aquí esta el producto del carrito" + listaCarrito);
 
     }
+    public void generarCodigoAleatorio() {
+    int longitud = 8;
+    String caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    StringBuilder codigo = new StringBuilder();
+
+    Random random = new Random();
+    for (int i = 0; i < longitud; i++) {
+        int indice = random.nextInt(caracteres.length());
+        codigo.append(caracteres.charAt(indice));
+    }
+
+    setCodCompra(codigo.toString());
+}
 
     public void deleteAllCarrito() {
         listaCarrito.clear();
@@ -124,12 +149,18 @@ public class CarritoController implements Serializable {
 
             double total = totalFinal();
 
-            ComprasTO compra = new ComprasTO(this.direccion, this.metodoPago, this.correoCompra, this.provincia, this.codigoPostal, this.nomTarjeta, this.numTarjeta, this.cvvTarjeta, total);
+            ComprasTO compra = new ComprasTO(this.direccion, this.metodoPago, this.correoCompra, this.provincia, this.codigoPostal, this.nomTarjeta, this.numTarjeta, this.cvvTarjeta, total, this.CodCompra);
             ServicioCompras ser = new ServicioCompras();
 
             ser.Insertar(compra);
             FacesContext.getCurrentInstance().addMessage("sticky-key", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Compra realizada", "Gracias por preferir a avs"));
-
+            int idEN = ser.verID(compra.getDireccion(), compra.getMetodoPago(), compra.getCorreo(), compra.getProvincia(), compra.getCodPostal(), compra.getNomTarjeta(), compra.getNumTarjeta(), compra.getCvv());
+            System.out.println(idEN);
+            
+            
+            
+            
+            
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage("sticky-key", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Correo no vinculado", "Porfavor eliga un correo vinculado a avs"));
 
@@ -249,5 +280,16 @@ public class CarritoController implements Serializable {
     public void setCodigoPostal(int codigoPostal) {
         this.codigoPostal = codigoPostal;
     }
+
+    public String getCodCompra() {
+        return CodCompra;
+    }
+
+    public void setCodCompra(String CodCompra) {
+        this.CodCompra = CodCompra;
+    }
+    
+    
+    
 
 }

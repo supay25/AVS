@@ -66,6 +66,7 @@
 
                     <p:panelGrid columns="2" style="width: 50%; height: 185px; display: inline-block; margin-left: 60px; margin-top: 0px">
 
+                        <h:outputText value="Código de Compra:  #{carritoController.codCompra}" />
 
                         <p:inputText value="#{carritoController.correoCompra}" placeholder="Correo electronico" />
                         <p:inputText value="#{carritoController.direccion}" placeholder="Direccion" />
@@ -113,7 +114,7 @@
 
                     </p:panel>
 
-                    <p:commandButton value="Comprar" actionListener="#{carritoController.Compras()}" style="width: 100px; height: 50px; display: inline-block; margin-left: 380px; text-align: center">
+                    <p:commandButton value="Comprar" actionListener="#{carritoController.Compras()}" style="width: 100px; height: 50px; display: inline-block; margin-left: 500px; text-align: center">
 
                     </p:commandButton>
                 </div>

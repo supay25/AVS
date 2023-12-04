@@ -19,7 +19,7 @@ public class ServicioCompras extends Servicio {
 
         try {
             if (existente(comprasTO.getCorreo())) {
-                PreparedStatement stmt = super.getConexion().prepareStatement("INSERT INTO compras (direccion, metodoPago, correo, provincia, codigoPostal, nomTarjeta, numTarjeta, cvv, total) VALUES (?,?,?,?,?,?,?,?,?)");
+                PreparedStatement stmt = super.getConexion().prepareStatement("INSERT INTO compras (direccion, metodoPago, correo, provincia, codigoPostal, nomTarjeta, numTarjeta, cvv, total, codigoCompra) VALUES (?,?,?,?,?,?,?,?,?,?)");
 
                 stmt.setString(1, comprasTO.getDireccion());
                 stmt.setString(2, comprasTO.getMetodoPago());
@@ -30,7 +30,7 @@ public class ServicioCompras extends Servicio {
                 stmt.setInt(7, comprasTO.getNumTarjeta());
                 stmt.setInt(8, comprasTO.getCvv());
                 stmt.setDouble(9, comprasTO.getTotal());
-
+                stmt.setString(10, comprasTO.getCodigoCompra());
                 stmt.execute();
 
                 stmt.close();
@@ -100,7 +100,7 @@ public class ServicioCompras extends Servicio {
                 listaRetorno.add(compra);
 
                 System.out.println("Added Producto: " + compra.getProvincia());
-                
+
             }
             // Close the Producto-related resources
             rs1.close();
@@ -111,23 +111,20 @@ public class ServicioCompras extends Servicio {
         }
         return listaRetorno;
     }
-    
-     public double ventasGlobal() {
-         double ventasTotales = 0.0;
-        
+
+    public double ventasGlobal() {
+        double ventasTotales = 0.0;
 
         try {
             System.out.println("Creating statement for Productos...");
             PreparedStatement stmt1 = super.getConexion().prepareStatement("SELECT  total FROM avs.compras;");
             ResultSet rs1 = stmt1.executeQuery();
 
-            while (rs1.next()) {                
+            while (rs1.next()) {
                 ventasTotales += rs1.getDouble("total");
-                
-                
-              
-                System.out.println("Added Producto: " + ventasTotales );
-                
+
+                System.out.println("Added Producto: " + ventasTotales);
+
             }
             // Close the Producto-related resources
             rs1.close();
@@ -137,6 +134,36 @@ public class ServicioCompras extends Servicio {
             ex.printStackTrace();
         }
         return ventasTotales;
+    }
+
+    public int verID(String direccion, String metodoP, String correo, String prov, int codP, String nomT, int numT, int cvv) {
+        int idCompras = -1; // Valor predeterminado si no se encuentra nada
+
+        try {
+            PreparedStatement stmt = super.getConexion().prepareStatement("SELECT idCompras FROM compras WHERE direccion = ? AND metodoPago = ? AND correo = ? AND provincia = ? AND codigoPostal = ? AND nomTarjeta = ? AND numTarjeta = ? AND cvv = ?");
+
+            stmt.setString(1, direccion);
+            stmt.setString(2, metodoP);
+            stmt.setString(3, correo);
+            stmt.setString(4, prov);
+            stmt.setInt(5, codP);
+            stmt.setString(6, nomT);
+            stmt.setInt(7, numT);
+            stmt.setInt(8, cvv);
+
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                idCompras = rs.getInt("idCompras");
+            }
+
+            rs.close();
+            stmt.close();
+        } catch (SQLException ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
+
+        return idCompras;
     }
 
 }//Fin
