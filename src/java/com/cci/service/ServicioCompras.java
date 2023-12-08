@@ -136,21 +136,14 @@ public class ServicioCompras extends Servicio {
         return ventasTotales;
     }
 
-    public int verID(String direccion, String metodoP, String correo, String prov, int codP, String nomT, int numT, int cvv) {
+    public int verID(String codigo) {
         int idCompras = -1; // Valor predeterminado si no se encuentra nada
 
         try {
-            PreparedStatement stmt = super.getConexion().prepareStatement("SELECT idCompras FROM compras WHERE direccion = ? AND metodoPago = ? AND correo = ? AND provincia = ? AND codigoPostal = ? AND nomTarjeta = ? AND numTarjeta = ? AND cvv = ?");
+            PreparedStatement stmt = super.getConexion().prepareStatement("SELECT idCompras FROM compras WHERE codigoCompra = ?");
 
-            stmt.setString(1, direccion);
-            stmt.setString(2, metodoP);
-            stmt.setString(3, correo);
-            stmt.setString(4, prov);
-            stmt.setInt(5, codP);
-            stmt.setString(6, nomT);
-            stmt.setInt(7, numT);
-            stmt.setInt(8, cvv);
-
+            stmt.setString(1, codigo);
+            
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {

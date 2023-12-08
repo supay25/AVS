@@ -8,6 +8,7 @@ package com.cci.store.controller;
 import com.cci.service.ComprasTO;
 import com.cci.service.ProductoTO;
 import com.cci.service.ServicioCompras;
+import com.cci.service.ServicioDetalleCompra;
 import com.cci.service.ServicioProducto;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -45,13 +46,12 @@ public class CarritoController implements Serializable {
     private int codigoPostal;
     private String CodCompra;
 
-    
     @PostConstruct
     public void init() {
-    if (getCodCompra() == null) {
-        generarCodigoAleatorio();
+        if (getCodCompra() == null) {
+            generarCodigoAleatorio();
+        }
     }
-}
     private List<ProductoTO> listaCarrito = new ArrayList<ProductoTO>();
     private ProductoTO selectedProducto;
 
@@ -61,13 +61,12 @@ public class CarritoController implements Serializable {
     }
 
     public void agregarAlCarrito(ProductoTO prodTO) {
-        System.out.println( "Test " + prodTO.getNombre());
+        System.out.println("Test " + prodTO.getNombre());
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Producto Agregado al Carrito"));
-        
 
         this.listaCarrito.add(prodTO);
         System.out.println(listaCarrito);
-        
+
     }
 
     public void redirigirCompra() {
@@ -81,19 +80,20 @@ public class CarritoController implements Serializable {
         System.out.println("Aquí esta el producto del carrito" + listaCarrito);
 
     }
+
     public void generarCodigoAleatorio() {
-    int longitud = 8;
-    String caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    StringBuilder codigo = new StringBuilder();
+        int longitud = 8;
+        String caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        StringBuilder codigo = new StringBuilder();
 
-    Random random = new Random();
-    for (int i = 0; i < longitud; i++) {
-        int indice = random.nextInt(caracteres.length());
-        codigo.append(caracteres.charAt(indice));
+        Random random = new Random();
+        for (int i = 0; i < longitud; i++) {
+            int indice = random.nextInt(caracteres.length());
+            codigo.append(caracteres.charAt(indice));
+        }
+
+        setCodCompra(codigo.toString());
     }
-
-    setCodCompra(codigo.toString());
-}
 
     public void deleteAllCarrito() {
         listaCarrito.clear();
@@ -156,13 +156,14 @@ public class CarritoController implements Serializable {
 
             ser.Insertar(compra);
             FacesContext.getCurrentInstance().addMessage("sticky-key", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Compra realizada", "Gracias por preferir a avs"));
-            int idEN = ser.verID(compra.getDireccion(), compra.getMetodoPago(), compra.getCorreo(), compra.getProvincia(), compra.getCodPostal(), compra.getNomTarjeta(), compra.getNumTarjeta(), compra.getCvv());
+            int idEN = ser.verID(compra.getCodigoCompra());
             System.out.println(idEN);
-            
-            
-            
-            
-            
+
+            for (ProductoTO producto : listaCarrito) {
+                ServicioDetalleCompra sdc = new ServicioDetalleCompra();
+                sdc.Insertar(idEN, producto.getNombre(), producto.getCantidad());
+            }
+
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage("sticky-key", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Correo no vinculado", "Porfavor eliga un correo vinculado a avs"));
 
@@ -290,8 +291,5 @@ public class CarritoController implements Serializable {
     public void setCodCompra(String CodCompra) {
         this.CodCompra = CodCompra;
     }
-    
-    
-    
 
 }
