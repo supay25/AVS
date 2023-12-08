@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @ManagedBean(name = "carritoController")
 @SessionScoped
-@ViewScoped
+
 public class CarritoController implements Serializable {
 
     //Atributos
@@ -64,8 +64,10 @@ public class CarritoController implements Serializable {
         System.out.println( "Test " + prodTO.getNombre());
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Producto Agregado al Carrito"));
         
-        this.listaCarrito.add(prodTO);
 
+        this.listaCarrito.add(prodTO);
+        System.out.println(listaCarrito);
+        
     }
 
     public void redirigirCompra() {
