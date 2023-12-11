@@ -62,6 +62,26 @@ public class ServicioUsuario extends Servicio {
         
     }
     
+    public void actualizar (UsuarioTO userTO){
+        
+        try {
+            PreparedStatement stmt = super.getConexion().prepareStatement("UPDATE usuario SET nombre=? , apellido=?, telefono = ?, Correo=? where id=?");
+
+                stmt.setString(1, userTO.getNombre());
+                stmt.setString(2, userTO.getApellido());
+                stmt.setInt(3, userTO.getTelefono());
+                stmt.setString(4, userTO.getCorreo());
+                stmt.setInt(5, userTO.getId());
+                stmt.execute();
+
+                stmt.close();
+            
+            
+        }catch(SQLException ex){
+           System.out.println("El error: " + ex);
+       }
+    }
+    
     public void eliminar(int id) {
 
         try {
