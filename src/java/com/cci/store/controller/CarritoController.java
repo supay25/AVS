@@ -21,6 +21,11 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 /**
  *
@@ -147,6 +152,15 @@ public class CarritoController implements Serializable {
         return total;
 
     }
+    
+    public double IVA (){
+        
+        double IVA = 0.0;
+       
+            IVA = totalFinal()- calcularTotalCarrito();
+            
+            return IVA;
+    }
 
     public void Compras() {
         try {
@@ -173,12 +187,50 @@ public class CarritoController implements Serializable {
                 
                 sdc.Insertar(idEN, producto.getNombre(), producto.getCantidad(),idTiendaRela );
             }
+            
+            this.redireccionar("/faces/FacturaElectronica.xhtml");
 
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage("sticky-key", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Correo no vinculado", "Porfavor eliga un correo vinculado a avs"));
 
         }
 
+    }
+    
+     public void descargar (){
+       
+        try {
+            
+            PDDocument documento = new PDDocument();
+            
+            PDPage pagina = new PDPage (PDRectangle.LETTER);
+            
+            documento.addPage(pagina);
+
+            PDPageContentStream contenido = new PDPageContentStream(documento, pagina);
+            
+            contenido.beginText();
+            
+            contenido.setFont(PDType1Font.TIMES_BOLD, 12);
+            
+            contenido.newLineAtOffset(20, pagina.getMediaBox().getHeight()-52);
+            
+            contenido.showText("Factura Electronica()");
+            
+            contenido.endText();
+            
+            contenido.close();
+            
+            documento.save("C:\\Nueva carpeta\\tester.pdf");
+            
+            
+            
+        } catch (Exception e) {
+            
+            System.out.println("Error" +e.getMessage().toString());
+            
+        }
+        
     }
 
     //Getters and Setters
