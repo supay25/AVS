@@ -8,7 +8,9 @@ package com.cci.service;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -183,6 +185,51 @@ public class ServicioUsuario extends Servicio {
 
     return null;
 }
+    
+    public List<UsuarioTO> demeUsuario(String correo) {
+
+        List<UsuarioTO> usuarioRetorno = new ArrayList<UsuarioTO>();
+
+        try {
+
+            PreparedStatement stmt = super.getConexion().prepareStatement("SELECT id, nombre, apellido, telefono, correo, contrasena, permiso FROM usuario WHERE correo = ?");
+            stmt.setString(1, correo);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                
+                // query que retorne la lista de la tarea
+                
+                int id = rs.getInt("id");
+
+                String nombre = rs.getString("nombre");
+                String apellido = rs.getString("apellido");
+                int telefono = rs.getInt("telefono");
+                String email = rs.getString("correo");
+                String contraseña = rs.getString("contrasena");
+                String permiso = rs.getString("permiso");
+
+                UsuarioTO userTO = new UsuarioTO(id, nombre, apellido, telefono, email, contraseña, permiso);
+                
+                userTO.setId(id);
+                userTO.setNombre(nombre);
+                userTO.setApellido(apellido);
+                userTO.setTelefono(telefono);
+                userTO.setCorreo(correo);
+                userTO.setContrasena(contraseña);
+                userTO.setPermiso(permiso);
+                usuarioRetorno.add(userTO);
+
+            }
+            rs.close();
+            stmt.close();
+            //super.getConexion().close();
+        } catch (SQLException ex) {
+            //System.out.println("Error al abrir Conexión: " + ex.getMessage());
+            ex.printStackTrace();
+        }
+        return usuarioRetorno;
+    }
     
 }
      
