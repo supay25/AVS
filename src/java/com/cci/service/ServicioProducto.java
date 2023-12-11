@@ -21,24 +21,22 @@ public class ServicioProducto extends Servicio {
 
     }
 
-
-   public void insertar(ProductoTO productoTO, int tienda) {
+    public void insertar(ProductoTO productoTO, int tienda) {
 
         try {
-            
-             if(productoExists(productoTO.getNombre())){
-           PreparedStatement stmt = super.getConexion().prepareStatement("UPDATE productos SET descripcion=? , precio=?, cantidad = ? where nombre=?");
 
-            
-            stmt.setString(1, productoTO.getDescripcion());
-            stmt.setInt(2, productoTO.getPrecio());
-            stmt.setInt(3, productoTO.getCantidad());
-            stmt.setString(4, productoTO.getNombre());
-            stmt.execute();
+            if (productoExists(productoTO.getNombre())) {
+                PreparedStatement stmt = super.getConexion().prepareStatement("UPDATE productos SET descripcion=? , precio=?, cantidad = ? where nombre=?");
 
-            stmt.close();
+                stmt.setString(1, productoTO.getDescripcion());
+                stmt.setInt(2, productoTO.getPrecio());
+                stmt.setInt(3, productoTO.getCantidad());
+                stmt.setString(4, productoTO.getNombre());
+                stmt.execute();
 
-           }else{
+                stmt.close();
+
+            } else {
 
                 PreparedStatement stmt = super.getConexion().prepareStatement("INSERT INTO productos(nombre, descripcion, precio,tienda,cantidad) VALUES (?,?,?,?,?)");
 
@@ -59,11 +57,11 @@ public class ServicioProducto extends Servicio {
 
     }
 
-   public boolean productoExists(String nombre) {
-         try {
+    public boolean productoExists(String nombre) {
+        try {
             PreparedStatement checkStmt = super.getConexion().prepareStatement("SELECT COUNT(*) FROM productos WHERE nombre = ?");
             checkStmt.setString(1, nombre);
-            
+
             ResultSet result = checkStmt.executeQuery();
             if (result.next()) {
                 int count = result.getInt(1);
@@ -87,4 +85,23 @@ public class ServicioProducto extends Servicio {
 
     }
 
+    public int obtenerIdProducto(ProductoTO productoTO) {
+        int idProducto = -1; // Valor por defecto si no se encuentra ningún ID
+
+        try {
+            PreparedStatement stmt = super.getConexion().prepareStatement("SELECT idproductos FROM productos WHERE nombre = ? LIMIT 1");
+            stmt.setString(1, productoTO.getNombre());
+            ResultSet resultSet = stmt.executeQuery();
+
+            if (resultSet.next()) {
+                idProducto = resultSet.getInt("idproductos");
+            }
+
+            stmt.close();
+        } catch (SQLException ex) {
+            System.out.println("Error al obtener el ID del producto: " + ex.getMessage());
+        }
+
+        return idProducto;
+    }
 }

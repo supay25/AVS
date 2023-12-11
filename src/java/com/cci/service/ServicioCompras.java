@@ -158,6 +158,13 @@ public class ServicioCompras extends Servicio {
 
         return idCompras;
     }
-
+    
+    
+    
+    
+    
+    
+    
+    
 }//Fin
 

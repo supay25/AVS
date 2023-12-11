@@ -62,8 +62,10 @@ public class CarritoController implements Serializable {
 
     public void agregarAlCarrito(ProductoTO prodTO) {
         System.out.println("Test " + prodTO.getNombre());
+        
+        
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Producto Agregado al Carrito"));
-
+        
         this.listaCarrito.add(prodTO);
         System.out.println(listaCarrito);
 
@@ -157,11 +159,19 @@ public class CarritoController implements Serializable {
             ser.Insertar(compra);
             FacesContext.getCurrentInstance().addMessage("sticky-key", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Compra realizada", "Gracias por preferir a avs"));
             int idEN = ser.verID(compra.getCodigoCompra());
-            System.out.println(idEN);
-
+            
+                
             for (ProductoTO producto : listaCarrito) {
                 ServicioDetalleCompra sdc = new ServicioDetalleCompra();
-                sdc.Insertar(idEN, producto.getNombre(), producto.getCantidad());
+                ServicioProducto sp = new ServicioProducto();
+                
+                int IdProducto =sp.obtenerIdProducto(producto);
+                int idTiendaRela = sdc.verTiendaRela(IdProducto);
+                
+                System.out.println(idTiendaRela);
+                System.out.println(IdProducto);
+                
+                sdc.Insertar(idEN, producto.getNombre(), producto.getCantidad(),idTiendaRela );
             }
 
         } catch (Exception ex) {
