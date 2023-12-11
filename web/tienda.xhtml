@@ -89,6 +89,10 @@
                     <p:menuitem value="Vista General"  icon="pi pi-fw pi-pencil" action="#{storeController.redireccionar('/faces/VistaGeneral.xhtml')}">
                         <f:param name="i" value="2"/>
                     </p:menuitem>
+                     <p:menuitem value="Ver Facturas"  icon="pi pi-fw pi-pencil" action="#{storeController.redireccionar('/faces/VerFacturas.xhtml')}">
+                        <f:param name="i" value="2"/>
+                    </p:menuitem>
+                    
                 </p:tabMenu>
 
                 <!-- Nuevo Producto -->
@@ -111,8 +115,7 @@
                                  paginator="true" paginatorPosition="both"
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
-                                 rowsPerPageTemplate="5,10,{ShowAll|'All'}"
-                                 style="margin-top: 40px; margin-left: 310px; width:1600px; ">
+                                 rowsPerPageTemplate="5,10,{ShowAll|'All'}">
 
                     <!-- Nombre de las columnas -->
                     <p:column headerText="Nombre" filterBy="#{producto.nombre}" filterMatchMode="startsWith">
