@@ -25,6 +25,7 @@ public class LoginController implements Serializable{
     private String nombre;
     private String apellido;
     private int telefono;
+    private int id;
     private String correo;
     private String clave;
     
@@ -111,13 +112,25 @@ public class LoginController implements Serializable{
     
     
     public void onRowEdit() {
+        ServicioUsuario servU = new ServicioUsuario();
+        servU.actualizar(usuarioRetorno.get(id));
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Usuario Editado"));
     }
 
     public void onRowCancel() {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Usuario Editado"));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("No se editó el usuario"));
     }
     
+    //Getters and setters
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getNombre() {
         return nombre;
     }
