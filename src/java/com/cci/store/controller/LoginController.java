@@ -16,6 +16,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import org.primefaces.PrimeFaces;
+import org.primefaces.event.RowEditEvent;
 
 @ManagedBean(name = "loginController")
 @SessionScoped
@@ -107,7 +108,16 @@ public class LoginController implements Serializable{
             FacesContext.getCurrentInstance().addMessage("sticky-key", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Token erroneo", "Token incorrecto"));
         }
     }
+    
+    
+    public void onRowEdit() {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Usuario Editado"));
+    }
 
+    public void onRowCancel() {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Usuario Editado"));
+    }
+    
     public String getNombre() {
         return nombre;
     }
