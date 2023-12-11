@@ -10,11 +10,14 @@ import com.cci.service.ProductoTO;
 import com.cci.service.ServicioCompras;
 import com.cci.service.ServicioProducto;
 import com.cci.service.ServicioTienda;
+import com.cci.service.ServicioUsuario;
 import com.cci.service.TiendaTO;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -52,7 +55,7 @@ public class storeController {
     private List<TiendaTO> listaRetorno = tienda.lista();
     private TiendaTO selectedUsuario = new TiendaTO();
     ServicioCompras compra = new ServicioCompras();
-    private List<ComprasTO> ultimasCompras  =  compra.ventasTotales();
+    private Set<ComprasTO> ultimasCompras;
     int idProducto;
     private List<ComprasTO> seguimientoCliente;
 
@@ -101,6 +104,7 @@ public class storeController {
         this.redireccionar("/faces/tienda.xhtml");
         this.idProducto = tienda.getIdl();
         System.out.println("ID tienda " + this.idProducto);
+        detalles();
 
     }
 
@@ -110,9 +114,17 @@ public class storeController {
         //this.listaCarrito = new ArrayList<ProductoTO>();
         this.redireccionar("/faces/Productos.xhtml");
         this.idProducto = tienda.getIdl();
+        
         System.out.println("ID tienda " + this.idProducto);
 
     }
+    public void detalles()  {
+        ServicioUsuario ser = new ServicioUsuario();
+       
+      ultimasCompras = ser.detalles(this.idProducto);
+       
+       
+   }
 
     public void openNewTienda() {
         this.selectedUsuario = new TiendaTO();
@@ -207,11 +219,11 @@ public class storeController {
         return "My Web App - " + this.selectedUsuario.getNombre();
     }
 
-    public List<ComprasTO> getUltimasCompras() {
+    public Set<ComprasTO> getUltimasCompras() {
         return ultimasCompras;
     }
 
-    public void setUltimasCompras(List<ComprasTO> ultimasCompras) {
+    public void setUltimasCompras(Set<ComprasTO> ultimasCompras) {
         this.ultimasCompras = ultimasCompras;
     }
     

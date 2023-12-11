@@ -8,6 +8,8 @@ package com.cci.service;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  *
@@ -110,6 +112,59 @@ public class ServicioUsuario extends Servicio {
        
        return false;
    } 
+     public  Set<ComprasTO>  detalles(int id) {
+        
+        Set<ComprasTO> perfil = new HashSet<>();
+
+        try {
+            System.out.println("Creating statement for Productos...");
+            PreparedStatement stmt1 = super.getConexion().prepareStatement("SELECT idCompra FROM avs.detalles WHERE idTiend = ?;");
+            stmt1.setInt(1, id);
+            
+            System.out.println("Id Tienda: " + id);
+            ResultSet rs1 = stmt1.executeQuery();
+            
+
+          
+            while (rs1.next()) {
+                int idCompra = rs1.getInt("idCompra"); 
+                
+                System.out.println("Creating statement for Productos...");
+                PreparedStatement stmt2 = super.getConexion().prepareStatement("SELECT correo, provincia,codigoCompra,total FROM avs.compras WHERE idCompras = ?;");
+                stmt2.setInt(1, idCompra);
+                System.out.println("ID: " + idCompra);
+                ResultSet rs2 = stmt2.executeQuery();
+
+                while (rs2.next()) {
+                    String correo = rs2.getString("correo");
+                    String provincia = rs2.getString("provincia");
+                    int total = rs2.getInt("total");
+                    String codigoCompra = rs2.getString("codigoCompra");
+                    ComprasTO prod = new ComprasTO();
+                    prod.setCorreo(correo);
+                    prod.setTotal(total);
+                    prod.setCodigoCompra(codigoCompra);
+                    prod.setProvincia(provincia);
+                    
+                    perfil.add(prod);
+
+                    System.out.println("Added Test: " + prod.getCorreo());
+                }
+                rs2.close();
+                stmt2.close();
+
+                
+            }                     
+            
+            rs1.close();
+            stmt1.close();
+       
+          
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return perfil;
+    }
     
     public String obtenerPermisoUsuario(String correo) {
     try {
