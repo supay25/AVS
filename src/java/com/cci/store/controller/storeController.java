@@ -54,6 +54,7 @@ public class storeController {
     ServicioCompras compra = new ServicioCompras();
     private List<ComprasTO> ultimasCompras  =  compra.ventasTotales();
     int idProducto;
+    private List<ComprasTO> seguimientoCliente;
 
     //Constructor
     public storeController() {
@@ -84,6 +85,13 @@ public class storeController {
         ServicioProducto servicioProducto = new ServicioProducto();
         servicioProducto.eliminar(this.selectedProducto);
         listaRetornoProducts.remove(selectedProducto);
+    }
+    public List<ComprasTO> comprasCliente(String correo){
+        
+        seguimientoCliente = compra.facturasSeguimiento(correo);
+        
+        return seguimientoCliente;
+        
     }
 
     public void openNewPage(TiendaTO tienda) {
@@ -124,6 +132,16 @@ public class storeController {
         return listaRetornoProducts;
     }
 
+    public List<ComprasTO> getSeguimientoCliente() {
+        return seguimientoCliente;
+    }
+
+    public void setSeguimientoCliente(List<ComprasTO> seguimientoCliente) {
+        this.seguimientoCliente = seguimientoCliente;
+    }
+
+    
+    
     public void setListaRetornoProducts(List<ProductoTO> listaRetornoProducts) {
         this.listaRetornoProducts = listaRetornoProducts;
     }

@@ -3,41 +3,89 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Lista de Compras</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f4f4f4;
+                color: #333;
+            }
+            .header {
+                text-align: center;
+                padding: 20px 0;
+                background-color: #007bff;
+                color: white;
+                margin-bottom: 20px;
+            }
+            .product-card {
+                margin: 0 auto;
+                max-width: 800px;
+                background-color: white;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                border-radius: 8px;
+                padding: 20px;
+            }
+            .product-item {
+                border-bottom: 1px solid #eee;
+                padding: 15px 0;
+                transition: all 0.3s ease;
+            }
+            .product-item:hover {
+                background-color: #f9f9f9;
+            }
+            .product-name {
+                font-size: 18px;
+                font-weight: bold;
+                margin-bottom: 5px;
+            }
+            .product-description {
+                margin-bottom: 5px;
+                color: #666;
+            }
+            .product-price {
+                font-size: 20px;
+                font-weight: bold;
+                color: #007bff;
+            }
+        </style>
     </h:head>
     <h:body>
-
-        <div class="centered-text">
-            <h1>Lista de Compras</h1>
+        <div class="header">
+            <h1>Lista de Compras de #{loginController.correo}</h1>
         </div>
+        <div class="product-card">
+            <h:form id="form">
+                <p:tabMenu activeIndex="#{param.i}">
+                    <p:menuitem value="Salir" icon="pi pi-fw pi-home" action="#{storeController.redireccionar('/faces/Productos.xhtml')}">
+                        <f:param name="i" value="0"/>
+                    </p:menuitem>
+                    
+                </p:tabMenu>  
 
+                <div class="product-list">
+                    <p:dataView var="compra" value="#{storeController.comprasCliente(loginController.correo)}" multiViewState="true" rows="12" gridIcon="pi pi-th-large" listIcon="pi pi-bars">
+                        <p:dataViewListItem>
+                            <div class="product-item">
+                                <div class="product-details">
+                                    <div class="product-name">Compra: #{compra.codigoCompra}</div>
+                                    
+                                    
+                                </div>
+                                <div class="product-price">
+                                    <h:outputText value="#{compra.total}" styleClass="product-price">
+                                        <f:convertNumber currencySymbol="$" type="currency"/>
+                                    </h:outputText>
+                                </div>                                   
+                            </div>
+                        </p:dataViewListItem>
+                    </p:dataView>
+                </div>
+            </h:form>
+        </div>
     </h:body>
-    <div class="product card">
-        <h:form id="form">
-            <p:commandButton value="Volver"  actionListener="#{carritoController.redireccionarLimpiaCarrito('/faces/Productos.xhtml')}"/>
-            <p:dataTable var="compra" value="#{storeController.listaRetornoProducts}" rows="10"
-                         paginator="true" paginatorPosition="bottom"
-                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                         currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
-                         rowsPerPageTemplate="5,10,{ShowAll|'All'}">
-
-                <!-- Nombre de las columnas -->
-                <p:column headerText="Nombre" filterBy="#{compra.nombre}" filterMatchMode="startsWith">
-                    <h:outputText value="" />
-                </p:column>
-                <p:column headerText="Descripcion">
-                    <h:outputText value="" />
-                </p:column>
-                <p:column headerText="Precio" filterBy="#{compra.precio}" filterMatchMode="startsWith">
-                    <h:outputText value="" />
-                </p:column>
-
-            </p:dataTable>
-        </h:form>
-
-    </div>
-
 </html>
+

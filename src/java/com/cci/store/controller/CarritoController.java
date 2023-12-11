@@ -21,11 +21,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.common.PDRectangle;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
+
 
 /**
  *
@@ -197,41 +193,7 @@ public class CarritoController implements Serializable {
 
     }
     
-     public void descargar (){
-       
-        try {
-            
-            PDDocument documento = new PDDocument();
-            
-            PDPage pagina = new PDPage (PDRectangle.LETTER);
-            
-            documento.addPage(pagina);
-
-            PDPageContentStream contenido = new PDPageContentStream(documento, pagina);
-            
-            contenido.beginText();
-            
-            contenido.setFont(PDType1Font.TIMES_BOLD, 12);
-            
-            contenido.newLineAtOffset(20, pagina.getMediaBox().getHeight()-52);
-            
-            contenido.showText("Factura Electronica()");
-            
-            contenido.endText();
-            
-            contenido.close();
-            
-            documento.save("C:\\Nueva carpeta\\tester.pdf");
-            
-            
-            
-        } catch (Exception e) {
-            
-            System.out.println("Error" +e.getMessage().toString());
-            
-        }
-        
-    }
+     
 
     //Getters and Setters
     public ProductoTO getSelectedProducto() {

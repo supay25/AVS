@@ -111,6 +111,44 @@ public class ServicioCompras extends Servicio {
         }
         return listaRetorno;
     }
+    
+    public List<ComprasTO> facturasSeguimiento(String cliente) {
+
+        List<ComprasTO> listaRetorno = new ArrayList<ComprasTO>();
+
+        try {
+            System.out.println("Creating statement for Productos...");
+            PreparedStatement stmt1 = super.getConexion().prepareStatement("SELECT correo, total, nomTarjeta,codigoCompra FROM avs.compras WHERE correo = ?;");
+            stmt1.setString(1, cliente);
+            ResultSet rs1 = stmt1.executeQuery();
+
+            while (rs1.next()) {
+                String correo = rs1.getString("correo");
+                double total = rs1.getDouble("total");
+                String nomTarjeta = rs1.getString("nomTarjeta");
+                
+                String codCompra = rs1.getString("codigoCompra");
+
+                ComprasTO compra = new ComprasTO();
+                compra.setCorreo(correo);
+                compra.setTotal(total);
+               
+                compra.setNomTarjeta(nomTarjeta);
+                compra.setCodigoCompra(codCompra);
+                listaRetorno.add(compra);
+
+               
+
+            }
+            // Close the Producto-related resources
+            rs1.close();
+            stmt1.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return listaRetorno;
+    }
 
     public double ventasGlobal() {
         double ventasTotales = 0.0;
