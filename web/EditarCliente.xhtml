@@ -14,6 +14,15 @@
         <h:form id="form">
             <p:growl id="msgs" showDetail="true"/>
 
+            <div class="card" >
+                <p:tabMenu activeIndex="#{param.i}" >
+                    <p:menuitem value="Salir" icon="pi pi-fw pi-home" action="#{storeController.redireccionar('/faces/MenuTiendas.xhtml')}">
+                        <f:param name="i" value="0"/>
+                    </p:menuitem>
+
+                </p:tabMenu>    
+            </div>
+
             <p:dataTable id="users1" var="user" value="#{loginController.usuarioRetorno}" editable="true"
                          style="margin-bottom:20px">
 
