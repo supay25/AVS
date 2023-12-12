@@ -65,6 +65,7 @@ public class storeController {
 
     //Constructor
     public storeController() {
+         
         
     }
 
@@ -126,7 +127,7 @@ public class storeController {
         this.listaRetornoProducts = ser.listaProducto(tienda.getIdl());
         //this.listaCarrito = new ArrayList<ProductoTO>();
         this.redireccionar("/faces/Productos.xhtml");
-        this.idProducto = tienda.getIdl();
+        this.idProducto = tienda.getIdl();     
         
         System.out.println("ID tienda " + this.idProducto);
 
@@ -151,6 +152,7 @@ public class storeController {
         } catch (Exception e) {
         }
     }
+    
 
     //Getters and setters
     public List<ProductoTO> getListaRetornoProducts() {

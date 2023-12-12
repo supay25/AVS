@@ -84,12 +84,9 @@
                     <p:menuitem value="Salir" icon="pi pi-fw pi-home" action="#{storeController.redireccionar('/faces/Menu.xhtml')}">
                         <f:param name="i" value="0"/>
                     </p:menuitem>
-                    <p:menuitem value="Ver Perfil" icon="pi pi-fw pi-calendar" action="#{storeController.openNewTienda}">
+                    <p:menuitem value="Ver Perfil" icon="pi pi-fw pi-calendar" action="#{loginController.redireccionarEditarUsuarios('/faces/EditarCliente.xhtml')}">
                         <f:param name="i" value="1"/>                      
                     </p:menuitem>
-
-
-
                 </p:tabMenu>
 
 

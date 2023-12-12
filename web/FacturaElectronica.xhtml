@@ -13,137 +13,90 @@ and open the template in the editor.
     <h:head>
         <title>Bienvenido</title>
         <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f4f4f4;
+            }
+
             .centered-text {
                 text-align: center;
-                position: absolute;
-                top: 10%;
-                left: 50%;
-                transform: translate(-50%, -50%);
+                margin-bottom: 3%;
             }
-        </style>
 
-        <style>
-            .centered-text2 {
-                text-align: left;
-                position: absolute;
-                top: 45%;
-                left: 50%;
-                transform: translate(-50%, -50%);
+            .card {
+                background-color: #fff;
+                border-radius: 8px;
+                box-shadow: 0 0 2%;
+                padding: 3%;
+                margin: 3% auto;
+                max-width: 40%;
             }
-        </style>
 
-        <style>
-            .centered-text3 {
-                text-align: left;
-                position: absolute;
-                top: 70%;
-                left: 55%;
-                transform: translate(-50%, -50%);
+            .invoice-label {
+                font-weight: bold;
             }
-        </style>
 
-        <style>
-            .centered-text4 {
-                text-align: left;
-                position: absolute;
-                top: 75%;
-                left: 56%;
-                transform: translate(-50%, -50%);
+            .invoice-section {
+                margin-top: 2%;
             }
-        </style>
 
-        <style>
-            .centered-text5 {
-                text-align: left;
-                position: absolute;
-                top: 80%;
-                left: 56%;
-                transform: translate(-50%, -50%);
+            .invoice-section div {
+                margin-bottom: 4%;
             }
-        </style>
 
-        <style>
-            .centered-text6 {
-                text-align: right;
-                position: absolute;
-                top: 10%;
-                left: 80%;
-                transform: translate(-50%, -50%);
+            .total-section {
+                margin-top: 4%;
+                font-size: 5vw;
             }
+            .table-section {
+            margin-top: 5%;
+            margin-bottom: 5%;
+        }
         </style>
-
-        <style>
-            .descargarBtn {
-                width: 100px;
-                height: -25px;
-                position: relative;
-                bottom: 0;
-                left:90%;
-                transform: translateX(-50%);
-            }
-        </style>
-
-        <style>
-            .centered-text7 {
-                text-align: left;
-                position: absolute;
-                top: 20%;
-                left: 10%;
-                transform: translate(-50%, -50%);
-            }
-        </style>
-        
-        <style>
-            .centered-text8 {
-                text-align: left;
-                position: absolute;
-                top: 30%;
-                left: 11%;
-                transform: translate(-50%, -50%);
-            }
-        </style>
-        
-        <style>
-            .centered-text9 {
-                text-align: left;
-                position: absolute;
-                top: 35%;
-                left: 6%;
-                transform: translate(-50%, -50%);
-            }
-        </style>
-        
-        <style>
-            .centered-text10 {
-                text-align: left;
-                position: absolute;
-                top: 40%;
-                left: 6%;
-                transform: translate(-50%, -50%);
-            }
-        </style>
-        
-        <style>
-            .centered-text11 {
-                text-align: left;
-                position: absolute;
-                top: 45%;
-                left: 10%;
-                transform: translate(-50%, -50%);
-            }
-        </style>
-
 
     </h:head>
 
     <h:body>
+        <h:form>
+            <p:tabMenu activeIndex="#{param.i}">
+                <p:menuitem value="Salir" icon="pi pi-fw pi-home" action="#{carritoController.redireccionarProductos('/faces/Productos.xhtml')}">
+                    <f:param name="i" value="0"/>
+                </p:menuitem>
+                <p:menuitem value="Ver Perfil" icon="pi pi-fw pi-calendar" action="#{loginController.redireccionarEditarUsuarios('/faces/EditarCliente.xhtml')}">
+                    <f:param name="i" value="1"/>                      
+                </p:menuitem>
+            </p:tabMenu>
+
+        </h:form>
+
         <div class="centered-text">
             <h1>FACTURA</h1>
         </div>
 
         <div class="product card">
             <h:form id="form">
-                <p:commandButton value="Volver"  actionListener="#{carritoController.redireccionar('/faces/Productos.xhtml')}"/> 
+                <div class="centered-text6">
+                    <div class="invoice-label">CODIGO DE COMPRA:<h:outputText value="#{carritoController.codCompra}" /></div>
+                </div>
+                <div class="centered-text7">
+                    <div class="invoice-label">DATOS DEL CLIENTE</div>
+                </div>
+
+                <div class="centered-text8">
+                    <div class="invoice-label">Correo Cliente: <h:outputText value="#{carritoController.correoCompra}" /> </div>
+                </div>
+
+                <div class="centered-text9">
+                    <div class="invoice-label">Direccion: <h:outputText value="#{carritoController.direccion}" /> </div>
+                </div>
+
+                <div class="centered-text10">
+                    <div class="invoice-label">Codigo Postal: <h:outputText value="#{carritoController.codigoPostal}" /> </div>
+                </div> 
+
+                <div class="table-section">
                 <p:dataTable var="producto" value="#{carritoController.listaCarrito}" 
                              rows="10" scrollHeight="250"
                              class="centered-text2">
@@ -158,13 +111,13 @@ and open the template in the editor.
                     <p:column headerText="Precio">
                         <h:outputText value="$#{producto.precio}" />
                     </p:column>
-
-
-
                 </p:dataTable>
+            </div>
 
+                <div class="centered-text11">
+                    <div class="invoice-label">Metodo de Pago utilizado: <h:outputText value="#{carritoController.metodoPago}" /> </div>
+                </div>
 
-                
 
 
                 <div class="centered-text3">
@@ -176,31 +129,13 @@ and open the template in the editor.
                 <div class="centered-text5">
                     <div class="invoice-label">TOTAL: <h:outputText value="#{carritoController.totalFinal()}$" /></div>
                 </div>
-                <div class="centered-text6">
-                    <div class="invoice-label">CODIGO DE COMPRA:<h:outputText value="#{carritoController.codCompra}" /></div>
-                </div>
 
-                <div class="centered-text7">
-                    <div class="invoice-label">DATOS DEL CLIENTE</div>
-                </div>
-                
-                <div class="centered-text8">
-                    <div class="invoice-label">Correo Cliente: <h:outputText value="#{carritoController.correoCompra}" /> </div>
-                </div>
-                
-                 <div class="centered-text9">
-                     <div class="invoice-label">Direccion: <h:outputText value="#{carritoController.direccion}" /> </div>
-                </div>
-                
-                <div class="centered-text10">
-                    <div class="invoice-label">Codigo Postal: <h:outputText value="#{carritoController.codigoPostal}" /> </div>
-                </div> 
-                
-                <div class="centered-text11">
-                    <div class="invoice-label">Metodo de Pago utilizado: <h:outputText value="#{carritoController.metodoPago}" /> </div>
-                </div> 
-                
-                
+
+
+
+
+
+
 
 
 

@@ -75,6 +75,7 @@ public class CarritoController implements Serializable {
     public void redirigirCompra() {
         System.out.println(this.listaCarrito);
         this.redireccionar("/faces/RealizarCompra.xhtml");
+        
     }
 
     public void deleteProductoCarrito() {
@@ -182,6 +183,7 @@ public class CarritoController implements Serializable {
                 System.out.println(IdProducto);
                 
                 sdc.Insertar(idEN, producto.getNombre(), producto.getCantidad(),idTiendaRela );
+               
             }
             
             this.redireccionar("/faces/FacturaElectronica.xhtml");
@@ -191,6 +193,15 @@ public class CarritoController implements Serializable {
 
         }
 
+    }
+    public void redireccionarProductos(String ruta) {
+         listaCarrito = new ArrayList<ProductoTO>();
+        HttpServletRequest request;
+        try {
+            request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+            FacesContext.getCurrentInstance().getExternalContext().redirect(request.getContextPath() + ruta);
+        } catch (Exception e) {
+        }
     }
     
      
