@@ -5,62 +5,44 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        
+
     </h:head>
-        <h:body>
+    <h:body>
 
 
-            <h:form id="form">
-                
-                <div class="card">
+       <div class="product card">
+        <h:form id="form">
+            <p:tabMenu activeIndex="#{param.i}" >
+                <p:menuitem value="Salir" icon="pi pi-fw pi-home" action="#{storeController.redireccionar('/faces/Productos.xhtml')}">
+                    <f:param name="i" value="0"/>
+                </p:menuitem>
+               
+            </p:tabMenu>  
+            
+            
+            <div style="margin: 0 20%;">
+                <p:dataView var="compra" value="#{storeController.verFacturasEspecificas()}" multiViewState="true" rows="12"                                  
+                            gridIcon="pi pi-th-large" listIcon="pi pi-bars" style="display: block">                           
 
-                    <p:tabMenu activeIndex="#{param.i}">
-                        <p:menuitem value="Salir" icon="pi pi-fw pi-home" action="#{storeController.redireccionar('/faces/tienda.xhtml')}">
-                            <f:param name="i" value="0"/>
-                        </p:menuitem>
-                        <p:menuitem value="Ver Perfil" icon="pi pi-fw pi-calendar" action="#{storeController.openNewTienda}">
-                            <f:param name="i" value="1"/>                      
-                        </p:menuitem>
+                    <p:dataViewListItem >
+
+                        <div style="display: flex; justify-content: space-between;">
 
 
+                            
+                            <div class="product-details" style="width: 30%">
+                                <div class="product-name">#{compra.nombreProducto}</div>
+                                <div class="product-description">#{compra.cantidad}</div>
+                              
+                           
+                            </div>
+                                                     
+                        </div>
+                    </p:dataViewListItem>
+                </p:dataView>
+            </div>
+        </h:form>
 
-                    </p:tabMenu>
-                </div>
-                <div class="card">
-                </div>
-
-                <p:growl id="messages" showDetail="true" />
-
-                    <p:dataTable var="tienda" value="#{storeController.listaRetorno}" rows="10"
-                                 paginator="true" paginatorPosition="bottom"
-                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                 currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
-                                 rowsPerPageTemplate="5,10,{ShowAll|'All'}">
-
-                    <p:column headerText="Nombre">
-                        <h:outputText value="#{tienda.nombre}" />
-                    </p:column>
-
-                    <p:column headerText="Descripcion">
-                        <h:outputText value="#{tienda.descripcion}" />
-                    </p:column>
-
-                    <p:column headerText="Categoria">
-                        <h:outputText value="#{tienda.categoria}" />
-                    </p:column>     
-                    <p:column headerText="Calificacion">
-                        <h:outputText value="#{tienda.calificacion}" />
-                    </p:column> 
-                    
-                        <f:facet name="paginatorTopLeft">
-                            <p:commandButton type="button" icon="pi pi-refresh"/>
-                        </f:facet>
-
-                        <f:facet name="paginatorBottomRight">
-                            <p:commandButton type="button" icon="pi pi-cloud-upload"/>
-                        </f:facet>
-
-                    </p:dataTable>
-                </h:form>
-            </h:body>
-        </html>
+    </div>
+    </h:body>
+</html>

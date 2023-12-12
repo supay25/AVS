@@ -6,8 +6,10 @@
 package com.cci.store.controller;
 
 import com.cci.service.ComprasTO;
+import com.cci.service.DetalleCompraTO;
 import com.cci.service.ProductoTO;
 import com.cci.service.ServicioCompras;
+import com.cci.service.ServicioDetalleCompra;
 import com.cci.service.ServicioProducto;
 import com.cci.service.ServicioTienda;
 import com.cci.service.ServicioUsuario;
@@ -55,9 +57,11 @@ public class storeController {
     private List<TiendaTO> listaRetorno = tienda.lista();
     private TiendaTO selectedUsuario = new TiendaTO();
     ServicioCompras compra = new ServicioCompras();
+    ServicioDetalleCompra sdc = new ServicioDetalleCompra();
     private Set<ComprasTO> ultimasCompras;
     int idProducto;
     private List<ComprasTO> seguimientoCliente;
+    private List<DetalleCompraTO> verFacturasEspe;
 
     //Constructor
     public storeController() {
@@ -96,6 +100,8 @@ public class storeController {
         return seguimientoCliente;
         
     }
+    
+  
 
     public void openNewPage(TiendaTO tienda) {
         ServicioTienda ser = new ServicioTienda();
@@ -106,6 +112,13 @@ public class storeController {
         System.out.println("ID tienda " + this.idProducto);
         detalles();
 
+    }
+      public List<DetalleCompraTO> verFacturasEspecificas(){
+        
+        verFacturasEspe = sdc.verProductosVendidos(idProducto);
+        
+        return verFacturasEspe;
+        
     }
 
     public void openNewPageCliente(TiendaTO tienda) {
@@ -150,6 +163,14 @@ public class storeController {
 
     public void setSeguimientoCliente(List<ComprasTO> seguimientoCliente) {
         this.seguimientoCliente = seguimientoCliente;
+    }
+
+    public List<DetalleCompraTO> getVerFacturasEspe() {
+        return verFacturasEspe;
+    }
+
+    public void setVerFacturasEspe(List<DetalleCompraTO> verFacturasEspe) {
+        this.verFacturasEspe = verFacturasEspe;
     }
 
     

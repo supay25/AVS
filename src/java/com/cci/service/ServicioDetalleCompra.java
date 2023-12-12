@@ -8,6 +8,8 @@ package com.cci.service;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
@@ -63,5 +65,83 @@ public class ServicioDetalleCompra extends Servicio {
         return idTienda;
     }
      
+      public List<DetalleCompraTO> verProductosVendidos(int idTienda) {
+
+        List<DetalleCompraTO> listaRetorno = new ArrayList<DetalleCompraTO>();
+
+        try {
+            System.out.println("Creating statement for Productos...");
+            PreparedStatement stmt1 = super.getConexion().prepareStatement("SELECT nombreProducto, cantidad FROM avs.detalles WHERE idTiend = ?;");
+            stmt1.setInt(1, idTienda);
+            ResultSet rs1 = stmt1.executeQuery();
+
+            while (rs1.next()) {
+                String nombreProducto = rs1.getString("nombreProducto");
+                int  cantidad = rs1.getInt("cantidad");
+                
+
+                DetalleCompraTO dt = new DetalleCompraTO();
+                dt.setNombreProducto(nombreProducto);
+                dt.setCantidad(cantidad);
+               
+                listaRetorno.add(dt);
+
+               
+
+            }
+            // Close the Producto-related resources
+            rs1.close();
+            stmt1.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return listaRetorno;
+    }
+      
+      public int verIDDetalle(String nombre) {
+        int idCompras = -1; // Valor predeterminado si no se encuentra nada
+
+        try {
+            PreparedStatement stmt = super.getConexion().prepareStatement("SELECT idDetalles FROM detalles WHERE nombreProducto = ?");
+
+            stmt.setString(1, nombre);
+            
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                idCompras = rs.getInt("idDetalles");
+            }
+
+            rs.close();
+            stmt.close();
+        } catch (SQLException ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
+
+        return idCompras;
+    }
+    public int verIDTienda(int idProducto) {
+        int idTienda = -1; // Valor predeterminado si no se encuentra nada
+
+        try {
+            PreparedStatement stmt = super.getConexion().prepareStatement("SELECT idTiend FROM detalles WHERE idDetalles = ?");
+
+            stmt.setInt(1, idProducto);
+            
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                idTienda = rs.getInt("idTiend");
+            }
+
+            rs.close();
+            stmt.close();
+        } catch (SQLException ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
+
+        return idTienda;
+    }
       
 }
