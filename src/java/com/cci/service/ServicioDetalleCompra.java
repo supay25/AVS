@@ -143,5 +143,40 @@ public class ServicioDetalleCompra extends Servicio {
 
         return idTienda;
     }
+    
+     public List<ComprasTO> VerTodasLasCompras() { 
+         List <ComprasTO> RetornarLista = new ArrayList<ComprasTO>();
+
+        try {
+            
+            PreparedStatement stmt = super.getConexion().prepareStatement("SELECT * FROM compras");
+            ResultSet rs = stmt.executeQuery();
+            
+            while (rs.next()) {
+                String codigoCompra = rs.getString("codigoCompra");
+                String nomTarjeta = rs.getString("nomTarjeta");
+                String correo = rs.getString("correo");
+                String MetodoPago = rs.getString("MetodoPago");
+                double total = rs.getDouble("total");
+
+                ComprasTO verCompras = new ComprasTO();
+                verCompras.setCodigoCompra(codigoCompra);
+                verCompras.setNomTarjeta(nomTarjeta);
+                verCompras.setCorreo(correo);
+                verCompras.setMetodoPago(MetodoPago);
+                verCompras.setTotal(total);
+                RetornarLista.add(verCompras);
+
+            }
+            
+            rs.close();
+            stmt.close();
+
+        }catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());    
+            
+        }
+        return RetornarLista;
+    }
       
 }

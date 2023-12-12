@@ -56,6 +56,11 @@ public class CarritoController implements Serializable {
     private List<ProductoTO> listaCarrito = new ArrayList<ProductoTO>();
     private ProductoTO selectedProducto;
     private ComprasTO selectdCompra;
+    
+    ServicioDetalleCompra VRL = new ServicioDetalleCompra();
+
+    
+    private List<ComprasTO> listaComprasTotales = new ArrayList<ComprasTO>();
 
     //Métodos
     //-------------Métodos del carrito-----------------
@@ -214,6 +219,17 @@ public class CarritoController implements Serializable {
         } catch (Exception e) {
         }
     }
+    
+    public List<ComprasTO> VerComprasTotalesDefinitivas(){
+        
+        listaComprasTotales = VRL.VerTodasLasCompras();
+        
+        return listaComprasTotales;
+        
+        
+        
+    } 
+    
     
      
 
