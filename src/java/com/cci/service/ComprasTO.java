@@ -9,7 +9,7 @@ public class ComprasTO implements Serializable {
     private String direccion;
     private String metodoPago;
     private String correo;
-    private String provincia;
+    private String estado;
     private int codPostal; 
     private String nomTarjeta;
     private int numTarjeta;
@@ -22,11 +22,11 @@ public class ComprasTO implements Serializable {
     public ComprasTO() {
     }
 
-    public ComprasTO(String direccion, String metodoPago, String correo, String provincia, int codPostal, String nomTarjeta, int numTarjeta, int cvv, double total, String codigoCompra) {
+    public ComprasTO(String direccion, String metodoPago, String correo, String estado, int codPostal, String nomTarjeta, int numTarjeta, int cvv, double total, String codigoCompra) {
         this.direccion = direccion;
         this.metodoPago = metodoPago;
         this.correo = correo;
-        this.provincia = provincia;
+        this.estado = estado;
         this.codPostal = codPostal;
         this.nomTarjeta = nomTarjeta;
         this.numTarjeta = numTarjeta;
@@ -62,11 +62,11 @@ public class ComprasTO implements Serializable {
     }
 
     public String getProvincia() {
-        return provincia;
+        return estado;
     }
 
-    public void setProvincia(String provincia) {
-        this.provincia = provincia;
+    public void setProvincia(String estado) {
+        this.estado = estado;
     }
 
     public int getCodPostal() {

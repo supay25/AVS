@@ -42,7 +42,7 @@ public class CarritoController implements Serializable {
     private String direccion;
     private String metodoPago;
     private String correoCompra;
-    private String provincia;
+    private String estado;
     private String distrito;
     private int codigoPostal;
     private String CodCompra;
@@ -55,6 +55,7 @@ public class CarritoController implements Serializable {
     }
     private List<ProductoTO> listaCarrito = new ArrayList<ProductoTO>();
     private ProductoTO selectedProducto;
+    private ComprasTO selectdCompra;
 
     //Métodos
     //-------------Métodos del carrito-----------------
@@ -164,7 +165,7 @@ public class CarritoController implements Serializable {
 
             double total = totalFinal();
 
-            ComprasTO compra = new ComprasTO(this.direccion, this.metodoPago, this.correoCompra, this.provincia, this.codigoPostal, this.nomTarjeta, this.numTarjeta, this.cvvTarjeta, total, this.CodCompra);
+            ComprasTO compra = new ComprasTO(this.direccion, this.metodoPago, this.correoCompra, this.estado, this.codigoPostal, this.nomTarjeta, this.numTarjeta, this.cvvTarjeta, total, this.CodCompra);
             ServicioCompras ser = new ServicioCompras();
 
             ser.Insertar(compra);
@@ -193,6 +194,16 @@ public class CarritoController implements Serializable {
 
         }
 
+    }
+    
+    public void ActualizarEstado(String codCOmpra){
+        
+     ServicioCompras sc = new ServicioCompras();
+     
+     
+     sc.marcarCompraComoAnulada(codCOmpra);
+     this.redireccionar("/faces/VerCompras.xhtml");
+        
     }
     public void redireccionarProductos(String ruta) {
          listaCarrito = new ArrayList<ProductoTO>();
@@ -296,11 +307,11 @@ public class CarritoController implements Serializable {
     }
 
     public String getProvincia() {
-        return provincia;
+        return estado;
     }
 
-    public void setProvincia(String provincia) {
-        this.provincia = provincia;
+    public void setProvincia(String estado) {
+        this.estado = estado;
     }
 
     public String getDistrito() {
@@ -326,5 +337,14 @@ public class CarritoController implements Serializable {
     public void setCodCompra(String CodCompra) {
         this.CodCompra = CodCompra;
     }
+
+    public ComprasTO getSelectdCompra() {
+        return selectdCompra;
+    }
+
+    public void setSelectdCompra(ComprasTO selectdCompra) {
+        this.selectdCompra = selectdCompra;
+    }
+    
 
 }

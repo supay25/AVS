@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -19,12 +20,12 @@ public class ServicioCompras extends Servicio {
 
         try {
             if (existente(comprasTO.getCorreo())) {
-                PreparedStatement stmt = super.getConexion().prepareStatement("INSERT INTO compras (direccion, metodoPago, correo, provincia, codigoPostal, nomTarjeta, numTarjeta, cvv, total, codigoCompra) VALUES (?,?,?,?,?,?,?,?,?,?)");
+                PreparedStatement stmt = super.getConexion().prepareStatement("INSERT INTO compras (direccion, metodoPago, correo, estado, codigoPostal, nomTarjeta, numTarjeta, cvv, total, codigoCompra) VALUES (?,?,?,?,?,?,?,?,?,?)");
 
                 stmt.setString(1, comprasTO.getDireccion());
                 stmt.setString(2, comprasTO.getMetodoPago());
                 stmt.setString(3, comprasTO.getCorreo());
-                stmt.setString(4, comprasTO.getProvincia());
+                stmt.setString(4, "Confirmada");
                 stmt.setInt(5, comprasTO.getCodPostal());
                 stmt.setString(6, comprasTO.getNomTarjeta());
                 stmt.setInt(7, comprasTO.getNumTarjeta());
@@ -77,20 +78,32 @@ public class ServicioCompras extends Servicio {
         return false;
     }
 
+    public void marcarCompraComoAnulada(String codCompra) {
+        try {
+            PreparedStatement stmt = super.getConexion().prepareStatement("UPDATE compras SET estado = ? WHERE codigoCompra = ?");
+            stmt.setString(1, "Anulada");
+            stmt.setString(2, codCompra);
+            stmt.executeUpdate();
+            stmt.close();
+        } catch (SQLException ex) {
+            System.out.println("Error al marcar la compra como Anulada: " + ex.getMessage());
+        }
+    }
+
     public List<ComprasTO> ventasTotales() {
 
         List<ComprasTO> listaRetorno = new ArrayList<ComprasTO>();
 
         try {
             System.out.println("Creating statement for Productos...");
-            PreparedStatement stmt1 = super.getConexion().prepareStatement("SELECT correo, total, nomTarjeta,provincia FROM avs.compras;");
+            PreparedStatement stmt1 = super.getConexion().prepareStatement("SELECT correo, total, nomTarjeta,estado FROM avs.compras;");
             ResultSet rs1 = stmt1.executeQuery();
 
             while (rs1.next()) {
                 String correo = rs1.getString("correo");
                 double total = rs1.getDouble("total");
                 String nomTarjeta = rs1.getString("nomTarjeta");
-                String provincia = rs1.getString("provincia");
+                String provincia = rs1.getString("estado");
 
                 ComprasTO compra = new ComprasTO();
                 compra.setCorreo(correo);
@@ -111,14 +124,14 @@ public class ServicioCompras extends Servicio {
         }
         return listaRetorno;
     }
-    
+
     public List<ComprasTO> facturasSeguimiento(String cliente) {
 
         List<ComprasTO> listaRetorno = new ArrayList<ComprasTO>();
 
         try {
             System.out.println("Creating statement for Productos...");
-            PreparedStatement stmt1 = super.getConexion().prepareStatement("SELECT correo, total, nomTarjeta,codigoCompra FROM avs.compras WHERE correo = ?;");
+            PreparedStatement stmt1 = super.getConexion().prepareStatement("SELECT correo, total, nomTarjeta,codigoCompra, numTarjeta, direccion, codigoPostal, estado FROM avs.compras WHERE correo = ?;");
             stmt1.setString(1, cliente);
             ResultSet rs1 = stmt1.executeQuery();
 
@@ -126,24 +139,28 @@ public class ServicioCompras extends Servicio {
                 String correo = rs1.getString("correo");
                 double total = rs1.getDouble("total");
                 String nomTarjeta = rs1.getString("nomTarjeta");
-                
+                String estado = rs1.getString("estado");
                 String codCompra = rs1.getString("codigoCompra");
+                int numTarjeta = rs1.getInt("numTarjeta");
+                String direccion = rs1.getString("direccion");
+                int codPostal = rs1.getInt("codigoPostal");
 
                 ComprasTO compra = new ComprasTO();
                 compra.setCorreo(correo);
                 compra.setTotal(total);
-               
+                compra.setCodPostal(codPostal);
+                compra.setDireccion(direccion);
+                compra.setNumTarjeta(numTarjeta);
                 compra.setNomTarjeta(nomTarjeta);
                 compra.setCodigoCompra(codCompra);
+                compra.setProvincia(estado);
                 listaRetorno.add(compra);
-
-               
 
             }
             // Close the Producto-related resources
             rs1.close();
             stmt1.close();
-
+            Collections.reverse(listaRetorno);
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -181,7 +198,7 @@ public class ServicioCompras extends Servicio {
             PreparedStatement stmt = super.getConexion().prepareStatement("SELECT idCompras FROM compras WHERE codigoCompra = ?");
 
             stmt.setString(1, codigo);
-            
+
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
@@ -196,13 +213,6 @@ public class ServicioCompras extends Servicio {
 
         return idCompras;
     }
-    
-    
-    
-    
-    
-    
-    
-    
+
 }//Fin
 

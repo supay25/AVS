@@ -7,6 +7,7 @@
     <h:head>
         <title>Lista de Compras</title>
         <style>
+            /* Estilos CSS */
             body {
                 font-family: Arial, sans-serif;
                 margin: 0;
@@ -30,26 +31,35 @@
                 padding: 20px;
             }
             .product-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
                 border-bottom: 1px solid #eee;
-                padding: 15px 0;
+                padding: 15px 20px;
                 transition: all 0.3s ease;
             }
             .product-item:hover {
                 background-color: #f9f9f9;
+            }
+            .product-details {
+                flex-grow: 1;
             }
             .product-name {
                 font-size: 18px;
                 font-weight: bold;
                 margin-bottom: 5px;
             }
-            .product-description {
-                margin-bottom: 5px;
-                color: #666;
-            }
             .product-price {
-                font-size: 20px;
-                font-weight: bold;
+                font-size: 16px;
                 color: #007bff;
+                margin-bottom: 8px;
+            }
+            .product-label {
+                font-weight: bold;
+                margin-right: 5px;
+            }
+            .product-actions {
+                margin-left: 20px;
             }
         </style>
     </h:head>
@@ -63,23 +73,45 @@
                     <p:menuitem value="Salir" icon="pi pi-fw pi-home" action="#{storeController.redireccionar('/faces/Productos.xhtml')}">
                         <f:param name="i" value="0"/>
                     </p:menuitem>
-                    
                 </p:tabMenu>  
-
                 <div class="product-list">
                     <p:dataView var="compra" value="#{storeController.comprasCliente(loginController.correo)}" multiViewState="true" rows="12" gridIcon="pi pi-th-large" listIcon="pi pi-bars">
                         <p:dataViewListItem>
                             <div class="product-item">
                                 <div class="product-details">
+                                    <!-- Detalles de la compra -->
                                     <div class="product-name">Compra: #{compra.codigoCompra}</div>
-                                    
-                                    
+                                    <div class="product-price">
+                                        <span class="product-label">Total:</span>
+                                        <h:outputText value="#{compra.total}">
+                                            <f:convertNumber currencySymbol="$" type="currency" />
+                                        </h:outputText>
+                                    </div>
+                                    <div class="product-price">
+                                        <span class="product-label">Código Postal:</span>
+                                        <h:outputText value="#{compra.codPostal}" />
+                                    </div>
+                                    <div class="product-price">
+                                        <span class="product-label">Dirección:</span>
+                                        <h:outputText value="#{compra.direccion}" />
+                                    </div>
+                                    <div class="product-price">
+                                        <span class="product-label">Número de Tarjeta:</span>
+                                        <h:outputText value="#{compra.numTarjeta}" />
+                                    </div>
+                                    <div class="product-price">
+                                        <span class="product-label">Estado de la compra:</span>
+                                        <h:outputText value="#{compra.provincia}" />
+                                    </div>
                                 </div>
-                                <div class="product-price">
-                                    <h:outputText value="#{compra.total}" styleClass="product-price">
-                                        <f:convertNumber currencySymbol="$" type="currency"/>
-                                    </h:outputText>
-                                </div>                                   
+                                <!-- Botón -->
+                                <div class="product-actions">
+                                    <p:commandButton value="Anular Compra" action="#{carritoController.ActualizarEstado(compra.codigoCompra)}">
+                                      
+                                    </p:commandButton>
+                                </div>
+
+
                             </div>
                         </p:dataViewListItem>
                     </p:dataView>
@@ -88,4 +120,3 @@
         </div>
     </h:body>
 </html>
-
