@@ -12,6 +12,8 @@ import java.io.Serializable;
  * @author Jose
  */
 public class ProductoTO implements Serializable{
+    
+    //Atributo
     private String nombre;
     private String descripcion;
     private int tienda;
@@ -19,6 +21,7 @@ public class ProductoTO implements Serializable{
     private int id;
     private int cantidad;
     
+    //Constructores
     public ProductoTO() {
     }
 
@@ -29,6 +32,7 @@ public class ProductoTO implements Serializable{
         this.cantidad = cantidad;
     }  
 
+    //Getters and Setters
     public int getId() {
         return id;
     }
@@ -44,9 +48,6 @@ public class ProductoTO implements Serializable{
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }
-    
-    
-    
     
     public String getNombre() {
         return nombre;
@@ -79,7 +80,6 @@ public class ProductoTO implements Serializable{
     public void setTienda(int tienda) {
         this.tienda = tienda;
     }
-
     
     @Override
     public String toString() {

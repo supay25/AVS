@@ -11,17 +11,19 @@ import java.io.Serializable;
  *
  * @author lizan
  */
-public class UsuarioTO implements Serializable{
-    
+public class UsuarioTO implements Serializable {
+
+    //atributos
     private int id;
+    private int telefono;
     private String nombre;
     private String apellido;
-    private int telefono;
     private String correo;
     private String contrasena;
     private String permiso;
     private String token;
 
+    //Constructores
     public UsuarioTO() {
     }
 
@@ -35,6 +37,7 @@ public class UsuarioTO implements Serializable{
         this.permiso = permiso;
     }
 
+    //Getters and Setters
     public int getId() {
         return id;
     }
@@ -98,7 +101,4 @@ public class UsuarioTO implements Serializable{
     public void setToken(String token) {
         this.token = token;
     }
-    
-    
-    
 }

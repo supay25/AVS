@@ -8,8 +8,7 @@ package com.cci.service;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+
 
 /**
  *
@@ -21,10 +20,9 @@ public class ServicioProducto extends Servicio {
 
     }
 
+    //Inserta los productos en la tienda correspondiente.
     public void insertar(ProductoTO productoTO, int tienda) {
-
         try {
-
             if (productoExists(productoTO.getNombre())) {
                 PreparedStatement stmt = super.getConexion().prepareStatement("UPDATE productos SET descripcion=? , precio=?, cantidad = ? where nombre=?");
 
@@ -57,6 +55,7 @@ public class ServicioProducto extends Servicio {
 
     }
 
+    //Muestra si hay un producto existente por el nombre
     public boolean productoExists(String nombre) {
         try {
             PreparedStatement checkStmt = super.getConexion().prepareStatement("SELECT COUNT(*) FROM productos WHERE nombre = ?");
@@ -73,6 +72,7 @@ public class ServicioProducto extends Servicio {
         return false;
     }
 
+    //Elimina un producto por el nombre
     public void eliminar(ProductoTO productoTO) {
         try {
             PreparedStatement stmt = super.getConexion().prepareStatement("DELETE FROM productos WHERE nombre = ?");
@@ -85,7 +85,7 @@ public class ServicioProducto extends Servicio {
 
     }
 
-    
+    //Elimina todos los productos de una tienda.
     public void eliminarProductoTienda(int idTienda){
         try {
             PreparedStatement stmt = super.getConexion().prepareStatement("DELETE FROM productos WHERE tienda = ?");
@@ -98,6 +98,7 @@ public class ServicioProducto extends Servicio {
         
     }
     
+    //Obtiene el id de los producos por medio del nombre
     public int obtenerIdProducto(ProductoTO productoTO) {
         int idProducto = -1; // Valor por defecto si no se encuentra ningún ID
 

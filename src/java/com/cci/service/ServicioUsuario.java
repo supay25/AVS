@@ -18,9 +18,9 @@ import java.util.Set;
  * @author lizan
  */
 public class ServicioUsuario extends Servicio {
-    
-    public void AgregarUsuario(UsuarioTO userTO){
-        
+
+    //Registra un nuevo usuario y le da el rol de cliente
+    public void AgregarUsuario(UsuarioTO userTO) {
         try {
             PreparedStatement stmt = super.getConexion().prepareStatement("INSERT INTO usuario (nombre, apellido, telefono, correo, contrasena, permiso) VALUES (?,?,?,?,?,?)");
             stmt.setString(1, userTO.getNombre());
@@ -28,21 +28,21 @@ public class ServicioUsuario extends Servicio {
             stmt.setInt(3, userTO.getTelefono());
             stmt.setString(4, userTO.getCorreo());
             stmt.setString(5, userTO.getContrasena());
-            
+
             stmt.setString(6, "Cliente");
             stmt.execute();
 
             stmt.close();
-            
+
         } catch (SQLException ex) {
             System.out.println("Error al insertar usuario: " + ex.getMessage());
         }
-        
+
     }
-    
-    
-    public void AgregarAdmin(UsuarioTO userTO){
-        
+
+    //Agrega un administrador y le da el rol de admin
+    public void AgregarAdmin(UsuarioTO userTO) {
+
         try {
             PreparedStatement stmt = super.getConexion().prepareStatement("INSERT INTO usuario (nombre, apellido, telefono, correo, contrasena, permiso) VALUES (?,?,?,?,?,?)");
             stmt.setString(1, userTO.getNombre());
@@ -50,107 +50,106 @@ public class ServicioUsuario extends Servicio {
             stmt.setInt(3, userTO.getTelefono());
             stmt.setString(4, userTO.getCorreo());
             stmt.setString(5, userTO.getContrasena());
-            
+
             stmt.setString(6, "Admin");
             stmt.execute();
 
             stmt.close();
-            
+
         } catch (SQLException ex) {
             System.out.println("Error al insertar usuario: " + ex.getMessage());
         }
-        
     }
-    
-    public void actualizar (UsuarioTO userTO){
-        
+
+    //Actualiza la información del cliente
+    public void actualizar(UsuarioTO userTO) {
+
         try {
             PreparedStatement stmt = super.getConexion().prepareStatement("UPDATE usuario SET nombre=? , apellido=?, telefono = ?, Correo=? where id=?");
 
-                stmt.setString(1, userTO.getNombre());
-                stmt.setString(2, userTO.getApellido());
-                stmt.setInt(3, userTO.getTelefono());
-                stmt.setString(4, userTO.getCorreo());
-                stmt.setInt(5, userTO.getId());
-                stmt.execute();
+            stmt.setString(1, userTO.getNombre());
+            stmt.setString(2, userTO.getApellido());
+            stmt.setInt(3, userTO.getTelefono());
+            stmt.setString(4, userTO.getCorreo());
+            stmt.setInt(5, userTO.getId());
+            stmt.execute();
 
-                stmt.close();
-            
-            
-        }catch(SQLException ex){
-           System.out.println("El error: " + ex);
-       }
+            stmt.close();
+        } catch (SQLException ex) {
+            System.out.println("El error: " + ex);
+        }
     }
-    
-    public void eliminar(int id) {
 
+    //Elimina un usuario
+    public void eliminar(int id) {
         try {
-            //super.conectarBBDD();
+
             PreparedStatement stmt = super.getConexion().prepareStatement("DELETE FROM avs WHERE ID=?");
             stmt.setInt(1, id);
             stmt.executeUpdate();
 
             stmt.close();
-            //super.getConexion().close();
 
         } catch (SQLException ex) {
             System.out.println("Error al eliminar usuario: " + ex.getMessage());
         }
     }
-     public boolean Ver(String correo, String clave) {
+
+    //Busca en la base de datos el correo y la clave para verificación.
+    public boolean Ver(String correo, String clave) {
         UsuarioTO c = null;
-        
-        try{
-           PreparedStatement stmt = super.getConexion().prepareStatement("SELECT COUNT(*) FROM usuario WHERE correo = ? and contrasena=? ");
-           stmt.setString(1, correo);
-           stmt.setString(2, clave);
-           ResultSet resultado = stmt.executeQuery();
-           if(resultado.next()){
-               int count = resultado.getInt(1);
-               return count >0;
-           }
-          
-       }catch (SQLException ex){
-           System.out.println("El error: " + ex);
-       }
-       
-       return false;
-   } 
-    
-     public boolean VerificarT(String token) {
-        
-        try{
-           PreparedStatement stmt = super.getConexion().prepareStatement("SELECT COUNT(*) FROM token WHERE token = ?");
-           stmt.setString(1, token);
-           ResultSet resultado = stmt.executeQuery();
-           if(resultado.next()){
-               int count = resultado.getInt(1);
-               return count >0;
-           }
-          
-       }catch (SQLException ex){
-           System.out.println("El error: " + ex);
-       }
-       
-       return false;
-   } 
-     public  Set<ComprasTO>  detalles(int id) {
-        
+
+        try {
+            PreparedStatement stmt = super.getConexion().prepareStatement("SELECT COUNT(*) FROM usuario WHERE correo = ? and contrasena=? ");
+            stmt.setString(1, correo);
+            stmt.setString(2, clave);
+            ResultSet resultado = stmt.executeQuery();
+            if (resultado.next()) {
+                int count = resultado.getInt(1);
+                return count > 0;
+            }
+        } catch (SQLException ex) {
+            System.out.println("El error: " + ex);
+        }
+
+        return false;
+    }
+
+    //Verifica el token para que el administrador se pueda registrar
+    public boolean VerificarT(String token) {
+
+        try {
+            PreparedStatement stmt = super.getConexion().prepareStatement("SELECT COUNT(*) FROM token WHERE token = ?");
+            stmt.setString(1, token);
+            ResultSet resultado = stmt.executeQuery();
+            if (resultado.next()) {
+                int count = resultado.getInt(1);
+                return count > 0;
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("El error: " + ex);
+        }
+
+        return false;
+    }
+
+    //Hace una lista con el detalle de compra del usuario.
+    public Set<ComprasTO> detalles(int id) {
+
         Set<ComprasTO> perfil = new HashSet<>();
 
         try {
             System.out.println("Creating statement for Productos...");
             PreparedStatement stmt1 = super.getConexion().prepareStatement("SELECT idCompra FROM avs.detalles WHERE idTiend = ?;");
             stmt1.setInt(1, id);
-            
+
             System.out.println("Id Tienda: " + id);
             ResultSet rs1 = stmt1.executeQuery();
-            
 
-          
             while (rs1.next()) {
-                int idCompra = rs1.getInt("idCompra"); 
-                
+                int idCompra = rs1.getInt("idCompra");
+
                 System.out.println("Creating statement for Productos...");
                 PreparedStatement stmt2 = super.getConexion().prepareStatement("SELECT correo, provincia,codigoCompra,total FROM avs.compras WHERE idCompras = ?;");
                 stmt2.setInt(1, idCompra);
@@ -167,45 +166,42 @@ public class ServicioUsuario extends Servicio {
                     prod.setTotal(total);
                     prod.setCodigoCompra(codigoCompra);
                     prod.setProvincia(provincia);
-                    
+
                     perfil.add(prod);
 
                     System.out.println("Added Test: " + prod.getCorreo());
                 }
                 rs2.close();
                 stmt2.close();
-
-                
-            }                     
-            
+            }
             rs1.close();
             stmt1.close();
-       
-          
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
         return perfil;
     }
-    
-    public String obtenerPermisoUsuario(String correo) {
-    try {
-        PreparedStatement stmt = super.getConexion().prepareStatement("SELECT permiso FROM usuario WHERE correo = ?");
-        stmt.setString(1, correo);
-        ResultSet resultado = stmt.executeQuery();
 
-        if (resultado.next()) {
-            return resultado.getString("permiso");
+    //Verifica si el usuario es un cliente o un administrador.
+    public String obtenerPermisoUsuario(String correo) {
+        try {
+            PreparedStatement stmt = super.getConexion().prepareStatement("SELECT permiso FROM usuario WHERE correo = ?");
+            stmt.setString(1, correo);
+            ResultSet resultado = stmt.executeQuery();
+
+            if (resultado.next()) {
+                return resultado.getString("permiso");
+            }
+
+            stmt.close();
+        } catch (SQLException ex) {
+            System.out.println("Error al obtener permiso del usuario: " + ex.getMessage());
         }
 
-        stmt.close();
-    } catch (SQLException ex) {
-        System.out.println("Error al obtener permiso del usuario: " + ex.getMessage());
+        return null;
     }
 
-    return null;
-}
-    
+    // Da una lista de usuarios.
     public List<UsuarioTO> demeUsuario(String correo) {
 
         List<UsuarioTO> usuarioRetorno = new ArrayList<UsuarioTO>();
@@ -217,9 +213,8 @@ public class ServicioUsuario extends Servicio {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                
+
                 // query que retorne la lista de la tarea
-                
                 int id = rs.getInt("id");
 
                 String nombre = rs.getString("nombre");
@@ -230,7 +225,7 @@ public class ServicioUsuario extends Servicio {
                 String permiso = rs.getString("permiso");
 
                 UsuarioTO userTO = new UsuarioTO(id, nombre, apellido, telefono, email, contraseña, permiso);
-                
+
                 userTO.setId(id);
                 userTO.setNombre(nombre);
                 userTO.setApellido(apellido);
@@ -243,15 +238,11 @@ public class ServicioUsuario extends Servicio {
             }
             rs.close();
             stmt.close();
-            //super.getConexion().close();
         } catch (SQLException ex) {
-            //System.out.println("Error al abrir Conexión: " + ex.getMessage());
+            System.out.println("Error al abrir Conexión: " + ex.getMessage());
             ex.printStackTrace();
         }
         return usuarioRetorno;
     }
-    
+
 }
-     
-     
-     

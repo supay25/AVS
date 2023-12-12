@@ -15,7 +15,7 @@ import javax.faces.context.FacesContext;
  */
 public class ServicioCompras extends Servicio {
 
-    // Es para insertar
+    // Es para insertar Compras
     public void Insertar(ComprasTO comprasTO) {
 
         try {
@@ -43,7 +43,8 @@ public class ServicioCompras extends Servicio {
             System.out.println("Error al insertar compra: " + ex.getMessage());
         }
     }
-
+    
+    //Elimina las compras por el id.
     public void eliminar(int id) {
 
         try {
@@ -60,6 +61,7 @@ public class ServicioCompras extends Servicio {
         }
     }
 
+    // Es para encontrar compras existentes por el correo.
     private boolean existente(String correo) {
 
         try {
@@ -78,6 +80,7 @@ public class ServicioCompras extends Servicio {
         return false;
     }
 
+    // Cambia el estado de la compra a anulada.
     public void marcarCompraComoAnulada(String codCompra) {
         try {
             PreparedStatement stmt = super.getConexion().prepareStatement("UPDATE compras SET estado = ? WHERE codigoCompra = ?");
@@ -90,6 +93,7 @@ public class ServicioCompras extends Servicio {
         }
     }
 
+    // Lista que retorna todas las ventas
     public List<ComprasTO> ventasTotales() {
 
         List<ComprasTO> listaRetorno = new ArrayList<ComprasTO>();
@@ -125,6 +129,7 @@ public class ServicioCompras extends Servicio {
         return listaRetorno;
     }
 
+    //Hace el seguimiento de factura.
     public List<ComprasTO> facturasSeguimiento(String cliente) {
 
         List<ComprasTO> listaRetorno = new ArrayList<ComprasTO>();
@@ -167,6 +172,7 @@ public class ServicioCompras extends Servicio {
         return listaRetorno;
     }
 
+    //Se ven las ventas globales de todas las tiendas -- Admin.
     public double ventasGlobal() {
         double ventasTotales = 0.0;
 
@@ -191,6 +197,7 @@ public class ServicioCompras extends Servicio {
         return ventasTotales;
     }
 
+    //Busca el id de las compras por medio del codigo de la factura.
     public int verID(String codigo) {
         int idCompras = -1; // Valor predeterminado si no se encuentra nada
 

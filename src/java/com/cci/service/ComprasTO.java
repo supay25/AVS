@@ -9,13 +9,13 @@ public class ComprasTO implements Serializable {
     private String direccion;
     private String metodoPago;
     private String correo;
-    private String estado;
-    private int codPostal; 
+    private String estado; 
     private String nomTarjeta;
+    private String codigoCompra;
+    private int codPostal;
     private int numTarjeta;
     private int cvv;
     private double total;
-    private String codigoCompra;
     
     
     //Constructor

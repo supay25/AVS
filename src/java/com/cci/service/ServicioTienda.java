@@ -5,7 +5,6 @@
  */
 package com.cci.service;
 
-import com.sun.javafx.runtime.SystemProperties;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,8 +19,8 @@ import javax.faces.context.FacesContext;
  */
 public class ServicioTienda extends Servicio {
 
+    //Inserta una tienda
     public void insertar(TiendaTO userTO) {
-
         try {
             if (tiendaExists(userTO.getNombre())) {
                 //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error al insertar usuario", "Hubo un error al insertar el usuario"));
@@ -57,6 +56,7 @@ public class ServicioTienda extends Servicio {
         }
     }
 
+    //Revisa si ya hay una tienda existente por el nombre
     public boolean tiendaExists(String nombreTienda) {
         try {
             PreparedStatement checkStmt = super.getConexion().prepareStatement("SELECT COUNT(*) FROM tienda WHERE nombre = ?");
@@ -73,6 +73,7 @@ public class ServicioTienda extends Servicio {
         return false;
     }
 
+    //Elimina una tienda
     public void eliminarTienda(TiendaTO tiendaTO) {
 
         try {
@@ -86,6 +87,7 @@ public class ServicioTienda extends Servicio {
 
     }
 
+    //Muestra la lista de las tiendas y de una vez divide los productos en las respectivas tiendas
     public List<TiendaTO> lista() {
         List<TiendaTO> listaRetorno = new ArrayList<TiendaTO>();
 
@@ -134,14 +136,11 @@ public class ServicioTienda extends Servicio {
                     for (ProductoTO y : x.getListaProductos()) {
                         System.out.println(y.getNombre());
                     }
-
                 }
                 // Close the Producto-related resources
                 rs1.close();
                 stmt1.close();
-
             }
-
             // Close the Tienda-related resources
             rs.close();
             stmt.close();
@@ -151,6 +150,7 @@ public class ServicioTienda extends Servicio {
         return listaRetorno;
     }
 
+    //MUestra la lista de los productos.
     public List<ProductoTO> listaProducto(int id) {
         List<ProductoTO> listaRetorno = new ArrayList<ProductoTO>();
 

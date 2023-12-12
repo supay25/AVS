@@ -18,10 +18,8 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
-
 
 /**
  *
@@ -34,8 +32,9 @@ public class CarritoController implements Serializable {
 
     //Atributos
     private int numTarjeta;
-    private String verificarNumTarjeta;
     private int cvvTarjeta;
+    private int codigoPostal;
+    private String verificarNumTarjeta;
     private String verificarCvvTarjeta;
     private String nombreTarjeta;
     private String nomTarjeta;
@@ -44,8 +43,18 @@ public class CarritoController implements Serializable {
     private String correoCompra;
     private String estado;
     private String distrito;
-    private int codigoPostal;
     private String CodCompra;
+    private ProductoTO selectedProducto;
+    private ComprasTO selectdCompra;
+    private List<ProductoTO> listaCarrito = new ArrayList<ProductoTO>();
+    private List<ComprasTO> listaComprasTotales = new ArrayList<ComprasTO>();
+
+    //Constructor
+    public CarritoController() {
+    }
+
+    //Métodos
+    ServicioDetalleCompra VRL = new ServicioDetalleCompra();
 
     @PostConstruct
     public void init() {
@@ -53,26 +62,12 @@ public class CarritoController implements Serializable {
             generarCodigoAleatorio();
         }
     }
-    private List<ProductoTO> listaCarrito = new ArrayList<ProductoTO>();
-    private ProductoTO selectedProducto;
-    private ComprasTO selectdCompra;
-    
-    ServicioDetalleCompra VRL = new ServicioDetalleCompra();
-
-    
-    private List<ComprasTO> listaComprasTotales = new ArrayList<ComprasTO>();
-
-    //Métodos
     //-------------Métodos del carrito-----------------
-    public CarritoController() {
-    }
 
+    //Agregar los productos al carrito
     public void agregarAlCarrito(ProductoTO prodTO) {
         System.out.println("Test " + prodTO.getNombre());
-        
-        
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Producto Agregado al Carrito"));
-        
         this.listaCarrito.add(prodTO);
         System.out.println(listaCarrito);
 
@@ -81,16 +76,17 @@ public class CarritoController implements Serializable {
     public void redirigirCompra() {
         System.out.println(this.listaCarrito);
         this.redireccionar("/faces/RealizarCompra.xhtml");
-        
+
     }
 
+    //Elimina los productos de un carrito
     public void deleteProductoCarrito() {
         listaCarrito.remove(this.selectedProducto);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Producto del carrito eliminado"));
         System.out.println("Aquí esta el producto del carrito" + listaCarrito);
-
     }
 
+    //Genera un codigo al azar para la factura
     public void generarCodigoAleatorio() {
         int longitud = 8;
         String caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -101,10 +97,10 @@ public class CarritoController implements Serializable {
             int indice = random.nextInt(caracteres.length());
             codigo.append(caracteres.charAt(indice));
         }
-
         setCodCompra(codigo.toString());
     }
 
+    //Elimina todos los productos del carrito
     public void deleteAllCarrito() {
         listaCarrito.clear();
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Producto del carrito eliminado"));
@@ -112,6 +108,7 @@ public class CarritoController implements Serializable {
 
     }
 
+    //Redirecciona a otra página
     public void redireccionar(String ruta) {
 
         HttpServletRequest request;
@@ -122,6 +119,7 @@ public class CarritoController implements Serializable {
         }
     }
 
+    //Al redireccionar elimina todos los productos del carrito
     public void redireccionarLimpiaCarrito(String ruta) {
 
         listaCarrito.clear();
@@ -135,6 +133,7 @@ public class CarritoController implements Serializable {
     }
 
     //-----------------------Métodos de la compra----------------------
+    // Calcula el precio total de todos los productos agregados al carrito
     public double calcularTotalCarrito() {
         double total = 0.0;
         for (ProductoTO producto : listaCarrito) {
@@ -146,28 +145,25 @@ public class CarritoController implements Serializable {
         return total2;
     }
 
+    // Multiplica la cantidad de productos por el precio para sacar el total
     public double totalFinal() {
         double total = 0.0;
         for (ProductoTO producto : listaCarrito) {
             total += producto.getPrecio() * producto.getCantidad();
         }
-
         return total;
-
     }
-    
-    public double IVA (){
-        
+
+    //Retorna el IVA
+    public double IVA() {
         double IVA = 0.0;
-       
-            IVA = totalFinal()- calcularTotalCarrito();
-            
-            return IVA;
+        IVA = totalFinal() - calcularTotalCarrito();
+        return IVA;
     }
 
+    // Realiza la compra 
     public void Compras() {
         try {
-
             double total = totalFinal();
 
             ComprasTO compra = new ComprasTO(this.direccion, this.metodoPago, this.correoCompra, this.estado, this.codigoPostal, this.nomTarjeta, this.numTarjeta, this.cvvTarjeta, total, this.CodCompra);
@@ -176,42 +172,36 @@ public class CarritoController implements Serializable {
             ser.Insertar(compra);
             FacesContext.getCurrentInstance().addMessage("sticky-key", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Compra realizada", "Gracias por preferir a avs"));
             int idEN = ser.verID(compra.getCodigoCompra());
-            
-                
+
             for (ProductoTO producto : listaCarrito) {
                 ServicioDetalleCompra sdc = new ServicioDetalleCompra();
                 ServicioProducto sp = new ServicioProducto();
-                
-                int IdProducto =sp.obtenerIdProducto(producto);
+
+                int IdProducto = sp.obtenerIdProducto(producto);
                 int idTiendaRela = sdc.verTiendaRela(IdProducto);
-                
+
                 System.out.println(idTiendaRela);
                 System.out.println(IdProducto);
-                
-                sdc.Insertar(idEN, producto.getNombre(), producto.getCantidad(),idTiendaRela );
-               
-            }
-            
-            this.redireccionar("/faces/FacturaElectronica.xhtml");
 
+                sdc.Insertar(idEN, producto.getNombre(), producto.getCantidad(), idTiendaRela);
+            }
+            this.redireccionar("/faces/FacturaElectronica.xhtml");
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage("sticky-key", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Correo no vinculado", "Porfavor eliga un correo vinculado a avs"));
-
         }
 
     }
-    
-    public void ActualizarEstado(String codCOmpra){
-        
-     ServicioCompras sc = new ServicioCompras();
-     
-     
-     sc.marcarCompraComoAnulada(codCOmpra);
-     this.redireccionar("/faces/VerCompras.xhtml");
-        
+
+    //Actualiza el estado de la compra a anulada
+    public void ActualizarEstado(String codCOmpra) {
+        ServicioCompras sc = new ServicioCompras();
+        sc.marcarCompraComoAnulada(codCOmpra);
+        this.redireccionar("/faces/VerCompras.xhtml");
     }
+
+    // Elimina el carrito
     public void redireccionarProductos(String ruta) {
-         listaCarrito = new ArrayList<ProductoTO>();
+        listaCarrito = new ArrayList<ProductoTO>();
         HttpServletRequest request;
         try {
             request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -219,19 +209,12 @@ public class CarritoController implements Serializable {
         } catch (Exception e) {
         }
     }
-    
-    public List<ComprasTO> VerComprasTotalesDefinitivas(){
-        
+
+    //Muestra todas las compras -- Admin
+    public List<ComprasTO> VerComprasTotalesDefinitivas() {
         listaComprasTotales = VRL.VerTodasLasCompras();
-        
         return listaComprasTotales;
-        
-        
-        
-    } 
-    
-    
-     
+    }
 
     //Getters and Setters
     public ProductoTO getSelectedProducto() {
@@ -361,6 +344,5 @@ public class CarritoController implements Serializable {
     public void setSelectdCompra(ComprasTO selectdCompra) {
         this.selectdCompra = selectdCompra;
     }
-    
 
 }

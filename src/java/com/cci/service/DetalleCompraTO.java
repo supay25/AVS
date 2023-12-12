@@ -13,9 +13,11 @@ import java.io.Serializable;
  */
 public class DetalleCompraTO implements Serializable  {
     
+    //Atributos
     private String nombreProducto;
     private int cantidad;
 
+    //Constructores
     public DetalleCompraTO() {
     }
 
@@ -24,6 +26,7 @@ public class DetalleCompraTO implements Serializable  {
         this.cantidad = cantidad;
     }
 
+    //Getters and setters
     public String getNombreProducto() {
         return nombreProducto;
     }
@@ -39,8 +42,5 @@ public class DetalleCompraTO implements Serializable  {
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }
-    
-    
-    
     
 }

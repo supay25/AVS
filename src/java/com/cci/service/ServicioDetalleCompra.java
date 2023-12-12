@@ -10,46 +10,43 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 
 /**
  *
  * @author ADMIN
  */
-
 public class ServicioDetalleCompra extends Servicio {
-    
-     public void Insertar(int idCompra, String nombreP, int cantidad, int idTiend) {
+
+    // Inserta la factura en la base de datos
+    public void Insertar(int idCompra, String nombreP, int cantidad, int idTiend) {
 
         try {
-            
-                PreparedStatement stmt = super.getConexion().prepareStatement("INSERT INTO detalles (idcompra, nombreProducto, cantidad, idTiend) VALUES (?,?,?,?)");
 
-                stmt.setInt(1, idCompra);
-                stmt.setString(2, nombreP);
-                stmt.setInt(3, cantidad);
-                stmt.setInt(4, idTiend);
-                
-                stmt.execute();
+            PreparedStatement stmt = super.getConexion().prepareStatement("INSERT INTO detalles (idcompra, nombreProducto, cantidad, idTiend) VALUES (?,?,?,?)");
 
-                stmt.close();
+            stmt.setInt(1, idCompra);
+            stmt.setString(2, nombreP);
+            stmt.setInt(3, cantidad);
+            stmt.setInt(4, idTiend);
+
+            stmt.execute();
+
+            stmt.close();
 
         } catch (SQLException ex) {
             System.out.println("Error al insertar compra: " + ex.getMessage());
         }
     }
- 
-     
-     
-      public int verTiendaRela(int idProducto) {
+
+    //Busca la tienda
+    public int verTiendaRela(int idProducto) {
         int idTienda = -1; // Valor predeterminado si no se encuentra nada
 
         try {
             PreparedStatement stmt = super.getConexion().prepareStatement("SELECT tienda FROM productos WHERE idproductos = ?");
 
             stmt.setInt(1, idProducto);
-            
+
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
@@ -64,8 +61,9 @@ public class ServicioDetalleCompra extends Servicio {
 
         return idTienda;
     }
-     
-      public List<DetalleCompraTO> verProductosVendidos(int idTienda) {
+
+    //Muestra los productos vendidos de la tienda -- Admin
+    public List<DetalleCompraTO> verProductosVendidos(int idTienda) {
 
         List<DetalleCompraTO> listaRetorno = new ArrayList<DetalleCompraTO>();
 
@@ -77,16 +75,13 @@ public class ServicioDetalleCompra extends Servicio {
 
             while (rs1.next()) {
                 String nombreProducto = rs1.getString("nombreProducto");
-                int  cantidad = rs1.getInt("cantidad");
-                
+                int cantidad = rs1.getInt("cantidad");
 
                 DetalleCompraTO dt = new DetalleCompraTO();
                 dt.setNombreProducto(nombreProducto);
                 dt.setCantidad(cantidad);
-               
-                listaRetorno.add(dt);
 
-               
+                listaRetorno.add(dt);
 
             }
             // Close the Producto-related resources
@@ -98,15 +93,16 @@ public class ServicioDetalleCompra extends Servicio {
         }
         return listaRetorno;
     }
-      
-      public int verIDDetalle(String nombre) {
+
+    // Busca el id del detalle por el nombre del producto
+    public int verIDDetalle(String nombre) {
         int idCompras = -1; // Valor predeterminado si no se encuentra nada
 
         try {
             PreparedStatement stmt = super.getConexion().prepareStatement("SELECT idDetalles FROM detalles WHERE nombreProducto = ?");
 
             stmt.setString(1, nombre);
-            
+
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
@@ -121,6 +117,8 @@ public class ServicioDetalleCompra extends Servicio {
 
         return idCompras;
     }
+
+    // Saca el id de la tienda por medio del id del prodcuto de las facturas.
     public int verIDTienda(int idProducto) {
         int idTienda = -1; // Valor predeterminado si no se encuentra nada
 
@@ -128,7 +126,7 @@ public class ServicioDetalleCompra extends Servicio {
             PreparedStatement stmt = super.getConexion().prepareStatement("SELECT idTiend FROM detalles WHERE idDetalles = ?");
 
             stmt.setInt(1, idProducto);
-            
+
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
@@ -143,15 +141,15 @@ public class ServicioDetalleCompra extends Servicio {
 
         return idTienda;
     }
-    
-     public List<ComprasTO> VerTodasLasCompras() { 
-         List <ComprasTO> RetornarLista = new ArrayList<ComprasTO>();
+
+    //Muestras todas la facturas de ña tienda -- Admin
+    public List<ComprasTO> VerTodasLasCompras() {
+        List<ComprasTO> RetornarLista = new ArrayList<ComprasTO>();
 
         try {
-            
             PreparedStatement stmt = super.getConexion().prepareStatement("SELECT * FROM compras");
             ResultSet rs = stmt.executeQuery();
-            
+
             while (rs.next()) {
                 String codigoCompra = rs.getString("codigoCompra");
                 String nomTarjeta = rs.getString("nomTarjeta");
@@ -166,17 +164,15 @@ public class ServicioDetalleCompra extends Servicio {
                 verCompras.setMetodoPago(MetodoPago);
                 verCompras.setTotal(total);
                 RetornarLista.add(verCompras);
-
             }
-            
+
             rs.close();
             stmt.close();
 
-        }catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());    
-            
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
         }
         return RetornarLista;
     }
-      
+
 }
