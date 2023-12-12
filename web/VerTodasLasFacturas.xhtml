@@ -37,23 +37,26 @@
                          currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
                          rowsPerPageTemplate="5,10,{ShowAll|'All'}">
 
-                <p:column headerText="Codigo de Compra">
+                <p:column headerText="Codigo de Compra" filterBy="#{VerCompra.codigoCompra}">
                     <h:outputText value="#{VerCompra.codigoCompra}" />
                 </p:column>
 
-                <p:column headerText="Nombre de Tarjeta">
+                <p:column headerText="Nombre de Tarjeta" filterBy="#{VerCompra.nomTarjeta}">
                     <h:outputText value="#{VerCompra.nomTarjeta}" />
                 </p:column>
 
-                <p:column headerText="Correo Ciente">
+                <p:column headerText="Correo Cliente" filterBy="#{VerCompra.correo}">
                     <h:outputText value="#{VerCompra.correo}" />
-                </p:column>     
-                <p:column headerText="Metodo de Pago">
+                </p:column>
+
+                <p:column headerText="Metodo de Pago" filterBy="#{VerCompra.metodoPago}">
                     <h:outputText value="#{VerCompra.metodoPago}" />
-                </p:column> 
-                <p:column headerText="Total">
+                </p:column>
+
+                <p:column headerText="Total" filterBy="#{VerCompra.total}">
                     <h:outputText value="#{VerCompra.total}" />
-                </p:column> 
+                </p:column>
+
 
                 <f:facet name="paginatorTopLeft">
                     <p:commandButton type="button" icon="pi pi-refresh"/>
