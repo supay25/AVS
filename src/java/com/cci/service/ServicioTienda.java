@@ -19,56 +19,49 @@ import javax.faces.context.FacesContext;
  * @author Jose
  */
 public class ServicioTienda extends Servicio {
-    
-    
+
     public void insertar(TiendaTO userTO) {
-         
 
-        try {               
-                if (tiendaExists(userTO.getNombre())) {
+        try {
+            if (tiendaExists(userTO.getNombre())) {
                 //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error al insertar usuario", "Hubo un error al insertar el usuario"));
-                    System.out.println(userTO.getNombre());
-            PreparedStatement stmt = super.getConexion().prepareStatement("Update tienda SET descripcion = ?, categoria = ?  WHERE nombre = ?");
-            //stmt.setInt(1, userTO.getId());
+                System.out.println(userTO.getNombre());
+                PreparedStatement stmt = super.getConexion().prepareStatement("Update tienda SET descripcion = ?, categoria = ?  WHERE nombre = ?");
+                //stmt.setInt(1, userTO.getId());
 
-            
-            stmt.setString(1, userTO.getDescripcion());
-            stmt.setString(2, userTO.getCategoria());   
-            stmt.setString(3, userTO.getNombre());
-            stmt.execute();
+                stmt.setString(1, userTO.getDescripcion());
+                stmt.setString(2, userTO.getCategoria());
+                stmt.setString(3, userTO.getNombre());
+                stmt.execute();
 
-            stmt.close();
-                return; 
+                stmt.close();
+                return;
+            } else {
+                System.out.println(userTO.getNombre());
+                PreparedStatement stmt = super.getConexion().prepareStatement("INSERT INTO tienda (nombre, descripcion,categoria) VALUES (?,?,?)");
+                //stmt.setInt(1, userTO.getId());
+
+                stmt.setString(1, userTO.getNombre());
+                stmt.setString(2, userTO.getDescripcion());
+                stmt.setString(3, userTO.getCategoria());
+                stmt.execute();
+
+                stmt.close();
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Tienda Agregado", "La tienda ha sido agregado con éxito."));
             }
-            else{
-                System.out.println(userTO.getNombre());                          
-            PreparedStatement stmt = super.getConexion().prepareStatement("INSERT INTO tienda (nombre, descripcion,categoria) VALUES (?,?,?)");
-            //stmt.setInt(1, userTO.getId());
 
-            
-            stmt.setString(1, userTO.getNombre());
-            stmt.setString(2, userTO.getDescripcion());
-            stmt.setString(3, userTO.getCategoria());
-            stmt.execute();
-
-            stmt.close();
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Tienda Agregado", "La tienda ha sido agregado con éxito."));  
-            }
-             
-                               
-             //super.getConexion().close();
+            //super.getConexion().close();
         } catch (SQLException ex) {
-            
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error al insertar Tienda", "Hubo un error al insertar la tienda: " + ex.getMessage()));
-        }        
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error al insertar Tienda", "Hubo un error al insertar la tienda: " + ex.getMessage()));
+        }
     }
 
-    
-     public boolean tiendaExists(String nombreTienda) {
+    public boolean tiendaExists(String nombreTienda) {
         try {
             PreparedStatement checkStmt = super.getConexion().prepareStatement("SELECT COUNT(*) FROM tienda WHERE nombre = ?");
             checkStmt.setString(1, nombreTienda);
-            
+
             ResultSet result = checkStmt.executeQuery();
             if (result.next()) {
                 int count = result.getInt(1);
@@ -79,9 +72,23 @@ public class ServicioTienda extends Servicio {
         }
         return false;
     }
+
+    public void eliminarTienda(TiendaTO tiendaTO) {
+
+        try {
+            PreparedStatement stmt = super.getConexion().prepareStatement("DELETE FROM tienda WHERE nombre = ?");
+            stmt.setString(1, tiendaTO.getNombre());
+            stmt.executeUpdate();
+            stmt.close();
+        } catch (SQLException ex) {
+            System.out.println("Error al eliminar usuario: " + ex.getMessage());
+        }
+
+    }
+
     public List<TiendaTO> lista() {
         List<TiendaTO> listaRetorno = new ArrayList<TiendaTO>();
-        
+
         try {
             System.out.println("Creating statement for Tiendas...");
             PreparedStatement stmt = super.getConexion().prepareStatement("SELECT idTienda, nombre, descripcion, calificacion, categoria FROM avs.tienda;");
@@ -113,21 +120,21 @@ public class ServicioTienda extends Servicio {
                     int id = rs1.getInt("tienda");
                     int cantidad = rs1.getInt("cantidad");
 
-                    ProductoTO prod = new ProductoTO(nombreProducto,descripProducto,precio,cantidad);
+                    ProductoTO prod = new ProductoTO(nombreProducto, descripProducto, precio, cantidad);
                     listaProducto.add(prod);
 
                     //System.out.println("Added Producto: " + prod.getNombre());
                 }
                 tiendaTO.setListaProductos(listaProducto);
-                
+
                 listaRetorno.add(tiendaTO);
-                for (TiendaTO x : listaRetorno){
+                for (TiendaTO x : listaRetorno) {
                     System.out.println(x.getNombre());
-                    
-                    for (ProductoTO y : x.getListaProductos())
-                    System.out.println(y.getNombre());
-                    
-                   
+
+                    for (ProductoTO y : x.getListaProductos()) {
+                        System.out.println(y.getNombre());
+                    }
+
                 }
                 // Close the Producto-related resources
                 rs1.close();
@@ -154,23 +161,21 @@ public class ServicioTienda extends Servicio {
             System.out.println("ID: " + id);
             ResultSet rs1 = stmt1.executeQuery();
 
-          
             while (rs1.next()) {
                 String nombreProducto = rs1.getString("nombre");
                 String descripProducto = rs1.getString("descripcion");
-                int precio = rs1.getInt("precio");       
+                int precio = rs1.getInt("precio");
                 int cantidad = rs1.getInt("cantidad");
-                
-                ProductoTO prod = new ProductoTO(nombreProducto, descripProducto, precio,cantidad);
+
+                ProductoTO prod = new ProductoTO(nombreProducto, descripProducto, precio, cantidad);
                 listaRetorno.add(prod);
 
                 System.out.println("Added Producto: " + prod.getNombre());
-            }                     
+            }
             // Close the Producto-related resources
             rs1.close();
             stmt1.close();
-       
-          
+
         } catch (SQLException ex) {
             ex.printStackTrace();
         }

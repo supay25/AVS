@@ -65,8 +65,7 @@ public class storeController {
 
     //Constructor
     public storeController() {
-         
-        
+
     }
 
     //métodos
@@ -94,15 +93,14 @@ public class storeController {
         servicioProducto.eliminar(this.selectedProducto);
         listaRetornoProducts.remove(selectedProducto);
     }
-    public List<ComprasTO> comprasCliente(String correo){
-        
+
+    public List<ComprasTO> comprasCliente(String correo) {
+
         seguimientoCliente = compra.facturasSeguimiento(correo);
-        
+
         return seguimientoCliente;
-        
+
     }
-    
-  
 
     public void openNewPage(TiendaTO tienda) {
         ServicioTienda ser = new ServicioTienda();
@@ -114,12 +112,13 @@ public class storeController {
         detalles();
 
     }
-      public List<DetalleCompraTO> verFacturasEspecificas(){
-        
+
+    public List<DetalleCompraTO> verFacturasEspecificas() {
+
         verFacturasEspe = sdc.verProductosVendidos(idProducto);
-        
+
         return verFacturasEspe;
-        
+
     }
 
     public void openNewPageCliente(TiendaTO tienda) {
@@ -127,18 +126,26 @@ public class storeController {
         this.listaRetornoProducts = ser.listaProducto(tienda.getIdl());
         //this.listaCarrito = new ArrayList<ProductoTO>();
         this.redireccionar("/faces/Productos.xhtml");
-        this.idProducto = tienda.getIdl();     
-        
+        this.idProducto = tienda.getIdl();
+
         System.out.println("ID tienda " + this.idProducto);
 
     }
-    public void detalles()  {
+
+    public void allDelete(){
+        ServicioProducto servPro = new ServicioProducto();
+        ServicioTienda servTi = new ServicioTienda();
+        
+        servPro.eliminarProductoTienda(selectedProducto.getTienda());
+        servTi.eliminarTienda(selectedUsuario);
+    }
+    
+    public void detalles() {
         ServicioUsuario ser = new ServicioUsuario();
-       
-      ultimasCompras = ser.detalles(this.idProducto);
-       
-       
-   }
+
+        ultimasCompras = ser.detalles(this.idProducto);
+
+    }
 
     public void openNewTienda() {
         this.selectedUsuario = new TiendaTO();
@@ -152,7 +159,6 @@ public class storeController {
         } catch (Exception e) {
         }
     }
-    
 
     //Getters and setters
     public List<ProductoTO> getListaRetornoProducts() {
@@ -175,8 +181,6 @@ public class storeController {
         this.verFacturasEspe = verFacturasEspe;
     }
 
-    
-    
     public void setListaRetornoProducts(List<ProductoTO> listaRetornoProducts) {
         this.listaRetornoProducts = listaRetornoProducts;
     }
@@ -249,16 +253,13 @@ public class storeController {
     public void setUltimasCompras(Set<ComprasTO> ultimasCompras) {
         this.ultimasCompras = ultimasCompras;
     }
-    
-    public double execute(){
-        
-        ServicioCompras compras =  new ServicioCompras();
-        
+
+    public double execute() {
+
+        ServicioCompras compras = new ServicioCompras();
+
         double total = compras.ventasGlobal();
         return total;
     }
-    
-
-    
 
 }

@@ -85,6 +85,19 @@ public class ServicioProducto extends Servicio {
 
     }
 
+    
+    public void eliminarProductoTienda(int idTienda){
+        try {
+            PreparedStatement stmt = super.getConexion().prepareStatement("DELETE FROM productos WHERE tienda = ?");
+            stmt.setInt(1, idTienda);
+            stmt.executeUpdate();
+            stmt.close();
+        } catch (SQLException ex) {
+            System.out.println("Error al eliminar usuario: " + ex.getMessage());
+        }
+        
+    }
+    
     public int obtenerIdProducto(ProductoTO productoTO) {
         int idProducto = -1; // Valor por defecto si no se encuentra ningún ID
 

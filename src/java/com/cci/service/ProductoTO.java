@@ -14,6 +14,7 @@ import java.io.Serializable;
 public class ProductoTO implements Serializable{
     private String nombre;
     private String descripcion;
+    private int tienda;
     private int precio;
     private int id;
     private int cantidad;
@@ -71,6 +72,15 @@ public class ProductoTO implements Serializable{
         this.precio = precio;
     }
 
+    public int getTienda() {
+        return tienda;
+    }
+
+    public void setTienda(int tienda) {
+        this.tienda = tienda;
+    }
+
+    
     @Override
     public String toString() {
         return "ProductoTO{" + "nombre=" + nombre + ", descripcion=" + descripcion + ", precio=" + precio+ '}';
