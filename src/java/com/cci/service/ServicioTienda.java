@@ -176,6 +176,7 @@ public class ServicioTienda extends Servicio {
                 int precio = rs1.getInt("precio");       
                 int cantidad = rs1.getInt("cantidad");
                 String imagen= rs1.getString("url");
+                System.out.println(imagen);
                 
                 ProductoTO prod = new ProductoTO(nombreProducto, descripProducto, precio,cantidad, imagen);
                 listaRetorno.add(prod);

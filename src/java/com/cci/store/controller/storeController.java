@@ -70,7 +70,7 @@ public class storeController {
     private List<DetalleCompraTO> verFacturasEspe;
      private  String image2;
     private UploadedFile file;
-    private String destinationFile2 = "http://localhost:8080/ImagenExample/resources/images/";
+    private String destinationFile2 = "http://localhost:8080/ImagenExample/resources/imagenes/";
 
     //Constructor
     public storeController() {
@@ -122,7 +122,7 @@ public class storeController {
     protected void copyFile(String fileName, InputStream in, boolean esTemporal) {
         try {
             if (fileName != null) {
-                String destinationFile = "C:\\Users\\ADMIN\\Documents\\NetBeansProjects\\ImagenTest\\web\\resources\\imagenes\\";
+                String destinationFile = "C:\\Users\\jmcar\\OneDrive\\Documents\\NetBeansProjects\\ImagenExample\\web\\resources\\imagenes\\";
                 String image = destinationFile + this.file.getFileName();
 
                 String[] partesArchivo = fileName.split(Pattern.quote("."));
