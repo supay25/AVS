@@ -15,10 +15,10 @@
             <div class="card">
 
                 <p:tabMenu activeIndex="#{param.i}">
-                    <p:menuitem value="Salir" icon="pi pi-fw pi-home" action="#{storeController.redireccionar('/faces/tienda.xhtml')}">
+                    <p:menuitem value="Salir" icon="pi pi-fw pi-home" action="#{storeController.redireccionar('/faces/index.xhtml')}">
                         <f:param name="i" value="0"/>
                     </p:menuitem>
-                    <p:menuitem value="Ver Perfil" icon="pi pi-fw pi-calendar" action="#{storeController.openNewTienda}">
+                    <p:menuitem value="Ver Facturas" icon="pi pi-fw pi-calendar" action="#{storeController.redireccionar('/faces/VerTodasLasFacturas.xhtml')}">
                         <f:param name="i" value="1"/>                      
                     </p:menuitem>
 

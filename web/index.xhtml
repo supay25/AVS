@@ -63,7 +63,9 @@
             position: absolute;
             top: 12%;
             right: 79.9%;
-            transform: translate(-50%, -50%);           
+            transform: translate(-50%, -50%);
+            
+        }
         </style>
 
         <style>
@@ -86,20 +88,16 @@
                         <p:menuitem value="Salir" icon="pi pi-fw pi-home" action="#{storeController.redireccionar('/faces/Menu.xhtml')}">
                             <f:param name="i" value="0"/>
                         </p:menuitem>
-                        <p:menuitem value="Ver Perfil" icon="pi pi-fw pi-calendar" action="#{storeController.openNewTienda}">
+                        <p:menuitem value="Ver Facturas" icon="pi pi-fw pi-calendar" action="#{storeController.redireccionar('/faces/VerTodasLasFacturas.xhtml')}">
                             <f:param name="i" value="1"/>                      
                         </p:menuitem>
-
+                        
 
 
                     </p:tabMenu>
                 </div>
 
-                <div class="VerFacturasBtn">
-                    <p:commandButton value="Ver las Facturas" action="#{storeController.redireccionar('/faces/VerTodasLasFacturas.xhtml')}">
 
-                    </p:commandButton>
-                </div>                  
 
 
                 <p:growl id="messages" showDetail="true" />
@@ -112,7 +110,7 @@
                     </div>
 
 
-
+                    <div style="margin: 5%;">
                     <p:dataTable var="tienda" value="#{storeController.listaRetorno}"
                                  rows="10" scrollHeight="250"
                                  paginator="true" paginatorPosition="bottom"
@@ -132,15 +130,13 @@
                         <p:column headerText="Categoria">
                             <h:outputText value="#{tienda.categoria}" />
                         </p:column>     
-                        <p:column headerText="Calificacion">
-                            <h:outputText value="#{tienda.calificacion}" />
-                        </p:column> 
+                        
                         <p:column headerText="Acciones">
 
                             <p:commandButton value="Abrir" actionListener="#{storeController.openNewPage(tienda)}">
 
                             </p:commandButton> 
-                            
+
                             <p:commandButton icon="pi pi-pencil" update=":dialogs:manage-product-content-edit"
                                              oncomplete="PF('manageProductDialogEdit').show()"
                                              styleClass="edit-button rounded-button ui-button-success" process="@form">
@@ -151,25 +147,25 @@
                             <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash"
                                              process="@this"
                                              style="background-color: red; color: white;"
-                            oncomplete="PF('deleteProductConfirmDialog').show()">
+                                             oncomplete="PF('deleteProductConfirmDialog').show()">
                                 <f:setPropertyActionListener value="#{tienda}" target="#{storeController.selectedUsuario}" />
-                        </p:commandButton>
+                            </p:commandButton>
 
 
-                    </p:column>
+                        </p:column>
 
 
 
-                    <f:facet name="paginatorTopLeft">
-                        <p:commandButton type="button" icon="pi pi-refresh"/>
-                    </f:facet>
+                        <f:facet name="paginatorTopLeft">
+                            <p:commandButton type="button" icon="pi pi-refresh"/>
+                        </f:facet>
 
-                    <f:facet name="paginatorBottomRight">
-                        <p:commandButton type="button" icon="pi pi-cloud-upload"/>
-                    </f:facet>
+                        <f:facet name="paginatorBottomRight">
+                            <p:commandButton type="button" icon="pi pi-cloud-upload"/>
+                        </f:facet>
 
-                </p:dataTable>
-
+                    </p:dataTable>
+                </div>
 
             </h:form>
             <h:form id="dialogs">
@@ -183,11 +179,11 @@
                         </div>
                         <div class="field">
                             <p:outputLabel for="Descripcion">Descripcion</p:outputLabel>
-                            <p:inputText id="Descripcion" value="#{storeController.selectedUsuario.descripcion}" required="true" />
+                            <p:inputText id="Descripcion" value="#{storeController.selectedUsuario.descripcion}" requiredMessage="Descripcion requerida" />
                         </div>
                         <div class="field">
                             <p:outputLabel for="Categoria">Categoria</p:outputLabel>
-                            <p:inputText id="Categoria" value="#{storeController.selectedUsuario.categoria}" required="true" />
+                            <p:inputText id="Categoria" value="#{storeController.selectedUsuario.categoria}" requiredMessage="Categoria requerida" />
                         </div>
 
                     </p:outputPanel> 
@@ -230,7 +226,7 @@
                 <p:growl id="messagesDialogs" showDetail="false" />
 
                 <p:confirmDialog widgetVar="deleteProductConfirmDialog" showEffect="fade" width="300"
-                                 message="¿Desea eliminar este producto?" header="Confirmar" severity="warn">
+                                 message="¿Desea eliminar esta tienda?" header="Confirmar" severity="warn">
                     <p:commandButton value="Sí" icon="pi pi-check" actionListener="#{storeController.allDelete()}"
                                      process="@this" update="form messagesDialogs"
                                      oncomplete="PF('deleteProductConfirmDialog').hide()" />

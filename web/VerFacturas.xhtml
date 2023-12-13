@@ -5,6 +5,14 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
+        <style>
+            body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+        </style>
 
     </h:head>
     <h:body>
@@ -13,9 +21,15 @@
        <div class="product card">
         <h:form id="form">
             <p:tabMenu activeIndex="#{param.i}" >
-                <p:menuitem value="Salir" icon="pi pi-fw pi-home" action="#{storeController.redireccionar('/faces/Productos.xhtml')}">
+                <p:menuitem value="Salir" icon="pi pi-fw pi-home" action="#{storeController.redireccionar('/faces/tienda.xhtml')}">
                     <f:param name="i" value="0"/>
                 </p:menuitem>
+                <p:menuitem value="Vista General"  icon="pi pi-fw pi-pencil" action="#{storeController.redireccionar('/faces/VistaGeneral.xhtml')}">
+                    <f:param name="i" value="2"/>
+                </p:menuitem>
+                <p:menuitem value="Ver Facturas"  icon="pi pi-fw pi-pencil" action="#{storeController.redireccionar('/faces/VerFacturas.xhtml')}">
+                        <f:param name="i" value="2"/>
+                    </p:menuitem>
                
             </p:tabMenu>  
             

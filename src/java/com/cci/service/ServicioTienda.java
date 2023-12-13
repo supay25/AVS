@@ -37,16 +37,23 @@ public class ServicioTienda extends Servicio {
                 return;
             } else {
                 System.out.println(userTO.getNombre());
-                PreparedStatement stmt = super.getConexion().prepareStatement("INSERT INTO tienda (nombre, descripcion,categoria) VALUES (?,?,?)");
-                //stmt.setInt(1, userTO.getId());
+                if ("".equals(userTO.getNombre()) || "".equals(userTO.getDescripcion()) || "".equals(userTO.getCategoria())) {
+                    // Your code here
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Campos Vacios"));
+                } 
+                else {
+                    PreparedStatement stmt = super.getConexion().prepareStatement("INSERT INTO tienda (nombre, descripcion,categoria) VALUES (?,?,?)");
+                    //stmt.setInt(1, userTO.getId());
 
-                stmt.setString(1, userTO.getNombre());
-                stmt.setString(2, userTO.getDescripcion());
-                stmt.setString(3, userTO.getCategoria());
-                stmt.execute();
+                    stmt.setString(1, userTO.getNombre());
+                    stmt.setString(2, userTO.getDescripcion());
+                    stmt.setString(3, userTO.getCategoria());
+                    stmt.execute();
 
-                stmt.close();
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Tienda Agregado", "La tienda ha sido agregado con éxito."));
+                    stmt.close();
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Tienda Agregada", "La tienda ha sido agregada con éxito."));
+                }
+
             }
 
             //super.getConexion().close();

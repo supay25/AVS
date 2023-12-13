@@ -66,16 +66,25 @@ public class CarritoController implements Serializable {
 
     //Agregar los productos al carrito
     public void agregarAlCarrito(ProductoTO prodTO) {
-        System.out.println("Test " + prodTO.getNombre());
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Producto Agregado al Carrito"));
+        
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Producto Agregado al Carrito", ""));
         this.listaCarrito.add(prodTO);
-        System.out.println(listaCarrito);
+       
+        
+        
+       
 
     }
 
     public void redirigirCompra() {
-        System.out.println(this.listaCarrito);
-        this.redireccionar("/faces/RealizarCompra.xhtml");
+        if(listaCarrito.isEmpty()){
+            
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Carrito Vacio", "No hay productos en el carrito"));
+        }
+        else{
+            this.redireccionar("/faces/RealizarCompra.xhtml");
+        }
+        
 
     }
 

@@ -8,7 +8,8 @@ package com.cci.service;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -23,7 +24,9 @@ public class ServicioProducto extends Servicio {
     //Inserta los productos en la tienda correspondiente.
     public void insertar(ProductoTO productoTO, int tienda) {
         try {
+
             if (productoExists(productoTO.getNombre())) {
+
                 PreparedStatement stmt = super.getConexion().prepareStatement("UPDATE productos SET descripcion=? , precio=?, cantidad = ? where nombre=?");
 
                 stmt.setString(1, productoTO.getDescripcion());
@@ -33,19 +36,28 @@ public class ServicioProducto extends Servicio {
                 stmt.execute();
 
                 stmt.close();
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Producto Actualizado", "El producto ha sido actualizado con exito"));
 
             } else {
 
-                PreparedStatement stmt = super.getConexion().prepareStatement("INSERT INTO productos(nombre, descripcion, precio,tienda,cantidad) VALUES (?,?,?,?,?)");
+                if ("".equals(productoTO.getNombre()) || ("".equals(productoTO.getDescripcion())) || "".equals(productoTO.getPrecio())) {
+                    // Your code here
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error, Campos Vacios", "Campos Vacios"));
+ 
+                } else {
+                    PreparedStatement stmt = super.getConexion().prepareStatement("INSERT INTO productos(nombre, descripcion, precio,tienda,cantidad) VALUES (?,?,?,?,?)");
 
-                stmt.setString(1, productoTO.getNombre());
-                stmt.setString(2, productoTO.getDescripcion());
-                stmt.setInt(3, productoTO.getPrecio());
-                stmt.setInt(4, tienda);
-                stmt.setInt(5, productoTO.getCantidad());
-                stmt.execute();
+                    stmt.setString(1, productoTO.getNombre());
+                    stmt.setString(2, productoTO.getDescripcion());
+                    stmt.setInt(3, productoTO.getPrecio());
+                    stmt.setInt(4, tienda);
+                    stmt.setInt(5, productoTO.getCantidad());
+                    stmt.execute();
 
-                stmt.close();
+                    stmt.close();
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "El producto ha sido agregado con exito", "El producto ha sido agregado con exito"));
+
+                }
 
             }
 
@@ -75,29 +87,38 @@ public class ServicioProducto extends Servicio {
     //Elimina un producto por el nombre
     public void eliminar(ProductoTO productoTO) {
         try {
-            PreparedStatement stmt = super.getConexion().prepareStatement("DELETE FROM productos WHERE nombre = ?");
-            stmt.setString(1, productoTO.getNombre());
-            stmt.executeUpdate();
-            stmt.close();
+            if (("").equals(productoTO.getNombre()) || (("").equals(productoTO.getDescripcion())) || productoTO.getPrecio() == 0) {
+                // Your code here
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Campos Vacios"));
+
+            } else {
+                PreparedStatement stmt = super.getConexion().prepareStatement("DELETE FROM productos WHERE nombre = ?");
+                stmt.setString(1, productoTO.getNombre());
+                stmt.executeUpdate();
+                stmt.close();
+                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Producto Eliminado", "El producto ha sido eliminado con éxito."));
+                
+            }
+            ;
         } catch (SQLException ex) {
-            System.out.println("Error al eliminar usuario: " + ex.getMessage());
+            System.out.println("Error al eliminar producto: ");
         }
 
     }
 
     //Elimina todos los productos de una tienda.
-    public void eliminarProductoTienda(int idTienda){
+    public void eliminarProductoTienda(int idTienda) {
         try {
             PreparedStatement stmt = super.getConexion().prepareStatement("DELETE FROM productos WHERE tienda = ?");
             stmt.setInt(1, idTienda);
             stmt.executeUpdate();
             stmt.close();
         } catch (SQLException ex) {
-            System.out.println("Error al eliminar usuario: " + ex.getMessage());
+            System.out.println("Error al eliminar producto: " + ex.getMessage());
         }
-        
+
     }
-    
+
     //Obtiene el id de los producos por medio del nombre
     public int obtenerIdProducto(ProductoTO productoTO) {
         int idProducto = -1; // Valor por defecto si no se encuentra ningún ID

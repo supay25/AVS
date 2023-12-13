@@ -74,10 +74,15 @@ public class storeController {
     }
 
     public void saveTienda() {
+        
+            
+        
         System.out.println("Aqui estas " + this.selectedUsuario.getNombre());
         ServicioTienda user = new ServicioTienda();
         user.insertar(this.selectedUsuario);
         this.listaRetorno = user.lista();
+        
+        
     }
 
     public void saveProduct() {
