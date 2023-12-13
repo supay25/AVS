@@ -137,12 +137,16 @@ public class storeController {
 
     }
 
-    public void allDelete(){
+    public void allDelete(String nombreTienda){
+        
         ServicioProducto servPro = new ServicioProducto();
         ServicioTienda servTi = new ServicioTienda();
         
-        servPro.eliminarProductoTienda(selectedProducto.getTienda());
-        servTi.eliminarTienda(selectedUsuario);
+        int idTienda = servTi.obtenerIdTienda(nombreTienda);
+        
+        servPro.eliminarProductoTienda(idTienda);
+        
+        servTi.eliminarTienda(nombreTienda);
     }
     
     public void detalles() {

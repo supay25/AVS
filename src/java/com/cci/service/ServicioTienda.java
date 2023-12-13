@@ -81,11 +81,11 @@ public class ServicioTienda extends Servicio {
     }
 
     //Elimina una tienda
-    public void eliminarTienda(TiendaTO tiendaTO) {
+    public void eliminarTienda(String nombreTienda) {
 
         try {
             PreparedStatement stmt = super.getConexion().prepareStatement("DELETE FROM tienda WHERE nombre = ?");
-            stmt.setString(1, tiendaTO.getNombre());
+            stmt.setString(1, nombreTienda);
             stmt.executeUpdate();
             stmt.close();
         } catch (SQLException ex) {
@@ -187,5 +187,25 @@ public class ServicioTienda extends Servicio {
             ex.printStackTrace();
         }
         return listaRetorno;
+    }
+    
+    public int obtenerIdTienda(String nomTienda) {
+        int idTienda = -1; // Valor por defecto si no se encuentra ningún ID
+
+        try {
+            PreparedStatement stmt = super.getConexion().prepareStatement("SELECT idTienda FROM tienda WHERE nombre = ? LIMIT 1");
+            stmt.setString(1, nomTienda);
+            ResultSet resultSet = stmt.executeQuery();
+
+            if (resultSet.next()) {
+                idTienda = resultSet.getInt("idtienda");
+            }
+
+            stmt.close();
+        } catch (SQLException ex) {
+            System.out.println("Error al obtener el ID de la tienda: " + ex.getMessage());
+        }
+
+        return idTienda;
     }
 }

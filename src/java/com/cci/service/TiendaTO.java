@@ -11,8 +11,7 @@ import java.util.List;
 /**
  *
  * @author Jose
- */
-public class TiendaTO implements Serializable {
+ */public class TiendaTO implements Serializable {
     //atributos
     private String nombre;
     private String descripcion;
