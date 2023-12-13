@@ -12,27 +12,29 @@ import java.io.Serializable;
  * @author Jose
  */
 public class ProductoTO implements Serializable{
-    
-    //Atributo
     private String nombre;
     private String descripcion;
-    private int tienda;
     private int precio;
     private int id;
     private int cantidad;
+    private String imagen;
     
-    //Constructores
     public ProductoTO() {
     }
 
-    public ProductoTO(String nombre, String descripcion, int precio, int cantidad) {
+    public ProductoTO(String imagen) {
+        this.imagen = imagen;
+    }
+    
+
+    public ProductoTO(String nombre, String descripcion, int precio, int cantidad, String imagen) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;       
         this.cantidad = cantidad;
+        this.imagen = imagen;
     }  
 
-    //Getters and Setters
     public int getId() {
         return id;
     }
@@ -48,6 +50,9 @@ public class ProductoTO implements Serializable{
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }
+    
+    
+    
     
     public String getNombre() {
         return nombre;
@@ -73,13 +78,14 @@ public class ProductoTO implements Serializable{
         this.precio = precio;
     }
 
-    public int getTienda() {
-        return tienda;
+    public String getImagen() {
+        return imagen;
     }
 
-    public void setTienda(int tienda) {
-        this.tienda = tienda;
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
     }
+
     
     @Override
     public String toString() {

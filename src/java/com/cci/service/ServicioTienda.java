@@ -115,7 +115,7 @@ public class ServicioTienda extends Servicio {
                 System.out.println("Added Tienda: " + tiendaTO.getNombre());
 
                 System.out.println("Creating statement for Productos...");
-                PreparedStatement stmt1 = super.getConexion().prepareStatement("SELECT nombre, descripcion, precio,tienda,cantidad FROM avs.productos WHERE tienda = ?;");
+                PreparedStatement stmt1 = super.getConexion().prepareStatement("SELECT nombre, descripcion, precio,tienda,cantidad, url FROM avs.productos WHERE tienda = ?;");
                 stmt1.setInt(1, tiendaTO.getIdl());
                 System.out.println("ID: " + tiendaTO.getIdl());
                 ResultSet rs1 = stmt1.executeQuery();
@@ -128,8 +128,9 @@ public class ServicioTienda extends Servicio {
                     int precio = rs1.getInt("precio");
                     int id = rs1.getInt("tienda");
                     int cantidad = rs1.getInt("cantidad");
+                    String  imagen = rs1.getString("url");
 
-                    ProductoTO prod = new ProductoTO(nombreProducto, descripProducto, precio, cantidad);
+                    ProductoTO prod = new ProductoTO(nombreProducto,descripProducto,precio,cantidad, imagen);
                     listaProducto.add(prod);
 
                     //System.out.println("Added Producto: " + prod.getNombre());
@@ -158,31 +159,34 @@ public class ServicioTienda extends Servicio {
     }
 
     //MUestra la lista de los productos.
-    public List<ProductoTO> listaProducto(int id) {
+   public List<ProductoTO> listaProducto(int id) {
         List<ProductoTO> listaRetorno = new ArrayList<ProductoTO>();
 
         try {
             System.out.println("Creating statement for Productos...");
-            PreparedStatement stmt1 = super.getConexion().prepareStatement("SELECT nombre, descripcion, precio, cantidad FROM avs.productos WHERE tienda = ?;");
+            PreparedStatement stmt1 = super.getConexion().prepareStatement("SELECT nombre, descripcion, precio, cantidad, url FROM avs.productos WHERE tienda = ?;");
             stmt1.setInt(1, id);
             System.out.println("ID: " + id);
             ResultSet rs1 = stmt1.executeQuery();
 
+          
             while (rs1.next()) {
                 String nombreProducto = rs1.getString("nombre");
                 String descripProducto = rs1.getString("descripcion");
-                int precio = rs1.getInt("precio");
+                int precio = rs1.getInt("precio");       
                 int cantidad = rs1.getInt("cantidad");
-
-                ProductoTO prod = new ProductoTO(nombreProducto, descripProducto, precio, cantidad);
+                String imagen= rs1.getString("url");
+                
+                ProductoTO prod = new ProductoTO(nombreProducto, descripProducto, precio,cantidad, imagen);
                 listaRetorno.add(prod);
 
                 System.out.println("Added Producto: " + prod.getNombre());
-            }
+            }                     
             // Close the Producto-related resources
             rs1.close();
             stmt1.close();
-
+       
+          
         } catch (SQLException ex) {
             ex.printStackTrace();
         }

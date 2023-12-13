@@ -14,12 +14,17 @@ import com.cci.service.ServicioProducto;
 import com.cci.service.ServicioTienda;
 import com.cci.service.ServicioUsuario;
 import com.cci.service.TiendaTO;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -35,6 +40,7 @@ import org.primefaces.model.charts.bar.BarChartOptions;
 import org.primefaces.model.charts.hbar.HorizontalBarChartDataSet;
 import org.primefaces.model.charts.hbar.HorizontalBarChartModel;
 import org.primefaces.model.charts.optionconfig.title.Title;
+import org.primefaces.model.file.UploadedFile;
 
 /**
  *
@@ -62,6 +68,9 @@ public class storeController {
     int idProducto;
     private List<ComprasTO> seguimientoCliente;
     private List<DetalleCompraTO> verFacturasEspe;
+     private  String image2;
+    private UploadedFile file;
+    private String destinationFile2 = "http://localhost:8080/ImagenExample/resources/images/";
 
     //Constructor
     public storeController() {
@@ -86,12 +95,63 @@ public class storeController {
     }
 
     public void saveProduct() {
+        this.handleFileUpload();
         System.out.println("Aqui esta produto " + this.idProducto + this.selectedProducto.getNombre());
         ServicioProducto prod = new ServicioProducto();
-        prod.insertar(this.selectedProducto, this.idProducto);
+        this.image2 = destinationFile2 + this.file.getFileName();
+        
+        prod.insertar(this.selectedProducto, this.idProducto, image2);
         ServicioTienda user = new ServicioTienda();
         this.listaRetornoProducts = user.listaProducto(idProducto);
     }
+    public void handleFileUpload() {
+        try {
+            System.out.println("===>>> " + this.file);
+            System.out.println("===>>> " + this.file.getFileName() + " size: " + this.file.getSize());
+            this.copyFile(this.file.getFileName(), this.file.getInputStream(), false);
+
+
+            
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    
+    protected void copyFile(String fileName, InputStream in, boolean esTemporal) {
+        try {
+            if (fileName != null) {
+                String destinationFile = "C:\\Users\\ADMIN\\Documents\\NetBeansProjects\\ImagenTest\\web\\resources\\imagenes\\";
+                String image = destinationFile + this.file.getFileName();
+
+                String[] partesArchivo = fileName.split(Pattern.quote("."));
+                String nombreArchivo = partesArchivo[0];
+                String extensionArchivo = partesArchivo[1];
+                if (esTemporal) {
+                    nombreArchivo += "_TMP";
+                }
+                //File tmp = new File(destinationFile + fileName);
+                File tmp = new File(destinationFile + nombreArchivo + "." + extensionArchivo);
+                tmp.getParentFile().mkdirs();
+                OutputStream out = new FileOutputStream(tmp);
+
+                int read = 0;
+                byte[] bytes = new byte[1024];
+
+                while ((read = in.read(bytes)) != -1) {
+                    out.write(bytes, 0, read);
+                }
+
+                in.close();
+                out.flush();
+                out.close();
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+  
 
     public void deleteProducto() {
         ServicioProducto servicioProducto = new ServicioProducto();
@@ -271,4 +331,28 @@ public class storeController {
         return total;
     }
 
+    public String getImage2() {
+        return image2;
+    }
+
+    public void setImage2(String image2) {
+        this.image2 = image2;
+    }
+
+    public UploadedFile getFile() {
+        return file;
+    }
+
+    public void setFile(UploadedFile file) {
+        this.file = file;
+    }
+
+    public String getDestinationFile2() {
+        return destinationFile2;
+    }
+
+    public void setDestinationFile2(String destinationFile2) {
+        this.destinationFile2 = destinationFile2;
+    }
+    
 }

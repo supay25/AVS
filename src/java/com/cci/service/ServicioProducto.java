@@ -22,42 +22,35 @@ public class ServicioProducto extends Servicio {
     }
 
     //Inserta los productos en la tienda correspondiente.
-    public void insertar(ProductoTO productoTO, int tienda) {
+    public void insertar(ProductoTO productoTO, int tienda, String imagen) {
+
         try {
 
             if (productoExists(productoTO.getNombre())) {
-
-                PreparedStatement stmt = super.getConexion().prepareStatement("UPDATE productos SET descripcion=? , precio=?, cantidad = ? where nombre=?");
+                PreparedStatement stmt = super.getConexion().prepareStatement("UPDATE productos SET descripcion=? , precio=?, cantidad = ?, url=? where nombre=?");
 
                 stmt.setString(1, productoTO.getDescripcion());
                 stmt.setInt(2, productoTO.getPrecio());
                 stmt.setInt(3, productoTO.getCantidad());
                 stmt.setString(4, productoTO.getNombre());
+                stmt.setString(5, imagen);
                 stmt.execute();
 
                 stmt.close();
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Producto Actualizado", "El producto ha sido actualizado con exito"));
 
             } else {
 
-                if ("".equals(productoTO.getNombre()) || ("".equals(productoTO.getDescripcion())) || "".equals(productoTO.getPrecio())) {
-                    // Your code here
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error, Campos Vacios", "Campos Vacios"));
- 
-                } else {
-                    PreparedStatement stmt = super.getConexion().prepareStatement("INSERT INTO productos(nombre, descripcion, precio,tienda,cantidad) VALUES (?,?,?,?,?)");
+                PreparedStatement stmt = super.getConexion().prepareStatement("INSERT INTO productos(nombre, descripcion, precio,tienda,cantidad, url) VALUES (?,?,?,?,?,?)");
 
-                    stmt.setString(1, productoTO.getNombre());
-                    stmt.setString(2, productoTO.getDescripcion());
-                    stmt.setInt(3, productoTO.getPrecio());
-                    stmt.setInt(4, tienda);
-                    stmt.setInt(5, productoTO.getCantidad());
-                    stmt.execute();
+                stmt.setString(1, productoTO.getNombre());
+                stmt.setString(2, productoTO.getDescripcion());
+                stmt.setInt(3, productoTO.getPrecio());
+                stmt.setInt(4, tienda);
+                stmt.setInt(5, productoTO.getCantidad());
+                stmt.setString(6, imagen);
+                stmt.execute();
 
-                    stmt.close();
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "El producto ha sido agregado con exito", "El producto ha sido agregado con exito"));
-
-                }
+                stmt.close();
 
             }
 
@@ -96,8 +89,8 @@ public class ServicioProducto extends Servicio {
                 stmt.setString(1, productoTO.getNombre());
                 stmt.executeUpdate();
                 stmt.close();
-                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Producto Eliminado", "El producto ha sido eliminado con éxito."));
-                
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Producto Eliminado", "El producto ha sido eliminado con éxito."));
+
             }
             ;
         } catch (SQLException ex) {
