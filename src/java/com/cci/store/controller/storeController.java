@@ -71,7 +71,7 @@ public class storeController {
      private  String image2;
      private String imgTienda;
     private UploadedFile file;
-    private String destinationFile2 = "http://localhost:8080/ImagenTest/resources/imagenes/";
+    private String destinationFile2 = "http://localhost:8080/ImagenExample/resources/imagenes/";
 
     //Constructor
     public storeController() {
@@ -123,7 +123,7 @@ public class storeController {
     protected void copyFile(String fileName, InputStream in, boolean esTemporal) {
         try {
             if (fileName != null) {
-                String destinationFile = "C:\\Users\\ADMIN\\Documents\\NetBeansProjects\\ImagenTestweb\\resources\\imagenes\\";
+                String destinationFile = "C:\\Users\\jmcar\\OneDrive\\Documents\\NetBeansProjects\\ImagenExample\\resources\\imagenes";
                 String image = destinationFile + this.file.getFileName();
 
                 String[] partesArchivo = fileName.split(Pattern.quote("."));
