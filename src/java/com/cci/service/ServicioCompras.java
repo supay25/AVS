@@ -74,7 +74,7 @@ public class ServicioCompras extends Servicio {
             }
 
         } catch (SQLException ex) {
-            System.out.println("la adriana cachera" + ex);
+            System.out.println("No sirve :v" + ex);
         }
 
         return false;

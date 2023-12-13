@@ -20,7 +20,7 @@ import javax.faces.context.FacesContext;
 public class ServicioTienda extends Servicio {
 
     //Inserta una tienda
-    public void insertar(TiendaTO userTO) {
+    public void insertar(TiendaTO userTO, String imgTiend) {
         try {
             if (tiendaExists(userTO.getNombre())) {
                 //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error al insertar usuario", "Hubo un error al insertar el usuario"));
@@ -42,12 +42,13 @@ public class ServicioTienda extends Servicio {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Campos Vacios"));
                 } 
                 else {
-                    PreparedStatement stmt = super.getConexion().prepareStatement("INSERT INTO tienda (nombre, descripcion,categoria) VALUES (?,?,?)");
+                    PreparedStatement stmt = super.getConexion().prepareStatement("INSERT INTO tienda (nombre, descripcion,categoria, url) VALUES (?,?,?,?)");
                     //stmt.setInt(1, userTO.getId());
 
                     stmt.setString(1, userTO.getNombre());
                     stmt.setString(2, userTO.getDescripcion());
                     stmt.setString(3, userTO.getCategoria());
+                    stmt.setString(4, imgTiend);
                     stmt.execute();
 
                     stmt.close();
@@ -100,7 +101,7 @@ public class ServicioTienda extends Servicio {
 
         try {
             System.out.println("Creating statement for Tiendas...");
-            PreparedStatement stmt = super.getConexion().prepareStatement("SELECT idTienda, nombre, descripcion, calificacion, categoria FROM avs.tienda;");
+            PreparedStatement stmt = super.getConexion().prepareStatement("SELECT idTienda, nombre, descripcion, calificacion, categoria, url FROM avs.tienda;");
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
@@ -109,8 +110,9 @@ public class ServicioTienda extends Servicio {
                 String descripcion = rs.getString("descripcion");
                 String calificacion = rs.getString("calificacion");
                 String categoria = rs.getString("categoria");
+                String imgTienda = rs.getString("url");
 
-                TiendaTO tiendaTO = new TiendaTO(nombre, descripcion, calificacion, categoria, idTienda);
+                TiendaTO tiendaTO = new TiendaTO(nombre, descripcion, calificacion, categoria, idTienda, imgTienda);
 
                 System.out.println("Added Tienda: " + tiendaTO.getNombre());
 

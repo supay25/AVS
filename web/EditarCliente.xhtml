@@ -7,29 +7,89 @@
 
     <h:head>
         <title>Facelet Title</title>
+        <style>
+            /* Estilos CSS */
+            body {
+                font-family: 'Arial', sans-serif;
+                background-color: #f5f5f5;
+                margin: 0;
+                padding: 0;
+            }
+
+            .container {
+                width: 80%;
+                margin: 0 auto;
+                padding: 20px;
+            }
+
+            .card {
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                background-color: #fff;
+                padding: 20px;
+                margin-bottom: 20px;
+            }
+
+            .table-container {
+                margin-bottom: 20px;
+            }
+
+            .table-container .ui-datatable {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            .table-container .ui-datatable th,
+            .table-container .ui-datatable td {
+                border: 1px solid #ddd;
+                padding: 8px;
+            }
+
+            .edit-column {
+                width: 6rem;
+                text-align: center;
+            }
+
+            .edit-column .ui-row-editor .ui-icon-pencil,
+            .edit-column .ui-row-editor .ui-icon-check,
+            .edit-column .ui-row-editor .ui-icon-close {
+                margin: 0;
+            }
+
+            .user-details {
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                background-color: #fff;
+                padding: 10px;
+                margin-bottom: 20px;
+            }
+
+            .user-details div {
+                margin-bottom: 5px;
+            }
+
+            .user-details .user-name {
+                font-weight: bold;
+            }
+        </style>
     </h:head>
 
     <h:body>
+        <div class="container">
+            <h:form id="form">
+                <p:growl id="msgs" showDetail="true"/>
 
-        <h:form id="form">
-            <p:growl id="msgs" showDetail="true"/>
+                <div class="card">
+                    <p:tabMenu activeIndex="#{param.i}">
+                        <p:menuitem value="Salir" icon="pi pi-fw pi-home" action="#{storeController.redireccionar('/faces/MenuTiendas.xhtml')}">
+                            <f:param name="i" value="0"/>
+                        </p:menuitem>
+                    </p:tabMenu>    
+                </div>
 
-            <div class="card" >
-                <p:tabMenu activeIndex="#{param.i}" >
-                    <p:menuitem value="Salir" icon="pi pi-fw pi-home" action="#{storeController.redireccionar('/faces/MenuTiendas.xhtml')}">
-                        <f:param name="i" value="0"/>
-                    </p:menuitem>
-
-                </p:tabMenu>    
-            </div>
-
-            <p:dataTable id="users1" var="user" value="#{loginController.usuarioRetorno}" editable="true"
-                         style="margin-bottom:20px">
-
-                <p:ajax event="rowEdit" listener="#{loginController.onRowEdit}" update=":form:msgs"/>
-                <p:ajax event="rowEditCancel" listener="#{loginController.onRowCancel}" update=":form:msgs"/>
-
-                <p:column headerText="Nombre Usuario">
+                <div class="table-container">
+                    <p:dataTable id="users1" var="user" value="#{loginController.usuarioRetorno}" editable="true">
+                        <p:column headerText="Nombre Usuario">
                     <p:cellEditor>
                         <f:facet name="output">
                             <h:outputText value="#{user.nombre}"/>
@@ -77,14 +137,9 @@
                     <p:rowEditor editTitle="Edit Row" cancelTitle="Cancel Edit" saveTitle="Save Row"/>
                 </p:column>
 
-            </p:dataTable>
-        </h:form>
-
-
-
-
-
-        <p:dataViewGridItem>
+                    </p:dataTable>
+                </div>
+            </h:form>
 
             <div class="user-details">
                 <div class="user-name">#{user.nombre}</div>
@@ -92,10 +147,6 @@
                 <div class="user-correo">#{user.correo}</div>
                 <div class="user-category">#{user.telefono}</div>
             </div>
-
-
-        </p:dataViewGridItem>
-
+        </div>
     </h:body>
 </html>
-

@@ -69,8 +69,9 @@ public class storeController {
     private List<ComprasTO> seguimientoCliente;
     private List<DetalleCompraTO> verFacturasEspe;
      private  String image2;
+     private String imgTienda;
     private UploadedFile file;
-    private String destinationFile2 = "http://localhost:8080/ImagenExample/resources/imagenes/";
+    private String destinationFile2 = "http://localhost:8080/ImagenTest/resources/imagenes/";
 
     //Constructor
     public storeController() {
@@ -84,11 +85,11 @@ public class storeController {
 
     public void saveTienda() {
         
-            
+        this.imgTienda = destinationFile2 + this.file.getFileName(); 
         
         System.out.println("Aqui estas " + this.selectedUsuario.getNombre());
         ServicioTienda user = new ServicioTienda();
-        user.insertar(this.selectedUsuario);
+        user.insertar(this.selectedUsuario, imgTienda);
         this.listaRetorno = user.lista();
         
         
@@ -122,7 +123,7 @@ public class storeController {
     protected void copyFile(String fileName, InputStream in, boolean esTemporal) {
         try {
             if (fileName != null) {
-                String destinationFile = "C:\\Users\\jmcar\\OneDrive\\Documents\\NetBeansProjects\\ImagenExample\\web\\resources\\imagenes\\";
+                String destinationFile = "C:\\Users\\ADMIN\\Documents\\NetBeansProjects\\ImagenTestweb\\resources\\imagenes\\";
                 String image = destinationFile + this.file.getFileName();
 
                 String[] partesArchivo = fileName.split(Pattern.quote("."));
@@ -354,5 +355,14 @@ public class storeController {
     public void setDestinationFile2(String destinationFile2) {
         this.destinationFile2 = destinationFile2;
     }
+
+    public String getImgTienda() {
+        return imgTienda;
+    }
+
+    public void setImgTienda(String imgTienda) {
+        this.imgTienda = imgTienda;
+    }
+    
     
 }

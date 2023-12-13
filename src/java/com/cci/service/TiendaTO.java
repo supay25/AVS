@@ -18,18 +18,27 @@ import java.util.List;
     private String calificacion;
     private String categoria;
     private int idl;
+    private String imgTienda;
     private List<ProductoTO> listaProductos;
     
     //Constructores
-    public TiendaTO(String nombre, String descripcion, String calificacion, String categoria, int idl) {
+    
+    
+    
+    public TiendaTO(String nombre, String descripcion, String calificacion, String categoria, int idl, String imgTienda) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.calificacion = calificacion;
         this.categoria = categoria;
         this.idl = idl;
+        this.imgTienda = imgTienda;
     }
     
     public TiendaTO() {
+    }
+
+    public TiendaTO(String imgTienda) {
+        this.imgTienda = imgTienda;
     }
     
     //Getters and Setters
@@ -80,5 +89,15 @@ import java.util.List;
     public void setListaProductos(List<ProductoTO> listaProductos) {
         this.listaProductos = listaProductos;
     }  
+
+    public String getImgTienda() {
+        return imgTienda;
+    }
+
+    public void setImgTienda(String imgTienda) {
+        this.imgTienda = imgTienda;
+    }
+    
+    
     
 }
